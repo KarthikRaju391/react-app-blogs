@@ -38,15 +38,32 @@
 	padding: 10px 16px;
 	margin: 20px 0;
 	border-bottom: 1px solid #fafafa;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .blog-preview:hover {
 	box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
-	cursor: pointer;
+	/* cursor: pointer; */
 }
 
 .blog-preview h2 {
 	font-size: 20px;
 	color: #f1356d;
 	margin-bottom: 8px;
+}
+
+.author-content {
+	margin-top: 0.5em;
+}
+
+.author {
+	font-weight: bold;
+}
+
+.article {
+	margin-top: 2em;
+	line-height: 1.7em;
+	font-size: 1.2em;
 }
