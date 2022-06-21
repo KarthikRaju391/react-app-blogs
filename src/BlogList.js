@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export const BlogList = ({ blogs, title }) => {
+
+	const navigate = useNavigate();
+
+	const handleDelete = async (id) => {
+		await fetch(`http://localhost:8000/blogs/${id}`, {
+			method: 'DELETE'
+		})
+		
+		window.location.reload();
+	}	
 
 	return (
 		<div className="blog-list">
@@ -13,8 +23,9 @@ export const BlogList = ({ blogs, title }) => {
 							<h2>{blog.title}</h2>
 							<p>Written by {blog.author}</p>
 						</div>
-						<div>
-							<Link to={`/blog/${blog.id}`}>Read more</Link>
+						<div className='button-container'>
+							<Link className='read-more' to={`/blog/${blog.id}`}>Read more</Link>
+							<button onClick={() => handleDelete(blog.id)} className='delete-btn'>Delete</button>
 						</div>
 					</div>
 				</section>

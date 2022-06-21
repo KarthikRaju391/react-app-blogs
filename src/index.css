@@ -60,10 +60,75 @@
 
 .author {
 	font-weight: bold;
+	color: #f1356d;
 }
 
 .article {
 	margin-top: 2em;
 	line-height: 1.7em;
 	font-size: 1.2em;
+}
+
+.read-more {
+	/* color: #f1356d; */
+	text-decoration: none;
+	font-weight: bold;
+	border-bottom: 1px solid #f1356d;
+}
+
+.input-section + .input-section {
+	margin-top: 2em;
+}
+
+.input-area::placeholder {
+	font-weight: lighter;
+}
+.input-area {
+	width: 75%;
+	padding: 1em 0.5em;
+	margin-top: 0.5em;
+	font-weight: bold;
+	font-size: 1.1em;
+	border-radius: 0.5em;
+	outline: none;
+	border: 1.5px solid black;
+}
+
+.input-text-area {
+	margin-top: 0.5em;
+	font-size: 1.1em;
+	padding: 1em 0.5em;
+	width: 100%;
+	border-radius: 0.5em;
+	outline: none;
+	border: 1.5px solid black;
+}
+
+.button-container {
+	display: flex;
+	align-items: center;
+	gap: 1em;
+}
+
+.publish-btn{
+	margin-top: 1.5em;
+	cursor: pointer;
+	padding: 0.5em 1em;
+	font-size: 1.2em;
+	font-weight: bold;
+	background-color: transparent;
+	outline: none;
+	border: 2px solid #f1356d;
+	border-radius: 0.5em;
+	color: #f1356d;
+}
+
+.delete-btn {
+	cursor: pointer;
+	padding: 0.3em 1em;
+	background-color: transparent;
+	outline: none;
+	border: 1px solid #f1356d;
+	border-radius: 0.5em;
+	color: #f1356d;
 }
