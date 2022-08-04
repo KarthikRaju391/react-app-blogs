@@ -3,16 +3,17 @@
 /* base styles */
 * {
 	margin: 0;
-	font-family: "Quicksand";
+	font-family: 'Quicksand';
 	color: #333;
 }
 .navbar {
 	padding: 20px;
 	display: flex;
 	align-items: center;
-	max-width: 600px;
+	max-width: 1000px;
 	margin: 0 auto;
 	border-bottom: 1px solid #f2f2f2;
+	z-index: 1;
 }
 .navbar h1 {
 	color: #f1356d;
@@ -27,6 +28,25 @@
 }
 .navbar a:hover {
 	color: #f1356d;
+}
+
+.account-hover:hover .dropdown_content {
+	display: flex;
+	flex-direction: column;
+	margin-left: 5em;
+	padding: 1em 0;
+	gap: 1em;
+	z-index: 1000;
+}
+
+.dropdown_content {
+	display: none;
+	position: absolute;
+	background-color: var(--clr-medium);
+	min-width: 190px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	/* z-index: 1; */
+	top: 7%;
 }
 .content {
 	max-width: 600px;
@@ -110,7 +130,7 @@
 	gap: 1em;
 }
 
-.publish-btn{
+.publish-btn {
 	margin-top: 1.5em;
 	cursor: pointer;
 	padding: 0.5em 1em;
