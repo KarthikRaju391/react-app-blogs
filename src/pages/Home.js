@@ -1,5 +1,5 @@
-import { BlogList } from './BlogList';
-import useFetch from './useFetch';
+import { BlogList } from '../components/BlogList';
+import useFetch from '../hooks/useFetch';
 
 export const Home = () => {
 	const { data: blogs, isLoading, error } = useFetch('blogs');

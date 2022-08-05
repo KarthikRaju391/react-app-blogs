@@ -9,7 +9,6 @@ export const BlogList = ({ blogs, title }) => {
 
 		window.location.reload();
 	};
-	console.log(blogs);
 	return (
 		<div className="blog-list">
 			<h2>{title}</h2>

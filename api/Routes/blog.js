@@ -51,7 +51,6 @@ router.get('/user/blogs', verifyToken, async (req, res) => {
 // POST REQUEST
 
 router.post('/', verifyToken, async (req, res) => {
-	console.log(req);
 	const newBlog = new Blog({
 		userId: req.user.id,
 		title: req.body.title,

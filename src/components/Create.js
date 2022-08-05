@@ -13,7 +13,6 @@ export const Create = () => {
 		await fetch('http://localhost:4000/api/blogs', {
 			method: 'POST',
 			headers: {
-				Accept: 'application/json',
 				'Content-Type': 'application/json',
 				token: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyZWI5MWM4OGFkOWJkNTc1MjBjYzNjNCIsImZpcnN0bmFtZSI6IkthcnRoaWsiLCJsYXN0bmFtZSI6IlJhanUiLCJpYXQiOjE2NTk2MDU0NDgsImV4cCI6MTY1OTg2NDY0OH0.nf5bgr5fm3fnk7LLibbIRhjTdC9GiEulGwu_Moc_I60`,
 			},

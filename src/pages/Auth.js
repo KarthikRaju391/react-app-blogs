@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useSignup } from '../hooks/useSignup';
+import { useLogin } from '../hooks/useLogin';
 
 const Auth = () => {
-	const navigate = useNavigate();
 	const [register, setRegister] = useState(false);
 	const [user, setUser] = useState({
 		firstname: '',
@@ -11,25 +11,11 @@ const Auth = () => {
 		email: '',
 		password: '',
 	});
+	const { signup, isLoading, error } = useSignup();
+	const { login, loginIsLoading, loginError } = useLogin();
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-
-		const response = await fetch(
-			register
-				? 'http://localhost:4000/api/auth/signup'
-				: 'http://localhost:4000/api/auth/login',
-			{
-				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(user),
-			}
-		);
-		const userDetails = await response.json();
-		localStorage.setItem('user', JSON.stringify(userDetails));
-		navigate('/');
+		register ? await signup(user) : await login(user.username, user.password);
 	};
 
 	const handleChange = (e) => {
@@ -56,12 +42,15 @@ const Auth = () => {
 				<input name="username" type="text" onChange={handleChange} />
 				<label htmlFor="password">Password</label>
 				<input name="password" type="password" onChange={handleChange} />
-				<button>{register ? 'Register' : 'Login'}</button>
+				<button disabled={isLoading || loginIsLoading}>
+					{register ? 'Register' : 'Login'}
+				</button>
 				<p onClick={() => setRegister((prevState) => !prevState)}>
 					{register
 						? 'Already have an account? Login'
 						: "Don't have an account? Register"}
 				</p>
+				{(error || loginError) && <div>{error || loginError}</div>}
 			</form>
 		</div>
 	);
