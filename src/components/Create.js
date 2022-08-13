@@ -1,27 +1,47 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { useBlogsContext } from '../hooks/useBlogsContext';
+import { userRequest } from '../requestMethods';
 
 export const Create = () => {
 	const [title, setTitle] = useState('');
 	const [author, setAuthor] = useState('');
 	const [body, setBody] = useState('');
+	const [error, setError] = useState(null);
 
+	const { user } = useAuthContext();
 	const navigate = useNavigate();
+	const { dispatch } = useBlogsContext();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		await fetch('http://localhost:4000/api/blogs', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				token: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyZWI5MWM4OGFkOWJkNTc1MjBjYzNjNCIsImZpcnN0bmFtZSI6IkthcnRoaWsiLCJsYXN0bmFtZSI6IlJhanUiLCJpYXQiOjE2NTk2MDU0NDgsImV4cCI6MTY1OTg2NDY0OH0.nf5bgr5fm3fnk7LLibbIRhjTdC9GiEulGwu_Moc_I60`,
-			},
-			body: JSON.stringify({ title, author, body }),
+		const response = await userRequest.post('/blogs', {
+			title,
+			author,
+			body,
 		});
+		// const response = await fetch('http://localhost:4000/api/blogs', {
+		// 	method: 'POST',
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 		token: `Bearer ${user.accessToken}`,
+		// 	},
+		// 	body: JSON.stringify({ title, author, body }),
+		// });
 
-		setTitle('');
-		setAuthor('');
-		setBody('');
+		const data = response.data;
+
+		if (!data) {
+			setError('Something went wrong...');
+		}
+		if (data) {
+			setTitle('');
+			setAuthor('');
+			setBody('');
+			setError(null);
+			dispatch({ type: 'CREATE_BLOG', payload: data });
+		}
 		navigate('/');
 	};
 
@@ -58,6 +78,7 @@ export const Create = () => {
 			<button type="submit" className="publish-btn">
 				Publish
 			</button>
+			{error && <div>{error}</div>}
 		</form>
 	);
 };

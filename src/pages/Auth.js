@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSignup } from '../hooks/useSignup';
 import { useLogin } from '../hooks/useLogin';
 
 const Auth = () => {
 	const [register, setRegister] = useState(false);
+	useEffect(() => {
+		return () => {
+			setRegister(false);
+		};
+	});
 	const [user, setUser] = useState({
 		firstname: '',
 		lastname: '',

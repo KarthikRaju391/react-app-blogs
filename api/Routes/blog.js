@@ -31,7 +31,6 @@ router.get('/:id', async (req, res) => {
 
 router.get('/user/blogs', verifyToken, async (req, res) => {
 	const qLatest = req.query.latest;
-
 	try {
 		let userBlogs;
 
@@ -42,9 +41,9 @@ router.get('/user/blogs', verifyToken, async (req, res) => {
 		} else {
 			userBlogs = await Blog.find({ userId: req.user.id });
 		}
-		res.status(200).json(userBlogs);
+		return res.status(200).json(userBlogs);
 	} catch (error) {
-		res.status(500).json(err);
+		return res.status(500).json(error);
 	}
 });
 

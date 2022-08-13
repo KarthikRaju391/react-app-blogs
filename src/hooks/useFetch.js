@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react';
+import { useAuthContext } from './useAuthContext';
 
-const useFetch = (url, accessToken) => {
+const useFetch = (url, token) => {
 	const [data, setData] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 
+	const { user } = useAuthContext();
 	useEffect(() => {
-		if (accessToken) {
+		if (token) {
 			fetch(`http://localhost:4000/api/${url}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${accessToken}`,
+					token: `Bearer ${user?.accessToken}`,
 				},
 			})
 				.then((res) => {
@@ -47,7 +49,7 @@ const useFetch = (url, accessToken) => {
 					setError(err.message);
 				});
 		}
-	}, [url]);
+	}, [url, token]);
 
 	return { data, isLoading, error };
 };
