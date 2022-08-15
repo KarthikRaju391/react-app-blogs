@@ -42,11 +42,11 @@
 .dropdown_content {
 	display: none;
 	position: absolute;
-	background-color: var(--clr-medium);
+	left: 66%;
+	background-color: #f2f2f2;
 	min-width: 190px;
 	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-	/* z-index: 1; */
-	top: 7%;
+	top: 6.5%;
 }
 .content {
 	max-width: 600px;
@@ -124,6 +124,36 @@
 	border: 1.5px solid black;
 }
 
+.quill {
+	margin-top: 1em;
+	height: 500px;
+	border: none;
+}
+
+.ql-toolbar.ql-snow {
+	font-size: large;
+	border: none !important;
+	border: 1px solid #333 !important;
+	padding: 0px !important;
+	padding: 1em 0 !important;
+	border-top-left-radius: 0.5em;
+	border-top-right-radius: 0.5em;
+}
+
+.ql-container.ql-snow {
+	border: none !important;
+	border: 1px solid #333 !important;
+	border-top: none !important;
+	border-bottom-left-radius: 0.5em;
+	border-bottom-right-radius: 0.5em;
+}
+
+.ql-editor {
+	font-size: large;
+	line-height: 1.75em !important;
+	font-weight: 500;
+}
+
 .button-container {
 	display: flex;
 	align-items: center;
@@ -131,7 +161,7 @@
 }
 
 .publish-btn {
-	margin-top: 1.5em;
+	margin-top: 4.5em;
 	cursor: pointer;
 	padding: 0.5em 1em;
 	font-size: 1.2em;

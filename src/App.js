@@ -26,16 +26,7 @@ function App() {
 							path="/auth"
 							element={!user ? <Auth /> : <Navigate to="/" />}
 						/>
-						<Route
-							path="/"
-							element={
-								user ? (
-									<Home myBlogs={myBlogs} />
-								) : (
-									<Navigate to="/auth" />
-								)
-							}
-						/>
+						<Route path="/" element={<Home myBlogs={myBlogs} />} />
 						<Route path="/blogs/:username" element={<UserBlogs />} />
 						<Route path="/blog/:id" element={<Blog />} />
 						<Route

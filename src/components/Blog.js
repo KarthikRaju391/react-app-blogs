@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import useFetch from '../hooks/useFetch';
-import { publicRequest } from '../requestMethods';
+import DOMPurify from 'dompurify';
 
 export const Blog = () => {
 	const path = useLocation();
@@ -13,15 +12,27 @@ export const Blog = () => {
 	useEffect(() => {
 		let unsubscribed = false;
 		const fetchBlog = async () => {
-			const response = await publicRequest(`blogs/${blogId}`);
-			const data = response.data;
-			if (!data) {
-				setIsLoading(false);
-				setError('unable to fetch the data...');
-			}
-			if (data && !unsubscribed) {
-				setIsLoading(false);
-				setBlog(data);
+			// write the code to get the blog from the server
+			// and set the state accordingly (setIsLoading, setError, setBlog)
+			try {
+				const response = await fetch(
+					`http://localhost:4000/api/blogs/${blogId}`
+				);
+				const data = await response.json();
+				if (!unsubscribed) {
+					setError(null);
+					setBlog(data);
+					setIsLoading(false);
+				}
+			} catch (error) {
+				if (!unsubscribed) {
+					setError(error);
+					setIsLoading(false);
+				}
+			} finally {
+				if (!unsubscribed) {
+					setIsLoading(false);
+				}
 			}
 		};
 
@@ -41,7 +52,16 @@ export const Blog = () => {
 					<p className="author-content">
 						Written by: <span className="author">{blog.author}</span>
 					</p>
-					<article className="article">{blog.body}</article>
+					<article className="article">
+						{/* {blog.body} */}
+						{
+							<div
+								dangerouslySetInnerHTML={{
+									__html: DOMPurify.sanitize(blog.body),
+								}}
+							/>
+						}
+					</article>
 				</div>
 			)}
 		</div>

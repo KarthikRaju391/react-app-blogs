@@ -1,15 +1,12 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useLogout } from '../hooks/useLogout';
 import { useAuthContext } from '../hooks/useAuthContext';
-import useFetch from '../hooks/useFetch';
 
 export const Navbar = () => {
-	const navigate = useNavigate();
 	const { logout } = useLogout();
 	const { user } = useAuthContext();
 
-	const handleChange = () => {};
 	const handleLogout = () => {
 		logout();
 	};
@@ -31,7 +28,7 @@ export const Navbar = () => {
 									<Link to={`/blogs/${user.username}`}>
 										Your Blogs
 									</Link>
-									<a onClick={handleLogout}>Logout</a>
+									<p onClick={handleLogout}>Logout</p>
 								</div>
 							)}
 						</button>

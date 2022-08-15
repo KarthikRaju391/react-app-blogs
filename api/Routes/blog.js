@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 		}
 		res.status(200).json(blogs);
 	} catch (error) {
-		res.status(500).json(err);
+		res.status(500).json(error.message);
 	}
 });
 
@@ -25,25 +25,25 @@ router.get('/:id', async (req, res) => {
 		const blog = await Blog.findById(req.params.id);
 		res.status(200).json(blog);
 	} catch (error) {
-		res.status(500).json(error);
+		res.status(500).json(error.message);
 	}
 });
 
-router.get('/user/blogs', verifyToken, async (req, res) => {
-	const qLatest = req.query.latest;
+router.get('/user/:id', verifyToken, async (req, res) => {
+	latest = req.query.latest;
 	try {
 		let userBlogs;
 
-		if (qLatest) {
-			userBlogs = await Blog.find({ userId: req.user.id })
+		if (latest) {
+			userBlogs = await Blog.find({ userId: req.params.id })
 				.sort({ createdAt: -1 })
 				.limit(1);
 		} else {
-			userBlogs = await Blog.find({ userId: req.user.id });
+			userBlogs = await Blog.find({ userId: req.params.id });
 		}
-		return res.status(200).json(userBlogs);
+		res.status(200).json(userBlogs);
 	} catch (error) {
-		return res.status(500).json(error);
+		res.status(500).json(error.message);
 	}
 });
 
@@ -61,7 +61,7 @@ router.post('/', verifyToken, async (req, res) => {
 		const savedBlog = await newBlog.save();
 		res.status(201).json(savedBlog);
 	} catch (error) {
-		rs.staus(500).json(error);
+		rs.staus(500).json(error.message);
 	}
 });
 
@@ -77,7 +77,7 @@ router.put('/:id', verifyToken, async (req, res) => {
 		);
 		res.status(200).json(updatedBlog);
 	} catch (error) {
-		res.status(500).json(error);
+		res.status(500).json(error.message);
 	}
 });
 
@@ -88,7 +88,7 @@ router.delete('/:id', verifyToken, async (req, res) => {
 		await Blog.findByIdAndDelete(req.params.id);
 		res.status(200).json('Blog was deleted successfully!');
 	} catch (error) {
-		res.status(500).json(error);
+		res.status(500).json(error.message);
 	}
 });
 

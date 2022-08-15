@@ -26,8 +26,8 @@ router.post('/signup', async (req, res) => {
 		);
 
 		const accessToken = createToken(newUser);
-
-		res.status(200).json({ username, accessToken });
+		const userId = newUser._id;
+		res.status(200).json({ username, accessToken, userId });
 	} catch (error) {
 		console.log(error);
 		res.status(400).json({ error: error.message });
@@ -39,10 +39,10 @@ router.post('/login', async (req, res) => {
 
 	try {
 		const user = await User.login(username, password);
-
+		const userId = user._id;
 		const accessToken = createToken(user);
 
-		res.status(200).json({ username, accessToken });
+		res.status(200).json({ username, accessToken, userId });
 	} catch (error) {
 		res.status(400).json({ error: error.message });
 	}

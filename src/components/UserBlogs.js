@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useAuthContext } from '../hooks/useAuthContext';
 import { BlogList } from './BlogList';
-import { userRequest } from '../requestMethods';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 export const UserBlogs = () => {
 	const { user } = useAuthContext();
@@ -11,64 +10,50 @@ export const UserBlogs = () => {
 
 	useEffect(() => {
 		let unsubscribed = false;
+
+		//todo: get the latest blogs by the user
 		const fetchUserBlogs = async () => {
-			const response = await userRequest.get('blogs/user/blogs');
-			const data = await response.data;
-			if (!data) {
-				setIsLoading(false);
-				setError(true);
-			}
-			if (data && !unsubscribed) {
-				setBlogs(data);
-				setIsLoading(false);
+			try {
+				const response = await fetch(
+					`http://localhost:4000/api/blogs/user/${user.userId}`,
+					{
+						headers: {
+							'Content-Type': 'application/json',
+							token: `Bearer ${user?.accessToken}`,
+						},
+					}
+				);
+				const data = await response.json();
+				if (!unsubscribed) {
+					setError(null);
+					setBlogs(data);
+					setIsLoading(false);
+				}
+			} catch (error) {
+				if (!unsubscribed) {
+					setError(error);
+					setIsLoading(false);
+				}
 			}
 		};
 		fetchUserBlogs();
 		return () => {
 			unsubscribed = true;
 		};
-	}, []);
-	const handleDelete = async (id) => {
-		await fetch(`http://localhost:4000/api/blogs/${id}`, {
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json',
-				token: `Bearer ${user && user.accessToken}`,
-			},
-		});
-	};
+	}, [user?.accessToken, user?.userId]);
+
 	return (
 		<div className="home">
 			{error && <div>Unable to get the data...</div>}
 			{isLoading && <div>Almost there...</div>}
 			{blogs && (
-				<BlogList deleteable={true} blogs={blogs} title="Your Blogs" />
+				<BlogList
+					deleteable={true}
+					setBlogs={setBlogs}
+					blogs={blogs}
+					title="Your Blogs"
+				/>
 			)}
 		</div>
-		// <div className="blog-list">
-		// 	<h2>Your Blogs</h2>
-		// 	{blogs &&
-		// 		blogs.map((blog) => (
-		// 			<section key={blog._id}>
-		// 				<div className="blog-preview">
-		// 					<div>
-		// 						<h2>{blog.title}</h2>
-		// 						<p>Written by {blog.author}</p>
-		// 					</div>
-		// 					<div className="button-container">
-		// 						<Link className="read-more" to={`/blog/${blog._id}`}>
-		// 							Read more
-		// 						</Link>
-		// 						<button
-		// 							onClick={() => handleDelete(blog._id)}
-		// 							className="delete-btn"
-		// 						>
-		// 							Delete
-		// 						</button>
-		// 					</div>
-		// 				</div>
-		// 			</section>
-		// 		))}
-		// </div>
 	);
 };
