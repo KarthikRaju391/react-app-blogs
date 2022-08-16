@@ -9,7 +9,21 @@ const UserSchema = new mongoose.Schema(
 		username: { type: String, unique: true },
 		email: { type: String, unique: true },
 		password: { type: String },
-		img: { type: String, default: null },
+		likedBlogs: [
+			{
+				blogId: {
+					type: String,
+				},
+			},
+		],
+		bookmarkedBlogs: [
+			{
+				blogId: {
+					type: String,
+				},
+			},
+		],
+		avatar: { type: String, default: null },
 	},
 	{ timestamps: true }
 );

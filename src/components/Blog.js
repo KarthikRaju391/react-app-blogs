@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import DOMPurify from 'dompurify';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart as heart } from '@fortawesome/free-regular-svg-icons';
+import { faHeart as heartSolid } from '@fortawesome/free-solid-svg-icons';
 
+//TODO: figure out icon tooltips
 export const Blog = () => {
 	const path = useLocation();
 	const blogId = path.pathname.split('/')[2];
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [blog, setBlog] = useState(null);
-	// const { data: blogs, isLoading, error } = useFetch(`blogs/${blogId}`);
 	useEffect(() => {
 		let unsubscribed = false;
+		console.log(path);
 		const fetchBlog = async () => {
-			// write the code to get the blog from the server
-			// and set the state accordingly (setIsLoading, setError, setBlog)
 			try {
 				const response = await fetch(
 					`http://localhost:4000/api/blogs/${blogId}`
@@ -49,11 +52,34 @@ export const Blog = () => {
 			{blog && (
 				<div>
 					<h1>{blog.title}</h1>
-					<p className="author-content">
-						Written by: <span className="author">{blog.author}</span>
-					</p>
+					<div className="subheader">
+						<p className="author-content">
+							Written by: <span className="author">{blog.author}</span>
+							{' |  '}
+							{formatDistanceToNow(
+								new Date(
+									// checking if updated date is recent or not
+									blog.updatedAt > blog.createdAt
+										? blog.updatedAt
+										: blog.createdAt
+								),
+								{
+									addSuffix: true,
+								}
+							)}
+						</p>
+						<div className="heart-content">
+							<FontAwesomeIcon
+								className="icon"
+								fontSize="larger"
+								icon={heart}
+							/>
+							<span className="heart-count">
+								{blog.likes > 0 && blog.likes}
+							</span>
+						</div>
+					</div>
 					<article className="article">
-						{/* {blog.body} */}
 						{
 							<div
 								dangerouslySetInnerHTML={{
