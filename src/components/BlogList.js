@@ -19,9 +19,9 @@ import { useAuthContext } from '../hooks/useAuthContext';
 export const BlogList = ({ blogs, deleteable, title }) => {
 	const { user } = useAuthContext();
 	const { deleteBlog, updateBlog } = useBlogs();
-	const handleDelete = (id) => {
-		deleteBlog(id);
-	};
+	// const handleDelete = (id) => {
+	// 	deleteBlog(id);
+	// };
 
 	const handleUpdate = async (id) => {
 		const blog = blogs.find((b) => b._id === id);
@@ -31,7 +31,7 @@ export const BlogList = ({ blogs, deleteable, title }) => {
 		} else {
 			blog.bookmark.push(user?.userId);
 		}
-		updateBlog(id, blog);
+		updateBlog(id, blog, false);
 	};
 
 	return (
@@ -78,7 +78,7 @@ export const BlogList = ({ blogs, deleteable, title }) => {
 										icon={trash}
 										fontSize="larger"
 										className="icon trash"
-										onClick={() => handleDelete(blog._id)}
+										onClick={() => deleteBlog(blog._id)}
 									/>
 								</div>
 							)}

@@ -104,7 +104,7 @@ export const useBlogs = () => {
 		}
 	};
 
-	const updateBlog = async (id, blog) => {
+	const updateBlog = async (id, blog, newUpdate) => {
 		const response = await fetch(`http://localhost:4000/api/blogs/${id}`, {
 			method: 'PUT',
 			headers: {
@@ -122,6 +122,7 @@ export const useBlogs = () => {
 			dispatch({ type: 'UpdateBlog', payload: { data } });
 			setError(null);
 			setIsLoading(false);
+			newUpdate && navigate('/');
 		}
 
 		getAllBlogs();

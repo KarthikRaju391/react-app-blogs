@@ -10,10 +10,6 @@ export const Home = () => {
 
 	useEffect(() => {
 		getAllBlogs();
-
-		return () => {
-			console.log('what is going on?');
-		};
 	}, [dispatch]);
 
 	return (
