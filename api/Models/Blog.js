@@ -7,7 +7,7 @@ const BlogSchema = new mongoose.Schema(
 		body: { type: String, required: true },
 		likes: { type: Number, default: 0 },
 		author: { type: String, required: true },
-		bookmark: { type: Boolean, default: false },
+		bookmark: { type: Array },
 	},
 	{
 		timestamps: true,

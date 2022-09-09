@@ -4,9 +4,10 @@ import { useLogin } from '../hooks/useLogin';
 
 const Auth = () => {
 	const [register, setRegister] = useState(false);
+	const [auth, setAuth] = useState(false);
 	useEffect(() => {
 		return () => {
-			setRegister(false);
+			setAuth(false);
 		};
 	});
 	const [user, setUser] = useState({
@@ -19,6 +20,7 @@ const Auth = () => {
 	const { signup, isLoading, error } = useSignup();
 	const { login, loginIsLoading, loginError } = useLogin();
 	const handleSubmit = async (e) => {
+		setAuth(true);
 		e.preventDefault();
 		register ? await signup(user) : await login(user.username, user.password);
 	};

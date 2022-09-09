@@ -1,47 +1,27 @@
 import { useEffect, useState } from 'react';
 import { BlogList } from '../components/BlogList';
+import { useBlogs } from '../hooks/useBlogs';
+import { useBlogsContext } from '../hooks/useBlogContext';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 export const Home = () => {
-	const [isLoading, setIsLoading] = useState(null);
-	const [blogs, setBlogs] = useState(null);
-	const [error, setError] = useState(false);
-	useEffect(() => {
-		let unsubscribed = false;
-		const fetchBlogs = async () => {
-			try {
-				const response = await fetch(`http://localhost:4000/api/blogs`);
-				const data = await response.json();
-				if (!unsubscribed) {
-					setIsLoading(false);
-					setError(false);
-					setBlogs(data);
-				}
-			} catch (error) {
-				if (!unsubscribed) {
-					setError(true);
-					setIsLoading(false);
-				}
-			}
-		};
+	const { getAllBlogs, isLoading, error } = useBlogs();
+	const { blogs, dispatch } = useBlogsContext();
 
-		fetchBlogs();
+	useEffect(() => {
+		getAllBlogs();
 
 		return () => {
-			unsubscribed = true;
+			console.log('what is going on?');
 		};
-	}, [setBlogs]);
+	}, [dispatch]);
 
 	return (
 		<div className="home">
 			{error && <div>'Unable to get the data...</div>}
 			{isLoading && <div>Almost there...</div>}
 			{blogs && (
-				<BlogList
-					deleteable={false}
-					setBlogs={setBlogs}
-					blogs={blogs}
-					title="All Blogs"
-				/>
+				<BlogList blogs={blogs} deleteable={false} title="All Blogs" />
 			)}
 		</div>
 	);

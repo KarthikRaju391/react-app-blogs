@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
 		if (qAuthor) {
 			blogs = await Blog.find({ author: qAuthor });
 		} else {
-			blogs = await Blog.find();
+			blogs = await Blog.find().sort({ createdAt: -1 });
 		}
 		res.status(200).json(blogs);
 	} catch (error) {
@@ -61,7 +61,7 @@ router.post('/', verifyToken, async (req, res) => {
 		const savedBlog = await newBlog.save();
 		res.status(201).json(savedBlog);
 	} catch (error) {
-		rs.staus(500).json(error.message);
+		res.status(500).json(error.message);
 	}
 });
 

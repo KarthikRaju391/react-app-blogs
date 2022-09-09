@@ -22,10 +22,10 @@ export const Navbar = () => {
 						<Link to="/auth">Login</Link>
 					) : (
 						<button className="account-hover" to="">
-							{!user ? 'Login' : `Hi, ${user.username}`}
+							{!user ? 'Login' : `Hi, ${user?.username}`}
 							{user && (
 								<div className="dropdown_content">
-									<Link to={`/blogs/${user.username}`}>
+									<Link to={`/blogs/${user?.username}`}>
 										Your Blogs
 									</Link>
 									<p onClick={handleLogout}>Logout</p>
