@@ -31,25 +31,56 @@ const Auth = () => {
 			[e.target.name]: e.target.value,
 		}));
 	};
-
+	//grid h-screen place-items-center text-xl
+	// flex h-full flex-col w-96 justify-center
 	return (
-		<div className="form-container">
-			<form onSubmit={handleSubmit}>
+		<div className="">
+			<form className="" onSubmit={handleSubmit}>
 				{register && (
 					<>
-						<label htmlFor="firstname">First Name</label>
-						<input name="firstname" type="text" onChange={handleChange} />
+						<label className="" htmlFor="firstname">
+							First Name
+						</label>
+						<input
+							className="border rounded-md text-black border-black focus:outline-none"
+							name="firstname"
+							type="text"
+							onChange={handleChange}
+						/>
 						<label htmlFor="lastname">Last Name</label>
-						<input name="lastname" type="text" onChange={handleChange} />
+						<input
+							className="border border-black focus:outline-none"
+							name="lastname"
+							type="text"
+							onChange={handleChange}
+						/>
 						<label htmlFor="email">Email</label>
-						<input name="email" type="email" onChange={handleChange} />
+						<input
+							className="border border-black focus:outline-none"
+							name="email"
+							type="email"
+							onChange={handleChange}
+						/>
 					</>
 				)}
 				<label htmlFor="username">Username</label>
-				<input name="username" type="text" onChange={handleChange} />
+				<input
+					className="border border-black focus:outline-none"
+					name="username"
+					type="text"
+					onChange={handleChange}
+				/>
 				<label htmlFor="password">Password</label>
-				<input name="password" type="password" onChange={handleChange} />
-				<button disabled={isLoading || loginIsLoading}>
+				<input
+					className="border border-black focus:outline-none"
+					name="password"
+					type="password"
+					onChange={handleChange}
+				/>
+				<button
+					className="border border-black"
+					disabled={isLoading || loginIsLoading}
+				>
 					{register ? 'Register' : 'Login'}
 				</button>
 				<p onClick={() => setRegister((prevState) => !prevState)}>

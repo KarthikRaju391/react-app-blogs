@@ -3,11 +3,12 @@ import { BlogList } from '../components/BlogList';
 import { useBlogs } from '../hooks/useBlogs';
 import { useBlogsContext } from '../hooks/useBlogContext';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { Navbar } from '../components/Navbar';
 
 export const Home = () => {
 	const { getAllBlogs, isLoading, error } = useBlogs();
 	const { blogs, dispatch } = useBlogsContext();
-
+	const { user } = useAuthContext();
 	useEffect(() => {
 		getAllBlogs();
 	}, [dispatch]);

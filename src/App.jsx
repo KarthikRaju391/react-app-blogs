@@ -17,8 +17,8 @@ function App() {
 	const { user } = useAuthContext();
 	return (
 		<Router>
-			<div className="App">
-				<Navbar />
+			<div className="App ">
+				{<Navbar />}
 				<div className="content">
 					<Routes>
 						<Route
