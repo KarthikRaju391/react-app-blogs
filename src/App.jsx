@@ -8,10 +8,11 @@ import {
 	Navigate,
 } from 'react-router-dom';
 import { useAuthContext } from './hooks/useAuthContext';
-import { UserBlogs } from './components/UserBlogs';
+import { UserBlogs } from './pages/UserBlogs';
 import { Blog } from './components/Blog';
 import { Create } from './components/Create';
 import { Edit } from './pages/Edit';
+import { UserBookmarks } from './pages/UserBookmarks';
 
 function App() {
 	const { user } = useAuthContext();
@@ -27,6 +28,10 @@ function App() {
 						/>
 						<Route path="/" element={<Home />} />
 						<Route path="/blogs/:username" element={<UserBlogs />} />
+						<Route
+							path="/blogs/:username/bookmarks"
+							element={<UserBookmarks />}
+						/>
 						{/* TODO: reroute to home when routing to blog that's deleted */}
 						<Route path="/blog/:id" element={<Blog />} />
 						<Route

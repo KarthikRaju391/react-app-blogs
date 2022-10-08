@@ -36,6 +36,8 @@ export const BlogsContextProvider = ({ children }) => {
 		blogs: null,
 	});
 
+	console.log('Blogs context: ', state);
+
 	return (
 		<BlogContext.Provider value={{ ...state, dispatch }}>
 			{children}

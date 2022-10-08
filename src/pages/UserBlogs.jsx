@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BlogList } from './BlogList';
+import { BlogList } from '../components/BlogList';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useBlogsContext } from '../hooks/useBlogContext';
 import { useBlogs } from '../hooks/useBlogs';

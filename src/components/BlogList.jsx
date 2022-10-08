@@ -19,9 +19,6 @@ import { useAuthContext } from '../hooks/useAuthContext';
 export const BlogList = ({ blogs, deleteable, title }) => {
 	const { user } = useAuthContext();
 	const { deleteBlog, updateBlog } = useBlogs();
-	// const handleDelete = (id) => {
-	// 	deleteBlog(id);
-	// };
 
 	const handleUpdate = async (id) => {
 		const blog = blogs.find((b) => b._id === id);

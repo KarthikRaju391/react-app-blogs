@@ -3,19 +3,22 @@ import { useLocation } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useBlogs } from '../hooks/useBlogs';
+import { useAuthContext } from '../hooks/useAuthContext';
 import { faHeart as heart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as heartSolid } from '@fortawesome/free-solid-svg-icons';
 
 //TODO: figure out icon tooltips
 export const Blog = () => {
 	const path = useLocation();
+	const { user } = useAuthContext();
+	const { updateBlog } = useBlogs();
 	const blogId = path.pathname.split('/')[2];
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [blog, setBlog] = useState(null);
 	useEffect(() => {
 		let unsubscribed = false;
-		console.log(path);
 		const fetchBlog = async () => {
 			try {
 				const response = await fetch(
@@ -45,6 +48,16 @@ export const Blog = () => {
 		};
 	}, [blogId]);
 
+	const handleUpdate = async (id) => {
+		if (blog.likes.includes(user?.userId)) {
+			const index = blog.likes.findIndex((b) => b === user?.userId);
+			blog.likes.splice(index, 1);
+		} else {
+			blog.likes.push(user?.userId);
+		}
+		updateBlog(id, blog, false);
+	};
+
 	return (
 		<div>
 			{error && <div>{error}</div>}
@@ -58,10 +71,11 @@ export const Blog = () => {
 							{' |  '}
 							{formatDistanceToNow(
 								new Date(
+									blog.createdAt
 									// checking if updated date is recent or not
-									blog.updatedAt > blog.createdAt
-										? blog.updatedAt
-										: blog.createdAt
+									// blog.updatedAt > blog.createdAt
+									// 	? blog.updatedAt
+									// 	: blog.createdAt
 								),
 								{
 									addSuffix: true,
@@ -72,10 +86,15 @@ export const Blog = () => {
 							<FontAwesomeIcon
 								className="icon"
 								fontSize="larger"
-								icon={heart}
+								icon={
+									blog.likes && blog.likes.includes(user?.userId)
+										? heartSolid
+										: heart
+								}
+								onClick={() => handleUpdate(blogId)}
 							/>
 							<span className="heart-count">
-								{blog.likes > 0 && blog.likes}
+								{blog.likes.length > 0 && blog.likes.length}
 							</span>
 						</div>
 					</div>

@@ -4,6 +4,7 @@ import { useBlogs } from '../hooks/useBlogs';
 import { useBlogsContext } from '../hooks/useBlogContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Navbar } from '../components/Navbar';
+import AuthorList from '../components/AuthorList';
 
 export const Home = () => {
 	const { getAllBlogs, isLoading, error } = useBlogs();
@@ -20,6 +21,7 @@ export const Home = () => {
 			{blogs && (
 				<BlogList blogs={blogs} deleteable={false} title="All Blogs" />
 			)}
+			{/* <AuthorList /> */}
 		</div>
 	);
 };

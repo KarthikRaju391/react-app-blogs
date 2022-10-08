@@ -28,6 +28,9 @@ export const Navbar = () => {
 									<Link to={`/blogs/${user?.username}`}>
 										Your Blogs
 									</Link>
+									<Link to={`/blogs/${user?.username}/bookmarks`}>
+										Your Bookmarks
+									</Link>
 									<p onClick={handleLogout}>Logout</p>
 								</div>
 							)}

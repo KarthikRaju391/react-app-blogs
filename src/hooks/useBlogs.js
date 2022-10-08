@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBlogsContext } from './useBlogContext';
 import { useAuthContext } from './useAuthContext';
-const URL = 'http://localhost:4000/api';
 
 export const useBlogs = () => {
+	const URL = 'http://localhost:4000/api';
 	const navigate = useNavigate();
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(null);
@@ -31,7 +31,6 @@ export const useBlogs = () => {
 	const getUserBlogs = async () => {
 		setIsLoading(true);
 		setError(null);
-		console.log('user', user.userId);
 		const response = await fetch(`${URL}/blogs/user/${user?.userId}`, {
 			headers: {
 				'Content-Type': 'application/json',
@@ -48,6 +47,29 @@ export const useBlogs = () => {
 
 		if (response.ok) {
 			dispatch({ type: 'GetBlogs', payload: data });
+			setIsLoading(false);
+			setError(null);
+		}
+	};
+
+	const getUserBookmarks = async () => {
+		setIsLoading(true);
+		setError(null);
+		const response = await fetch(`${URL}/blogs`);
+
+		const data = await response.json();
+
+		const bookmarks = data.filter((blog) => {
+			return blog.bookmark.includes(user?.userId);
+		});
+
+		if (!response.ok) {
+			setIsLoading(false);
+			setError(data.error);
+		}
+
+		if (response.ok) {
+			dispatch({ type: 'GetBlogs', payload: bookmarks });
 			setIsLoading(false);
 			setError(null);
 		}
@@ -131,6 +153,7 @@ export const useBlogs = () => {
 	return {
 		getAllBlogs,
 		getUserBlogs,
+		getUserBookmarks,
 		deleteBlog,
 		createBlog,
 		updateBlog,
