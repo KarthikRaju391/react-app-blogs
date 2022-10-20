@@ -1,12 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const BlogSchema = new mongoose.Schema(
 	{
 		userId: { type: String, required: true },
 		title: { type: String, required: true },
 		body: { type: String, required: true },
-		likes: { type: Array },
+		likes: { type: Array, required: true },
 		author: { type: String, required: true },
+		categories: { type: String },
 		bookmark: { type: Array },
 	},
 	{
@@ -14,4 +15,4 @@ const BlogSchema = new mongoose.Schema(
 	}
 );
 
-module.exports = mongoose.model('Blog', BlogSchema);
+module.exports = mongoose.model("Blog", BlogSchema);

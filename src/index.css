@@ -1,14 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
 /* base styles */
 * {
 	margin: 0;
 	font-family: "Quicksand";
 	color: #333;
 }
-.navbar {
+/* .navbar {
 	padding: 20px;
 	display: flex;
 	align-items: center;
@@ -229,4 +229,4 @@
 
 .trash {
 	margin-left: 0.75em;
-}
+} */

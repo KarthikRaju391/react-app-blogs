@@ -1,26 +1,27 @@
-import { Navbar } from './components/Navbar';
-import { Home } from './pages/Home';
-import Auth from './pages/Auth';
+import { Navbar } from "./components/Navbar";
+import { Home } from "./pages/Home";
+import Auth from "./pages/Auth";
 import {
 	BrowserRouter as Router,
 	Routes,
 	Route,
 	Navigate,
-} from 'react-router-dom';
-import { useAuthContext } from './hooks/useAuthContext';
-import { UserBlogs } from './pages/UserBlogs';
-import { Blog } from './components/Blog';
-import { Create } from './components/Create';
-import { Edit } from './pages/Edit';
-import { UserBookmarks } from './pages/UserBookmarks';
+} from "react-router-dom";
+import { useAuthContext } from "./hooks/useAuthContext";
+import { UserBlogs } from "./pages/UserBlogs";
+import { Blog } from "./components/Blog";
+import { Create } from "./components/Create";
+import { Edit } from "./pages/Edit";
+import { UserBookmarks } from "./pages/UserBookmarks";
+import AuthorList from "./components/AuthorList";
 
 function App() {
 	const { user } = useAuthContext();
 	return (
 		<Router>
-			<div className="App ">
+			<div className="App min-h-screen bg-background px-5 py-5">
 				{<Navbar />}
-				<div className="content">
+				<div className="content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 					<Routes>
 						<Route
 							path="/auth"

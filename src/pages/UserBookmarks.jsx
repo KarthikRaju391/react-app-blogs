@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { BlogList } from '../components/BlogList';
-import { useAuthContext } from '../hooks/useAuthContext';
-import { useBlogsContext } from '../hooks/useBlogContext';
-import { useBlogs } from '../hooks/useBlogs';
+import React, { useEffect, useState } from "react";
+import { BlogList } from "../components/BlogList";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useBlogsContext } from "../hooks/useBlogContext";
+import { useBlogs } from "../hooks/useBlogs";
 
 export const UserBookmarks = () => {
 	const { user } = useAuthContext();
@@ -14,7 +14,7 @@ export const UserBookmarks = () => {
 	}, [user, dispatch]);
 
 	return (
-		<div className="home">
+		<div className="home col-span-2 mt-10 md:w-3/4 md:mx-auto">
 			{error && <div>Unable to get the data...</div>}
 			{isLoading && <div>Almost there...</div>}
 			{blogs && (

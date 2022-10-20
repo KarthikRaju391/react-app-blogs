@@ -1,16 +1,15 @@
-const Blog = require('../Models/Blog');
-const { verifyToken } = require('./verifyToken');
-const router = require('express').Router();
+const Blog = require("../Models/Blog");
+const { verifyToken } = require("./verifyToken");
+const router = require("express").Router();
 
 // GET REQUESTS
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
 	const qAuthor = req.query.author;
-
 	try {
 		let blogs;
 
 		if (qAuthor) {
-			blogs = await Blog.find({ author: qAuthor });
+			blogs = await Blog.find({ userId: qAuthor });
 		} else {
 			blogs = await Blog.find().sort({ createdAt: -1 });
 		}
@@ -20,7 +19,7 @@ router.get('/', async (req, res) => {
 	}
 });
 
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
 	try {
 		const blog = await Blog.findById(req.params.id);
 		res.status(200).json(blog);
@@ -29,7 +28,7 @@ router.get('/:id', async (req, res) => {
 	}
 });
 
-router.get('/user/:id', verifyToken, async (req, res) => {
+router.get("/user/:id", verifyToken, async (req, res) => {
 	latest = req.query.latest;
 	try {
 		let userBlogs;
@@ -49,7 +48,7 @@ router.get('/user/:id', verifyToken, async (req, res) => {
 
 // POST REQUEST
 
-router.post('/', verifyToken, async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
 	const newBlog = new Blog({
 		userId: req.user.id,
 		title: req.body.title,
@@ -66,7 +65,7 @@ router.post('/', verifyToken, async (req, res) => {
 });
 
 // PUT REQUEST
-router.put('/:id', verifyToken, async (req, res) => {
+router.put("/:id", verifyToken, async (req, res) => {
 	try {
 		const updatedBlog = await Blog.findByIdAndUpdate(
 			req.params.id,
@@ -83,10 +82,10 @@ router.put('/:id', verifyToken, async (req, res) => {
 
 //DELETE REQUEST
 
-router.delete('/:id', verifyToken, async (req, res) => {
+router.delete("/:id", verifyToken, async (req, res) => {
 	try {
 		await Blog.findByIdAndDelete(req.params.id);
-		res.status(200).json('Blog was deleted successfully!');
+		res.status(200).json("Blog was deleted successfully!");
 	} catch (error) {
 		res.status(500).json(error.message);
 	}

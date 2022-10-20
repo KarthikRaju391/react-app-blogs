@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useBlogsContext } from './useBlogContext';
-import { useAuthContext } from './useAuthContext';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useBlogsContext } from "./useBlogContext";
+import { useAuthContext } from "./useAuthContext";
 
 export const useBlogs = () => {
-	const URL = 'http://localhost:4000/api';
+	const URL = "http://localhost:4000/api";
 	const navigate = useNavigate();
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(null);
 	const { dispatch } = useBlogsContext();
-	const { user } = useAuthContext();
+	const { user, userId } = useAuthContext();
 
 	const getAllBlogs = async () => {
 		setIsLoading(true);
@@ -22,7 +22,24 @@ export const useBlogs = () => {
 			setIsLoading(false);
 			setError(data.error);
 		} else {
-			dispatch({ type: 'GetBlogs', payload: data });
+			dispatch({ type: "GetBlogs", payload: data });
+			setIsLoading(false);
+			setError(null);
+		}
+	};
+
+	const getTopAuthors = async () => {
+		setIsLoading(true);
+		setError(null);
+
+		const response = await fetch(`${URL}/blogs?author=${userId}`);
+		const data = await response.json();
+
+		if (!response.ok) {
+			setIsLoading(false);
+			setError(data.error);
+		} else {
+			dispatch({ type: "GetBlogs", payload: data });
 			setIsLoading(false);
 			setError(null);
 		}
@@ -33,7 +50,7 @@ export const useBlogs = () => {
 		setError(null);
 		const response = await fetch(`${URL}/blogs/user/${user?.userId}`, {
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 				token: `Bearer ${user?.accessToken}`,
 			},
 		});
@@ -46,7 +63,7 @@ export const useBlogs = () => {
 		}
 
 		if (response.ok) {
-			dispatch({ type: 'GetBlogs', payload: data });
+			dispatch({ type: "GetBlogs", payload: data });
 			setIsLoading(false);
 			setError(null);
 		}
@@ -69,7 +86,7 @@ export const useBlogs = () => {
 		}
 
 		if (response.ok) {
-			dispatch({ type: 'GetBlogs', payload: bookmarks });
+			dispatch({ type: "GetBlogs", payload: bookmarks });
 			setIsLoading(false);
 			setError(null);
 		}
@@ -77,9 +94,9 @@ export const useBlogs = () => {
 
 	const deleteBlog = async (id) => {
 		const response = await fetch(`${URL}/blogs/${id}`, {
-			method: 'DELETE',
+			method: "DELETE",
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 				token: `Bearer ${user?.accessToken}`,
 			},
 		});
@@ -92,7 +109,7 @@ export const useBlogs = () => {
 		}
 
 		if (response.ok) {
-			dispatch({ type: 'DeleteBlog', payload: id });
+			dispatch({ type: "DeleteBlog", payload: id });
 			setIsLoading(false);
 			setError(null);
 		}
@@ -101,10 +118,10 @@ export const useBlogs = () => {
 	};
 
 	const createBlog = async (title, body) => {
-		const response = await fetch('http://localhost:4000/api/blogs', {
-			method: 'POST',
+		const response = await fetch("http://localhost:4000/api/blogs", {
+			method: "POST",
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 				token: `Bearer ${user?.accessToken}`,
 			},
 			body: JSON.stringify({
@@ -119,18 +136,18 @@ export const useBlogs = () => {
 		}
 
 		if (response.ok) {
-			dispatch({ type: 'AddBlog', payload: { data } });
+			dispatch({ type: "AddBlog", payload: { data } });
 			setIsLoading(false);
 			setError(null);
-			navigate('/');
+			navigate("/");
 		}
 	};
 
 	const updateBlog = async (id, blog, newUpdate) => {
 		const response = await fetch(`http://localhost:4000/api/blogs/${id}`, {
-			method: 'PUT',
+			method: "PUT",
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 				token: `Bearer ${user?.accessToken}`,
 			},
 			body: JSON.stringify(blog),
@@ -141,10 +158,10 @@ export const useBlogs = () => {
 			setError(data.error);
 			setIsLoading(false);
 		} else {
-			dispatch({ type: 'UpdateBlog', payload: { data } });
+			dispatch({ type: "UpdateBlog", payload: { data } });
 			setError(null);
 			setIsLoading(false);
-			newUpdate && navigate('/');
+			newUpdate && navigate("/");
 		}
 
 		getAllBlogs();
@@ -152,6 +169,7 @@ export const useBlogs = () => {
 
 	return {
 		getAllBlogs,
+		getTopAuthors,
 		getUserBlogs,
 		getUserBookmarks,
 		deleteBlog,

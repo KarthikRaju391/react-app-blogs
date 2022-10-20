@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useSignup } from '../hooks/useSignup';
-import { useLogin } from '../hooks/useLogin';
+import React, { useEffect, useState } from "react";
+import { useSignup } from "../hooks/useSignup";
+import { useLogin } from "../hooks/useLogin";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { faTriangleExclamation as caution } from "@fortawesome/free-solid-svg-icons";
 
 const Auth = () => {
 	const [register, setRegister] = useState(false);
@@ -11,11 +14,11 @@ const Auth = () => {
 		};
 	});
 	const [user, setUser] = useState({
-		firstname: '',
-		lastname: '',
-		username: '',
-		email: '',
-		password: '',
+		firstname: "",
+		lastname: "",
+		username: "",
+		email: "",
+		password: "",
 	});
 	const { signup, isLoading, error } = useSignup();
 	const { login, loginIsLoading, loginError } = useLogin();
@@ -31,64 +34,81 @@ const Auth = () => {
 			[e.target.name]: e.target.value,
 		}));
 	};
-	//grid h-screen place-items-center text-xl
-	// flex h-full flex-col w-96 justify-center
+
 	return (
-		<div className="">
-			<form className="" onSubmit={handleSubmit}>
+		<div className="w-1/3 mx-auto mt-10">
+			<form className="flex flex-col" onSubmit={handleSubmit}>
 				{register && (
 					<>
 						<label className="" htmlFor="firstname">
 							First Name
 						</label>
 						<input
-							className="border rounded-md text-black border-black focus:outline-none"
+							className="border rounded p-2 font-bold text-black border-black focus:outline-none"
 							name="firstname"
 							type="text"
 							onChange={handleChange}
 						/>
-						<label htmlFor="lastname">Last Name</label>
+						<label className="mt-4" htmlFor="lastname">
+							Last Name
+						</label>
 						<input
-							className="border border-black focus:outline-none"
+							className="border rounded p-2 font-bold text-black border-black focus:outline-none"
 							name="lastname"
 							type="text"
 							onChange={handleChange}
 						/>
-						<label htmlFor="email">Email</label>
+						<label className="mt-4" htmlFor="email">
+							Email
+						</label>
 						<input
-							className="border border-black focus:outline-none"
+							className="border rounded p-2 font-bold text-black border-black focus:outline-none"
 							name="email"
 							type="email"
 							onChange={handleChange}
 						/>
 					</>
 				)}
-				<label htmlFor="username">Username</label>
+				<label className="mt-4" htmlFor="username">
+					Username
+				</label>
 				<input
-					className="border border-black focus:outline-none"
+					className="border rounded p-2 font-bold text-black border-black focus:outline-none"
 					name="username"
 					type="text"
 					onChange={handleChange}
 				/>
-				<label htmlFor="password">Password</label>
+				<label className="mt-4" htmlFor="password">
+					Password
+				</label>
 				<input
-					className="border border-black focus:outline-none"
+					className="border rounded p-2 font-bold text-black border-black focus:outline-none"
 					name="password"
 					type="password"
 					onChange={handleChange}
 				/>
+				{(error || loginError) && (
+					<div className="flex items-center justify-center gap-2 rounded-full bg-red-300 mt-5 border-red-600 border-2 py-2">
+						<FontAwesomeIcon icon={caution} />
+						{error || loginError}
+					</div>
+				)}
 				<button
-					className="border border-black"
+					className="border border-black mt-5 w-1/3 mx-auto bg-black text-white px-2 py-3"
 					disabled={isLoading || loginIsLoading}
 				>
-					{register ? 'Register' : 'Login'}
+					{register ? "Register" : "Login"}
 				</button>
-				<p onClick={() => setRegister((prevState) => !prevState)}>
-					{register
-						? 'Already have an account? Login'
-						: "Don't have an account? Register"}
+				<p
+					className="mx-auto mt-4"
+					onClick={() => setRegister((prevState) => !prevState)}
+				>
+					<span className="underline cursor-pointer">
+						{register
+							? "Already have an account? Login"
+							: "Don't have an account? Register"}
+					</span>
 				</p>
-				{(error || loginError) && <div>{error || loginError}</div>}
 			</form>
 		</div>
 	);
