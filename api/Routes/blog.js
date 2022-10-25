@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
 		if (qAuthor) {
 			blogs = await Blog.find({ userId: qAuthor });
 		} else {
-			blogs = await Blog.find().sort({ createdAt: -1 });
+			blogs = await Blog.find({ draft: false }).sort({ createdAt: -1 });
 		}
 		res.status(200).json(blogs);
 	} catch (error) {
@@ -46,6 +46,16 @@ router.get("/user/:id", verifyToken, async (req, res) => {
 	}
 });
 
+router.get("/drafts/user/:id", verifyToken, async (req, res) => {
+	try {
+		const drafts = await Blog.find({ draft: true, userId: req.params.id });
+		res.status(200).json(drafts);
+	} catch (error) {
+		console.log("here");
+		res.status(500).json(error.message);
+	}
+});
+
 // POST REQUEST
 
 router.post("/", verifyToken, async (req, res) => {
@@ -53,6 +63,8 @@ router.post("/", verifyToken, async (req, res) => {
 		userId: req.user.id,
 		title: req.body.title,
 		body: req.body.body,
+		category: req.body.category,
+		draft: req.body.draft,
 		author: `${req.user.firstname} ${req.user.lastname}`,
 	});
 

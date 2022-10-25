@@ -13,7 +13,8 @@ import { Blog } from "./components/Blog";
 import { Create } from "./components/Create";
 import { Edit } from "./pages/Edit";
 import { UserBookmarks } from "./pages/UserBookmarks";
-import AuthorList from "./components/AuthorList";
+import { UserDrafts } from "./pages/UserDrafts";
+import React from "react";
 
 function App() {
 	const { user } = useAuthContext();
@@ -21,7 +22,7 @@ function App() {
 		<Router>
 			<div className="App min-h-screen bg-background px-5 py-5">
 				{<Navbar />}
-				<div className="content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+				<div className="content grid grid-cols-1 grid-flow-row-dense md:grid-cols-2 lg:grid-cols-3">
 					<Routes>
 						<Route
 							path="/auth"
@@ -42,6 +43,10 @@ function App() {
 						<Route
 							path="/blog/edit/:id"
 							element={user ? <Edit /> : <Navigate to="/auth" />}
+						/>
+						<Route
+							path="/blogs/:username/drafts"
+							element={<UserDrafts />}
 						/>
 					</Routes>
 				</div>

@@ -1,18 +1,18 @@
-import { createContext, useReducer, useEffect } from 'react';
+import { createContext, useReducer, useEffect } from "react";
 
 export const BlogContext = createContext();
 
 export const blogReducer = (state, action) => {
 	switch (action.type) {
-		case 'GetBlogs':
+		case "GetBlogs":
 			return {
 				blogs: action.payload,
 			};
-		case 'AddBlog':
+		case "AddBlog":
 			return {
 				blogs: [action.payload, ...state.blogs],
 			};
-		case 'UpdateBlog':
+		case "UpdateBlog":
 			return {
 				blogs: state.blogs.map((blog) => {
 					if (blog._id === action.payload.id) {
@@ -22,7 +22,7 @@ export const blogReducer = (state, action) => {
 					return blog;
 				}),
 			};
-		case 'DeleteBlog':
+		case "DeleteBlog":
 			return {
 				blogs: state.blogs.filter((blog) => blog._id !== action.payload.id),
 			};
@@ -36,7 +36,7 @@ export const BlogsContextProvider = ({ children }) => {
 		blogs: null,
 	});
 
-	console.log('Blogs context: ', state);
+	console.log("Blogs context: ", state);
 
 	return (
 		<BlogContext.Provider value={{ ...state, dispatch }}>

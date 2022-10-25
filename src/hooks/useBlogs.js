@@ -28,17 +28,24 @@ export const useBlogs = () => {
 		}
 	};
 
-	const getTopAuthors = async () => {
+	const getUserDrafts = async () => {
 		setIsLoading(true);
 		setError(null);
-
-		const response = await fetch(`${URL}/blogs?author=${userId}`);
+		const response = await fetch(`${URL}/blogs/drafts/user/${user?.userId}`, {
+			headers: {
+				"Content-Type": "application/json",
+				token: `Bearer ${user?.accessToken}`,
+			},
+		});
 		const data = await response.json();
+		console.log(data);
 
 		if (!response.ok) {
 			setIsLoading(false);
 			setError(data.error);
-		} else {
+		}
+
+		if (response.ok) {
 			dispatch({ type: "GetBlogs", payload: data });
 			setIsLoading(false);
 			setError(null);
@@ -117,7 +124,7 @@ export const useBlogs = () => {
 		getUserBlogs();
 	};
 
-	const createBlog = async (title, body) => {
+	const createBlog = async (title, body, category, draft) => {
 		const response = await fetch("http://localhost:4000/api/blogs", {
 			method: "POST",
 			headers: {
@@ -127,6 +134,8 @@ export const useBlogs = () => {
 			body: JSON.stringify({
 				title,
 				body,
+				category,
+				draft,
 			}),
 		});
 		const data = await response.json();
@@ -169,8 +178,9 @@ export const useBlogs = () => {
 
 	return {
 		getAllBlogs,
-		getTopAuthors,
+		// getTopAuthors,
 		getUserBlogs,
+		getUserDrafts,
 		getUserBookmarks,
 		deleteBlog,
 		createBlog,

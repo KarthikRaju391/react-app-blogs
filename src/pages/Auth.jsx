@@ -36,28 +36,37 @@ const Auth = () => {
 	};
 
 	return (
-		<div className="w-1/3 mx-auto mt-10">
+		<div className="col-span-3 w-4/12 mx-auto h-[500px] my-20">
+			<h1 className="text-3xl font-bold text-center">
+				Welcome to Drafters!
+			</h1>
 			<form className="flex flex-col" onSubmit={handleSubmit}>
 				{register && (
 					<>
-						<label className="" htmlFor="firstname">
-							First Name
-						</label>
-						<input
-							className="border rounded p-2 font-bold text-black border-black focus:outline-none"
-							name="firstname"
-							type="text"
-							onChange={handleChange}
-						/>
-						<label className="mt-4" htmlFor="lastname">
-							Last Name
-						</label>
-						<input
-							className="border rounded p-2 font-bold text-black border-black focus:outline-none"
-							name="lastname"
-							type="text"
-							onChange={handleChange}
-						/>
+						<div className="flex gap-12 w-full items-center">
+							<div className="block w-1/2">
+								<label className="" htmlFor="firstname">
+									First Name
+								</label>
+								<input
+									className="border rounded p-2 font-bold text-black border-black focus:outline-none"
+									name="firstname"
+									type="text"
+									onChange={handleChange}
+								/>
+							</div>
+							<div className="block">
+								<label className="mt-4" htmlFor="lastname">
+									Last Name
+								</label>
+								<input
+									className="border rounded p-2 font-bold text-black border-black focus:outline-none"
+									name="lastname"
+									type="text"
+									onChange={handleChange}
+								/>
+							</div>
+						</div>
 						<label className="mt-4" htmlFor="email">
 							Email
 						</label>

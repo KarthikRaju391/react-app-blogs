@@ -6,6 +6,7 @@ import {
 	faArrowRightLong as faArrowRight,
 	faBookmark as bookmarkSolid,
 	faHeart as heartSolid,
+	faSliders,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -20,6 +21,15 @@ export const BlogList = ({ blogs, deleteable, title }) => {
 	const { user } = useAuthContext();
 	const { deleteBlog, updateBlog } = useBlogs();
 
+	// colors
+	const colors = {
+		personal: "bg-gray-500",
+		tech: "bg-red-400",
+		"self-help": "bg-green-500",
+		entertainment: "bg-sky-500",
+		lifestyle: "bg-indigo-500",
+	};
+
 	const handleUpdate = async (id) => {
 		const blog = blogs.find((b) => b._id === id);
 		if (blog.bookmark.includes(user?.userId)) {
@@ -30,15 +40,20 @@ export const BlogList = ({ blogs, deleteable, title }) => {
 		}
 		updateBlog(id, blog, false);
 	};
-	const red = "bg-personal";
 
 	return (
 		<div className="blog-lists">
-			<h2 className="text-3xl font-medium">{title}</h2>
+			<div className="flex justify-between items-center">
+				<h2 className="text-3xl font-medium">{title}</h2>
+				<FontAwesomeIcon
+					className="cursor-pointer text-2xl"
+					icon={faSliders}
+				/>
+			</div>
 			{blogs.map((blog, index) => {
-				let category = "bg-".concat(blog.category.toLowerCase());
+				let category = blog.category && blog.category.toLowerCase();
 				return (
-					<section key={index} className="">
+					<section key={index}>
 						<div className="blog-preview bg-white mt-5 p-5 border border-gray-200 rounded hover:border-gray-500 transition-all">
 							<div>
 								<div className="flex justify-between items-center">
@@ -47,7 +62,9 @@ export const BlogList = ({ blogs, deleteable, title }) => {
 									</h2>
 									<div className="font-semibold flex items-center gap-2">
 										{blog.category}
-										<div className={`${category} h-4 w-1`}></div>
+										<div
+											className={`${colors[category]} h-4 w-1`}
+										></div>
 									</div>
 								</div>
 								<p className="text-sm">
@@ -65,7 +82,7 @@ export const BlogList = ({ blogs, deleteable, title }) => {
 							<div className="button-container flex justify-between mt-2">
 								{!deleteable && (
 									<FontAwesomeIcon
-										className="icon bookmark cursor-pointer"
+										className="icon bookmark cursor-pointer text-2xl"
 										icon={
 											blog.bookmark &&
 											blog.bookmark.includes(user?.userId)
@@ -78,7 +95,7 @@ export const BlogList = ({ blogs, deleteable, title }) => {
 								)}
 								<Link className="read-more" to={`/blog/${blog._id}`}>
 									<FontAwesomeIcon
-										className="icon arrow-right"
+										className="icon hover:translate-x-1 transition-all text-2xl"
 										fontSize="larger"
 										icon={faArrowRight}
 									/>
@@ -87,7 +104,7 @@ export const BlogList = ({ blogs, deleteable, title }) => {
 									<div className="icon-container flex">
 										<Link to={`/blog/edit/${blog._id}`}>
 											<FontAwesomeIcon
-												className="icon edit"
+												className="icon edit text-2xl"
 												icon={edit}
 												fontSize="larger"
 											/>
@@ -95,7 +112,7 @@ export const BlogList = ({ blogs, deleteable, title }) => {
 										<FontAwesomeIcon
 											icon={trash}
 											fontSize="larger"
-											className="icon trash ml-3"
+											className="icon trash ml-3 text-2xl"
 											onClick={() => deleteBlog(blog._id)}
 										/>
 									</div>

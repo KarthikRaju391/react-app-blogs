@@ -10,30 +10,35 @@ export const Navbar = () => {
 
 	const handleLogout = () => {
 		logout();
+		setIsOpen(false);
+	};
+
+	const handleClick = () => {
+		setIsOpen((prevState) => !prevState);
 	};
 
 	return (
 		<div className="">
 			<nav className="grid grid-cols-2">
-				<h1 className="text-2xl font-bold flex justify-start items-center">
+				<h1 className="text-3xl font-bold flex justify-start items-center">
 					Drafters
 				</h1>
-				<div className="text-base links flex justify-end items-center">
+				<div className="text-base links flex justify-end items-end">
 					<Link
-						className="hover:border-b-2 border-black hidden md:flex transition-all duration-75"
+						className="hover:border-b-4 text-xl border-black hidden md:flex transition-all duration-75"
 						to="/"
 					>
 						Home
 					</Link>
 					<Link
-						className="hover:border-b-2 border-black hidden ml-10 md:flex transition-all duration-75"
+						className="hover:border-b-4 text-xl border-black hidden ml-10 md:flex transition-all duration-75"
 						to="/blog/create"
 					>
 						Write
 					</Link>
 					{!user ? (
 						<Link
-							className="ml-5 hover:border-b-2 border-black"
+							className="ml-10 hover:border-b-4 transition-all duration-75 text-xl border-black"
 							to="/auth"
 						>
 							Login
@@ -41,11 +46,11 @@ export const Navbar = () => {
 					) : (
 						<>
 							<button
-								className="ml-10 flex items-center border-b-2 border-black"
+								className="ml-10 flex text-xl items-center border-b-2 border-black"
 								type="button"
 								data-dropdown-toggle="dropdown"
 								aria-expanded="false"
-								onClick={() => setIsOpen((prevState) => !prevState)}
+								onClick={handleClick}
 							>
 								{`Hi, ${user?.username}`}
 								<svg
@@ -114,6 +119,22 @@ export const Navbar = () => {
 										to={`/blogs/${user?.username}/bookmarks`}
 									>
 										Your Bookmarks
+									</Link>
+									<Link
+										className="
+										dropdown-item
+										text-sm
+										py-3
+										px-5
+										font-normal
+										block
+										w-full
+										whitespace-nowrap
+										bg-transparent
+									"
+										to={`/blogs/${user?.username}/drafts`}
+									>
+										Your Drafts
 									</Link>
 									<p
 										className="

@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BlogList } from "../components/BlogList";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useBlogsContext } from "../hooks/useBlogContext";
 import { useBlogs } from "../hooks/useBlogs";
 
-export const UserBlogs = () => {
+export const UserDrafts = () => {
 	const { user } = useAuthContext();
-	const { getUserBlogs, isLoading, error } = useBlogs();
+	const { getUserDrafts, isLoading, error } = useBlogs();
 	const { blogs, dispatch } = useBlogsContext();
 
 	useEffect(() => {
-		user && getUserBlogs();
-		//TODO: get the latest blogs by the user
+		user && getUserDrafts();
 	}, [dispatch, user]);
 
 	return (
@@ -19,7 +18,7 @@ export const UserBlogs = () => {
 			{error && <div>unable to get the data...</div>}
 			{isLoading && <div>almost there...</div>}
 			{blogs && (
-				<BlogList blogs={blogs} deleteable={true} title="Your blogs" />
+				<BlogList blogs={blogs} deleteable={true} title="Your drafts" />
 			)}
 		</div>
 	);

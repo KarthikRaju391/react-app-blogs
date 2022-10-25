@@ -8,169 +8,55 @@
 	font-family: "Quicksand";
 	color: #333;
 }
-/* .navbar {
-	padding: 20px;
-	display: flex;
-	align-items: center;
-	max-width: 1000px;
-	margin: 0 auto;
-	border-bottom: 1px solid #f2f2f2;
-	z-index: 1;
-}
-.navbar h1 {
-	color: #f1356d;
-}
 
-.navbar .links {
-	margin-left: auto;
-}
-.navbar a {
-	margin-left: 16px;
-	text-decoration: none;
-	padding: 6px;
-}
-.navbar a:hover {
-	color: #f1356d;
-}
-
-.account-hover:hover .dropdown_content {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	margin-left: 7em;
-	padding: 1em 0;
-	gap: 1em;
-	z-index: 1000;
-}
-
-.dropdown_content {
-	display: none;
-	position: absolute;
-	left: 68%;
-	background-color: #f2f2f2;
-	min-width: 170px;
-	font-size: medium;
-	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-	top: 6%;
-}
-
-.dropdown_content > p {
-	cursor: pointer;
-	padding: 6px;
-	margin-left: 1em;
-}
-
-.dropdown_content > p:hover {
-	color: #f1356d;
-}
-
-.content {
-	max-width: 600px;
-	margin: 40px auto;
-	padding: 20px;
-}
-
-.blog-preview {
-	padding: 10px 16px;
-	margin: 20px 0;
-	border-bottom: 1px solid #fafafa;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.blog-preview:hover {
-	box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
-	cursor: pointer;
-}
-
-.blog-preview h2 {
-	font-size: 20px;
-	color: #f1356d;
-	margin-bottom: 8px;
-}
-
-.author-content {
-	margin-top: 0.5em;
-}
-
-.author {
+.blog-content > h1 {
+	font-size: 2em;
 	font-weight: bold;
-	color: #f1356d;
+	opacity: 0.8;
+	padding-bottom: 0.5em;
+	border-bottom: 1px solid #cccccc;
 }
 
-.subheader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding-bottom: 1em;
-	border-bottom: 1px solid #333;
-}
-
-.heart-content {
-	margin-top: 1em;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.heart-content > .icon {
-	margin-right: 1.2em;
-}
-.heart-content > span {
-	font-size: larger;
+.blog-content > h2 {
+	font-size: 1.5em;
 	font-weight: bold;
+	opacity: 0.8;
+	padding-bottom: 0.5em;
+	border-bottom: 1px solid #cccccc;
 }
 
-.article {
-	margin-top: 2em;
-	line-height: 1.7em;
-	font-size: 1.2em;
-}
-
-.read-more {
-	text-decoration: none;
+.blog-content > h3 {
+	font-size: 1.17em;
 	font-weight: bold;
+	opacity: 0.8;
+	padding-bottom: 0.5em;
+	border-bottom: 1px solid #cccccc;
 }
 
-.input-section + .input-section {
-	margin-top: 2em;
+.blog-content > ul,
+ol {
+	padding-left: 1.5em;
 }
 
-.input-area::placeholder {
-	font-weight: lighter;
-}
-.input-area {
-	width: 75%;
-	padding: 1em 0.5em;
-	margin-top: 0.5em;
-	font-weight: bold;
-	font-size: 1.1em;
-	border-radius: 0.5em;
-	outline: none;
-	border: 1.5px solid black;
+.blog-content > ul > li {
+	list-style-type: disc;
 }
 
-.input-text-area {
-	margin-top: 0.5em;
-	font-size: 1.1em;
-	padding: 1em 0.5em;
-	width: 100%;
-	border-radius: 0.5em;
-	outline: none;
-	border: 1.5px solid black;
+.blog-content > ol > li {
+	list-style-type: decimal;
 }
 
 .quill {
 	margin-top: 1em;
-	height: 500px;
+	height: 400px;
 	border: none;
+	background-color: white;
+	border-top-left-radius: 0.5em;
+	border-top-right-radius: 0.5em;
 }
 
 .ql-toolbar.ql-snow {
 	font-size: large;
-	border: none !important;
-	border: 1px solid #333 !important;
 	padding: 0px !important;
 	padding: 1em 0 !important;
 	border-top-left-radius: 0.5em;
@@ -178,9 +64,9 @@
 }
 
 .ql-container.ql-snow {
-	border: none !important;
-	border: 1px solid #333 !important;
-	border-top: none !important;
+	/* border: none !important; */
+	/* border: 1px solid #333 !important; */
+	/* border-top: none !important; */
 	border-bottom-left-radius: 0.5em;
 	border-bottom-right-radius: 0.5em;
 }
@@ -189,44 +75,7 @@
 	font-size: large;
 	line-height: 1.75em !important;
 	font-weight: 500;
+	background-color: white;
+	border-bottom-left-radius: 0.5em;
+	border-bottom-right-radius: 0.5em;
 }
-
-.button-container {
-	display: flex;
-	align-items: center;
-	gap: 1em;
-}
-
-.publish-btn {
-	margin-top: 4.5em;
-	cursor: pointer;
-	padding: 0.5em 1em;
-	font-size: 1.2em;
-	font-weight: bold;
-	background-color: transparent;
-	outline: none;
-	border: 2px solid #f1356d;
-	border-radius: 0.5em;
-	color: #f1356d;
-}
-
-.delete-btn {
-	cursor: pointer;
-	padding: 0.3em 1em;
-	background-color: transparent;
-	outline: none;
-	border: 1px solid #f1356d;
-	border-radius: 0.5em;
-	color: #f1356d;
-}
-
-.icon {
-	width: 1.5em;
-	cursor: pointer;
-	height: 1.2em;
-	color: #333;
-}
-
-.trash {
-	margin-left: 0.75em;
-} */
