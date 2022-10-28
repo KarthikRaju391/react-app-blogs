@@ -1,25 +1,25 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useBlogs } from "../hooks/useBlogs";
+import { useBlogsContext } from "../hooks/useBlogContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faArrowRightLong as faArrowRight,
 	faBookmark as bookmarkSolid,
-	faHeart as heartSolid,
-	faSliders,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
 	faBookmark as bookmark,
-	faHeart as heart,
 	faXmarkCircle as trash,
 	faPenToSquare as edit,
 } from "@fortawesome/free-regular-svg-icons";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { Filter } from "./Filter";
 
 export const BlogList = ({ blogs, deleteable, title }) => {
 	const { user } = useAuthContext();
-	const { deleteBlog, updateBlog } = useBlogs();
+	const { deleteBlog, updateBlog, getUserBookmarks } = useBlogs();
+	const { dispatch } = useBlogsContext();
 
 	// colors
 	const colors = {
@@ -43,44 +43,54 @@ export const BlogList = ({ blogs, deleteable, title }) => {
 
 	return (
 		<div className="blog-lists">
-			<div className="flex justify-between items-center">
+			<div className="flex justify-between">
 				<h2 className="text-3xl font-medium">{title}</h2>
-				<FontAwesomeIcon
-					className="cursor-pointer text-2xl"
-					icon={faSliders}
-				/>
+				<Filter />
 			</div>
 			{blogs.map((blog, index) => {
 				let category = blog.category && blog.category.toLowerCase();
 				return (
 					<section key={index}>
-						<div className="blog-preview bg-white mt-5 p-5 border border-gray-200 rounded hover:border-gray-500 transition-all">
+						<div className="group blog-preview bg-white mt-5 p-5 border border-gray-200 rounded hover:border-gray-500 transition-all">
 							<div>
 								<div className="flex justify-between items-center">
-									<h2 className="text-xl w-3/4 font-extrabold">
-										{blog.title}
-									</h2>
-									<div className="font-semibold flex items-center gap-2">
+									<Link className="w-3/4" to={`/blog/${blog._id}`}>
+										<h2 className="text-2xl w-3/4 font-extrabold">
+											{blog.title?.split(" ").length > 5
+												? blog.title
+														.split(" ")
+														.slice(0, 4)
+														.join(" ") + "..."
+												: blog.title}{" "}
+										</h2>
+									</Link>
+									<Link
+										className="font-semibold hover:underline transition flex items-center gap-2"
+										to={`/blogs/category/${blog.category}`}
+									>
 										{blog.category}
 										<div
-											className={`${colors[category]} h-4 w-1`}
+											className={`${colors[category]} h-4 w-1 `}
 										></div>
-									</div>
+									</Link>
 								</div>
-								<p className="text-sm">
+								<p className="text-sm font-semibold">
 									{new Date(blog.createdAt).toLocaleString("en-us", {
 										month: "long",
 										day: "2-digit",
 										year: "numeric",
 									})}
 									{" | "}
-									<span className="cursor-pointer hover:underline">
+									<Link
+										to={`/author/${blog.author}`}
+										className="cursor-pointer hover:underline"
+									>
 										{blog.author}
-									</span>
+									</Link>
 								</p>
 							</div>
 							<div className="button-container flex justify-between mt-2">
-								{!deleteable && (
+								{!deleteable && user && (
 									<FontAwesomeIcon
 										className="icon bookmark cursor-pointer text-2xl"
 										icon={
@@ -95,7 +105,7 @@ export const BlogList = ({ blogs, deleteable, title }) => {
 								)}
 								<Link className="read-more" to={`/blog/${blog._id}`}>
 									<FontAwesomeIcon
-										className="icon hover:translate-x-1 transition-all text-2xl"
+										className="icon group-hover:translate-x-1 transition-all text-2xl"
 										fontSize="larger"
 										icon={faArrowRight}
 									/>
@@ -112,7 +122,7 @@ export const BlogList = ({ blogs, deleteable, title }) => {
 										<FontAwesomeIcon
 											icon={trash}
 											fontSize="larger"
-											className="icon trash ml-3 text-2xl"
+											className="icon trash ml-3 text-2xl cursor-pointer"
 											onClick={() => deleteBlog(blog._id)}
 										/>
 									</div>

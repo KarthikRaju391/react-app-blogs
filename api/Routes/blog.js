@@ -5,11 +5,23 @@ const router = require("express").Router();
 // GET REQUESTS
 router.get("/", async (req, res) => {
 	const qAuthor = req.query.author;
+	const qCategory = req.query.category;
 	try {
 		let blogs;
-
-		if (qAuthor) {
-			blogs = await Blog.find({ userId: qAuthor });
+		if (qCategory && qAuthor) {
+			blogs = await Blog.find({
+				draft: false,
+				category: qCategory,
+				author: qAuthor,
+			}).sort({ createdAt: -1 });
+		} else if (qCategory) {
+			blogs = await Blog.find({ draft: false, category: qCategory }).sort({
+				createdAt: -1,
+			});
+		} else if (qAuthor) {
+			blogs = await Blog.find({ draft: false, author: qAuthor }).sort({
+				createdAt: -1,
+			});
 		} else {
 			blogs = await Blog.find({ draft: false }).sort({ createdAt: -1 });
 		}
@@ -34,11 +46,14 @@ router.get("/user/:id", verifyToken, async (req, res) => {
 		let userBlogs;
 
 		if (latest) {
-			userBlogs = await Blog.find({ userId: req.params.id })
+			userBlogs = await Blog.find({ userId: req.params.id, draft: false })
 				.sort({ createdAt: -1 })
 				.limit(1);
 		} else {
-			userBlogs = await Blog.find({ userId: req.params.id });
+			userBlogs = await Blog.find({
+				userId: req.params.id,
+				draft: false,
+			}).sort({ createdAt: -1 });
 		}
 		res.status(200).json(userBlogs);
 	} catch (error) {
@@ -82,6 +97,9 @@ router.put("/:id", verifyToken, async (req, res) => {
 		const updatedBlog = await Blog.findByIdAndUpdate(
 			req.params.id,
 			{
+				$currentDate: {
+					createdAt: true,
+				},
 				$set: req.body,
 			},
 			{ new: true }

@@ -46,7 +46,7 @@ export const useBlogs = () => {
 		}
 
 		if (response.ok) {
-			dispatch({ type: "GetBlogs", payload: data });
+			dispatch({ type: "GetUserDrafts", payload: data });
 			setIsLoading(false);
 			setError(null);
 		}
@@ -63,7 +63,43 @@ export const useBlogs = () => {
 		});
 
 		const data = await response.json();
+		if (!response.ok) {
+			setIsLoading(false);
+			setError(data.error);
+		}
 
+		if (response.ok) {
+			dispatch({ type: "GetUserBlogs", payload: data });
+			setIsLoading(false);
+			setError(null);
+		}
+	};
+
+	const getAuthorBlogs = async (authorName) => {
+		setIsLoading(true);
+		setError(null);
+
+		const response = await fetch(`${URL}/blogs?author=${authorName}`);
+		const data = await response.json();
+
+		if (!response.ok) {
+			setIsLoading(false);
+			setError(data.error);
+		}
+
+		if (response.ok) {
+			dispatch({ type: "GetBlogs", payload: data });
+			setIsLoading(false);
+			setError(null);
+		}
+	};
+
+	const getCategoryBlogs = async (category) => {
+		setIsLoading(true);
+		setError(null);
+
+		const response = await fetch(`${URL}/blogs?category=${category}`);
+		const data = await response.json();
 		if (!response.ok) {
 			setIsLoading(false);
 			setError(data.error);
@@ -93,7 +129,7 @@ export const useBlogs = () => {
 		}
 
 		if (response.ok) {
-			dispatch({ type: "GetBlogs", payload: bookmarks });
+			dispatch({ type: "GetUserBookmarks", payload: bookmarks });
 			setIsLoading(false);
 			setError(null);
 		}
@@ -178,7 +214,8 @@ export const useBlogs = () => {
 
 	return {
 		getAllBlogs,
-		// getTopAuthors,
+		getAuthorBlogs,
+		getCategoryBlogs,
 		getUserBlogs,
 		getUserDrafts,
 		getUserBookmarks,

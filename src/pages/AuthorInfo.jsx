@@ -1,27 +1,31 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BlogList } from "../components/BlogList";
-import { useBlogs } from "../hooks/useBlogs";
 import { useBlogsContext } from "../hooks/useBlogContext";
+import { useBlogs } from "../hooks/useBlogs";
 import AuthorList from "../components/AuthorList";
 import CategoryList from "../components/CategoryList";
+import { useLocation } from "react-router-dom";
 import { Pagination } from "../components/Pagination";
 import { NoContent } from "../components/NoContent";
 import { Loading } from "../components/Loading";
 
-//TODO: Notification on actions!!
-export const Home = () => {
-	const { getAllBlogs, isLoading, error } = useBlogs();
+export const AuthorInfo = () => {
+	const { getAuthorBlogs, isLoading, error } = useBlogs();
 	const { blogs, dispatch } = useBlogsContext();
-	const [subscribed, setIsSubscribed] = useState(false);
+	const [subscribed, setIsSubsribed] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [postsPerPage] = useState(5);
+	const path = useLocation();
+
+	const authorName = path.pathname.split("/")[2].replace("%20", " ");
 
 	useEffect(() => {
-		setIsSubscribed(true);
-		subscribed && getAllBlogs();
+		setIsSubsribed(true);
+
+		subscribed && getAuthorBlogs(authorName);
 
 		return () => {
-			setIsSubscribed(false);
+			setIsSubsribed(false);
 		};
 	}, [dispatch, subscribed]);
 
@@ -36,19 +40,22 @@ export const Home = () => {
 	return (
 		<>
 			<div className="home col-span-2 mt-10 md:w-3/4 md:mx-auto">
-				{error && <div>'Unable to get the data...</div>}
+				{error && <div>unable to get the data...</div>}
 				{isLoading ? (
-					<Loading subtitle={"Loading all blogs..."} />
+					<Loading subtitle={`Loading ${authorName} blogs...`} />
 				) : (
 					blogs && (
 						<BlogList
 							blogs={currentPosts}
 							deleteable={false}
-							title="All Blogs"
+							title={`${authorName}'s blogs`}
 						/>
 					)
 				)}
-				{!isLoading && blogs && blogs.length > 5 && (
+				{!isLoading && blogs && blogs.length === 0 && (
+					<NoContent content="No recent blogs by this author..." />
+				)}
+				{!isLoading && blogs && blogs.length >= 5 && (
 					<Pagination
 						postsPerPage={postsPerPage}
 						totalPosts={blogs?.length}

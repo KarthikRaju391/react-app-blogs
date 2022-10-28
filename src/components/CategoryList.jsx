@@ -5,7 +5,7 @@ const CategoryList = () => {
 	const categories = [
 		"Personal",
 		"Tech",
-		"Self-Help",
+		"Self-help",
 		"Entertainment",
 		"Lifestyle",
 	];
@@ -19,7 +19,11 @@ const CategoryList = () => {
 			<ul>
 				{categories &&
 					categories.map((category, index) => (
-						<Link to="" className="mt-2 block" key={index}>
+						<Link
+							to={`/blogs/category/${category}`}
+							className="mt-2 block"
+							key={index}
+						>
 							<span>{index + 1}. </span>
 							{category}
 						</Link>

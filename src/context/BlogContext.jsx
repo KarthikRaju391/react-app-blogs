@@ -8,6 +8,14 @@ export const blogReducer = (state, action) => {
 			return {
 				blogs: action.payload,
 			};
+		case "GetUserBlogs":
+			return {
+				blogs: action.payload,
+			};
+		case "GetUserDrafts":
+			return {
+				blogs: action.payload,
+			};
 		case "AddBlog":
 			return {
 				blogs: [action.payload, ...state.blogs],
@@ -26,6 +34,30 @@ export const blogReducer = (state, action) => {
 			return {
 				blogs: state.blogs.filter((blog) => blog._id !== action.payload.id),
 			};
+		case "GetUserBookmarks":
+			return {
+				blogs: action.payload,
+			};
+		case "SortBlogsLatestFirst":
+			return {
+				blogs: state.blogs.sort((a, b) =>
+					b.createdAt.localeCompare(a.createdAt)
+				),
+			};
+		case "SortBlogsOldestFirst":
+			return {
+				blogs: state.blogs.sort((a, b) =>
+					a.createdAt.localeCompare(b.createdAt)
+				),
+			};
+		case "SortBlogsMostLikedFirst":
+			return {
+				blogs: state.blogs.sort((a, b) => b.likes.length - a.likes.length),
+			};
+		case "SortBlogsLeastLikedFirst":
+			return {
+				blogs: state.blogs.sort((a, b) => a.likes.length - b.likes.length),
+			};
 		default:
 			return state;
 	}
@@ -34,6 +66,7 @@ export const blogReducer = (state, action) => {
 export const BlogsContextProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(blogReducer, {
 		blogs: null,
+		//TODO: Notification system!
 	});
 
 	console.log("Blogs context: ", state);

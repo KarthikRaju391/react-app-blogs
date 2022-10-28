@@ -61,7 +61,7 @@ export const Blog = () => {
 	};
 
 	return (
-		<div className="col-span-3 w-1/2 mx-auto mt-11">
+		<div className="col-span-3 w-full md:w-1/2 mx-auto mt-11">
 			{error && <div>{error}</div>}
 			{isLoading && <div>Loading blog...</div>}
 			{blog && (

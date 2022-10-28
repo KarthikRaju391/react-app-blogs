@@ -15,6 +15,8 @@ import { Edit } from "./pages/Edit";
 import { UserBookmarks } from "./pages/UserBookmarks";
 import { UserDrafts } from "./pages/UserDrafts";
 import React from "react";
+import { AuthorInfo } from "./pages/AuthorInfo";
+import { CategoryInfo } from "./pages/CategoryInfo";
 
 function App() {
 	const { user } = useAuthContext();
@@ -47,6 +49,11 @@ function App() {
 						<Route
 							path="/blogs/:username/drafts"
 							element={<UserDrafts />}
+						/>
+						<Route path="/author/:authorName" element={<AuthorInfo />} />
+						<Route
+							path="/blogs/category/:categoryName"
+							element={<CategoryInfo />}
 						/>
 					</Routes>
 				</div>

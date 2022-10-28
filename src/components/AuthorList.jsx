@@ -45,7 +45,11 @@ const AuthorList = () => {
 				<ul className="">
 					{authors &&
 						authors.map((author, index) => (
-							<Link to="" className="mt-2 block" key={index}>
+							<Link
+								to={`/author/${author.author}`}
+								className="mt-2 block"
+								key={index}
+							>
 								<span>{index + 1}. </span>
 								{author.author}
 								<span>
@@ -54,15 +58,6 @@ const AuthorList = () => {
 								</span>
 							</Link>
 						))}
-					<Link className="mt-2 block" to="">
-						3. Kavya
-					</Link>
-					<Link className="mt-2 block" to="">
-						4. Kavya
-					</Link>
-					<Link className="mt-2 block" to="">
-						5. Kavya
-					</Link>
 				</ul>
 			</div>
 		</>

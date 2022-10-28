@@ -21,7 +21,6 @@ export const Create = () => {
 
 	useEffect(() => {
 		blogId && setUpdate(true);
-
 		const fetchBlog = async () => {
 			try {
 				const response = await fetch(
@@ -31,6 +30,7 @@ export const Create = () => {
 				setTitle(data.title);
 				setBody(data.body);
 				setCategory(data.category);
+				setDraft(data.draft);
 			} catch (error) {
 				setError(error);
 			}
@@ -44,17 +44,28 @@ export const Create = () => {
 
 	const handleUpdate = async (e) => {
 		e.preventDefault();
-		const newData = {
-			title,
-			body,
-			category,
-		};
-		updateBlog(blogId, newData, true);
+		if (e.nativeEvent.submitter.name === "final") {
+			const newData = {
+				title,
+				body,
+				category,
+				draft: false,
+			};
+			updateBlog(blogId, newData, true);
+		} else {
+			const newData = {
+				title,
+				body,
+				category,
+				draft,
+			};
+			updateBlog(blogId, newData, true);
+		}
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (e.nativeEvent.submitter.name == "final") {
+		if (e.nativeEvent.submitter.name === "final") {
 			createBlog(title, body, category, false);
 		} else {
 			createBlog(title, body, category, true);
@@ -62,22 +73,22 @@ export const Create = () => {
 	};
 
 	return (
-		<div className="col-span-3 w-3/4 mx-auto mt-11 min-h-screen">
+		<div className="col-span-3 w-full md:w-3/4 mx-auto mt-11 min-h-screen">
 			<form onSubmit={update ? handleUpdate : handleSubmit}>
 				<div className="input-section">
 					<h2 className="text-2xl font-bold">
 						{update ? "Update" : "Enter"} the blog title
 					</h2>
-					<div className="flex justify-between items-center">
+					<div className="md:flex md:justify-between md:items-center">
 						<input
 							required
-							className="input-area mt-3 w-1/2 p-3 border font-semibold border-quill-border rounded-lg focus:outline-none focus:border-gray-800"
+							className="input-area mt-3 w-full md:w-1/2 p-3 border font-semibold border-quill-border rounded-lg focus:outline-none focus:border-gray-800"
 							placeholder="Introduction to Javascript"
 							value={title || ""}
 							type="text"
 							onChange={(e) => setTitle(e.target.value)}
 						/>
-						<div className="flex items-center gap-2">
+						<div className="flex items-center justify-start md:justify-between gap-2 mt-3 md:mt-0">
 							<label
 								className="text-xl font-semibold"
 								htmlFor="categories"
@@ -86,7 +97,8 @@ export const Create = () => {
 							</label>
 							<select
 								className="p-2 cursor-pointer rounded focus:outline-none border border-quill-border"
-								value={category || ""}
+								// value={category || "Personal"}
+								defaultValue={"Personal"}
 								onChange={(e) => setCategory(e.target.value)}
 								required
 							>
@@ -110,19 +122,30 @@ export const Create = () => {
 						onChange={setBody}
 					/>
 				</div>
-				<div>
-					<button
-						type="submit"
-						name="final"
-						className="border border-black mt-28 hover:bg-gray-900 transition-all w-3/12 mx-auto bg-gray-800 text-white px-2 py-3"
-					>
-						{update ? "Update" : "Publish"}
-					</button>
+				<div className="flex gap-y-2 flex-col md:flex-row md:gap-x-2 mt-28">
+					{
+						<button
+							type="submit"
+							name="final"
+							className="border border-black hover:bg-gray-900 transition-all w-1/2 md:w-3/12 mx-auto bg-gray-800 text-white px-2 py-3"
+						>
+							{update ? "Update" : "Publish"}
+						</button>
+					}
+					{draft && (
+						<button
+							type="submit"
+							name="final"
+							className="border border-black hover:bg-gray-900 transition-all w-1/2 md:w-3/12 mx-auto bg-gray-800 text-white px-2 py-3"
+						>
+							Publish Draft
+						</button>
+					)}
 					{!update && (
 						<button
 							type="submit"
 							name="draft"
-							className="border ml-10 border-black mt-28 hover:bg-gray-900 transition-all w-3/12 mx-auto bg-gray-800 text-white px-2 py-3"
+							className="border border-black hover:bg-gray-900 transition-all w-1/2 md:w-3/12 mx-auto bg-gray-800 text-white px-2 py-3"
 						>
 							Save as Draft
 						</button>
