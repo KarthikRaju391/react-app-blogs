@@ -9,6 +9,7 @@ const BlogSchema = new mongoose.Schema(
 		author: { type: String, required: true },
 		category: { type: String },
 		bookmark: { type: Array },
+		views: { type: Number },
 		draft: { type: Boolean, required: true, default: false },
 	},
 	{

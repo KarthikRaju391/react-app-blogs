@@ -44,7 +44,8 @@ export const AuthorInfo = () => {
 				{isLoading ? (
 					<Loading subtitle={`Loading ${authorName} blogs...`} />
 				) : (
-					blogs && (
+					blogs &&
+					blogs.length !== 0 && (
 						<BlogList
 							blogs={currentPosts}
 							deleteable={false}

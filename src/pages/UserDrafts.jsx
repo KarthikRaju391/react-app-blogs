@@ -6,18 +6,25 @@ import AuthorList from "../components/AuthorList";
 import CategoryList from "../components/CategoryList";
 import { useBlogs } from "../hooks/useBlogs";
 import { Pagination } from "../components/Pagination";
+import { NoContent } from "../components/NoContent";
 import { Loading } from "../components/Loading";
 
 export const UserDrafts = () => {
 	const { user } = useAuthContext();
 	const { getUserDrafts, isLoading, error } = useBlogs();
 	const { blogs, dispatch } = useBlogsContext();
+	const [subscribed, setIsSubscribed] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [postsPerPage] = useState(5);
 
 	useEffect(() => {
-		user && getUserDrafts();
-	}, [dispatch, user]);
+		setIsSubscribed(true);
+		subscribed && user && getUserDrafts();
+
+		return () => {
+			setIsSubscribed(false);
+		};
+	}, [dispatch, user, subscribed]);
 
 	const indexOfLastPost = currentPage * postsPerPage;
 	const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -34,13 +41,17 @@ export const UserDrafts = () => {
 				{isLoading ? (
 					<Loading subtitle={"Loading your drafts..."} />
 				) : (
-					blogs && (
+					blogs &&
+					blogs.length !== 0 && (
 						<BlogList
 							blogs={currentPosts}
 							deleteable={true}
 							title="Your drafts"
 						/>
 					)
+				)}
+				{!isLoading && blogs && blogs.length === 0 && (
+					<NoContent content="Write drafts to see them here..." />
 				)}
 				{!isLoading && blogs && blogs.length > 5 && (
 					<Pagination

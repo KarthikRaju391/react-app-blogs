@@ -16,11 +16,11 @@ router.get("/", async (req, res) => {
 			}).sort({ createdAt: -1 });
 		} else if (qCategory) {
 			blogs = await Blog.find({ draft: false, category: qCategory }).sort({
-				createdAt: -1,
+				updatedAt: -1,
 			});
 		} else if (qAuthor) {
 			blogs = await Blog.find({ draft: false, author: qAuthor }).sort({
-				createdAt: -1,
+				updatedAt: -1,
 			});
 		} else {
 			blogs = await Blog.find({ draft: false }).sort({ createdAt: -1 });
@@ -47,13 +47,13 @@ router.get("/user/:id", verifyToken, async (req, res) => {
 
 		if (latest) {
 			userBlogs = await Blog.find({ userId: req.params.id, draft: false })
-				.sort({ createdAt: -1 })
+				.sort({ updatedAt: -1 })
 				.limit(1);
 		} else {
 			userBlogs = await Blog.find({
 				userId: req.params.id,
 				draft: false,
-			}).sort({ createdAt: -1 });
+			}).sort({ updatedAt: -1 });
 		}
 		res.status(200).json(userBlogs);
 	} catch (error) {
@@ -63,7 +63,10 @@ router.get("/user/:id", verifyToken, async (req, res) => {
 
 router.get("/drafts/user/:id", verifyToken, async (req, res) => {
 	try {
-		const drafts = await Blog.find({ draft: true, userId: req.params.id });
+		const drafts = await Blog.find({
+			draft: true,
+			userId: req.params.id,
+		}).sort({ updatedAt: -1 });
 		res.status(200).json(drafts);
 	} catch (error) {
 		console.log("here");
@@ -97,9 +100,6 @@ router.put("/:id", verifyToken, async (req, res) => {
 		const updatedBlog = await Blog.findByIdAndUpdate(
 			req.params.id,
 			{
-				$currentDate: {
-					createdAt: true,
-				},
 				$set: req.body,
 			},
 			{ new: true }

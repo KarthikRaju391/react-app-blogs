@@ -50,6 +50,7 @@ export const Create = () => {
 				body,
 				category,
 				draft: false,
+				createdAt: new Date().toISOString(),
 			};
 			updateBlog(blogId, newData, true);
 		} else {

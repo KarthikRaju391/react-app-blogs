@@ -26,7 +26,7 @@ export const CategoryInfo = () => {
 		return () => {
 			setIsSubsribed(false);
 		};
-	}, [dispatch, subscribed]);
+	}, [dispatch, subscribed, categoryName]);
 
 	const indexOfLastPost = currentPage * postsPerPage;
 	const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -43,7 +43,8 @@ export const CategoryInfo = () => {
 				{isLoading ? (
 					<Loading subtitle={`Loading ${categoryName} blogs...`} />
 				) : (
-					blogs && (
+					blogs &&
+					blogs.length !== 0 && (
 						<BlogList
 							blogs={currentPosts}
 							deleteable={false}

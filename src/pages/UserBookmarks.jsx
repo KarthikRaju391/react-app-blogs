@@ -6,19 +6,26 @@ import AuthorList from "../components/AuthorList";
 import CategoryList from "../components/CategoryList";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useBlogsContext } from "../hooks/useBlogContext";
+import { NoContent } from "../components/NoContent";
 import { useBlogs } from "../hooks/useBlogs";
 
 export const UserBookmarks = () => {
 	const { user } = useAuthContext();
 	const { getUserBookmarks, isLoading, error } = useBlogs();
 	const { blogs, dispatch } = useBlogsContext();
+	const [subscribed, setIsSubscribed] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [postsPerPage] = useState(5);
 
 	//TODO: Take care removing of bookmarks UI
 	useEffect(() => {
-		user && getUserBookmarks();
-	}, [user, dispatch]);
+		setIsSubscribed(true);
+		subscribed && user && getUserBookmarks();
+
+		return () => {
+			setIsSubscribed(false);
+		};
+	}, [user, dispatch, subscribed]);
 
 	const indexOfLastPost = currentPage * postsPerPage;
 	const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -35,13 +42,17 @@ export const UserBookmarks = () => {
 				{isLoading ? (
 					<Loading subtitle={"Loading your bookmarks..."} />
 				) : (
-					blogs && (
+					blogs &&
+					blogs.length !== 0 && (
 						<BlogList
 							blogs={currentPosts}
 							deleteable={false}
 							title="Your Bookmarks"
 						/>
 					)
+				)}
+				{!isLoading && blogs && blogs.length === 0 && (
+					<NoContent content="Bookmark blogs to see them here..." />
 				)}
 				{!isLoading && blogs && blogs.length > 5 && (
 					<Pagination

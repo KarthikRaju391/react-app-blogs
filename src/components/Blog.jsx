@@ -44,7 +44,7 @@ export const Blog = () => {
 		};
 
 		fetchBlog();
-
+		// blog && updateBlog(blogId, { ...blog, views: blog?.views + 1 }, false);
 		return () => {
 			unsubscribed = true;
 		};

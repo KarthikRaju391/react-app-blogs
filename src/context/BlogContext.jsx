@@ -41,13 +41,13 @@ export const blogReducer = (state, action) => {
 		case "SortBlogsLatestFirst":
 			return {
 				blogs: state.blogs.sort((a, b) =>
-					b.createdAt.localeCompare(a.createdAt)
+					b.updatedAt.localeCompare(a.updatedAt)
 				),
 			};
 		case "SortBlogsOldestFirst":
 			return {
 				blogs: state.blogs.sort((a, b) =>
-					a.createdAt.localeCompare(b.createdAt)
+					a.updatedAt.localeCompare(b.updatedAt)
 				),
 			};
 		case "SortBlogsMostLikedFirst":
