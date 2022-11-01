@@ -10,9 +10,11 @@ export const Navbar = () => {
 	return (
 		<div className="">
 			<nav className="grid grid-cols-2">
-				<h1 className="text-3xl font-bold flex justify-start items-center">
-					Drafters
-				</h1>
+				<Link to={"/"}>
+					<h1 className="text-3xl font-bold flex justify-start items-center">
+						Drafters
+					</h1>
+				</Link>
 				<div className="text-base links flex justify-end items-center">
 					<Link
 						className="hover:border-b-4 text-xl border-black hidden md:flex transition-all duration-75"

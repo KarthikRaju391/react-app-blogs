@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useLogout } from "../hooks/useLogout";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+	faBars,
+	faLinesLeaning,
+	faFilePen,
+	faBookBookmark,
+	faHeartCircleCheck,
+	faArrowRightFromBracket,
+	faUser,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const Dropdown = ({ username }) => {
 	const { logout } = useLogout();
@@ -38,9 +48,10 @@ export const Dropdown = ({ username }) => {
 					aria-expanded="true"
 					aria-haspopup="true"
 				>
-					{`Hi, ${username}`}
+					<p className="hidden md:block">{`Hi, ${username}`}</p>
+					<FontAwesomeIcon className="md:hidden" icon={faBars} />
 					<svg
-						className="-mr-1 ml-2 h-5 w-5"
+						className="hidden md:block md:-mr-1 md:ml-2 md:h-5 md:w-5"
 						xmlns="http://www.w3.org/2000/svg"
 						viewBox="0 0 20 20"
 						fill="currentColor"
@@ -66,49 +77,72 @@ export const Dropdown = ({ username }) => {
       To: "transform opacity-0 scale-95"
   --> */ && (
 				<div
-					className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+					className="absolute right-0 z-10 mt-2 w-52 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 					role="menu"
 					aria-orientation="vertical"
 					aria-labelledby="menu-button"
 					tabIndex="-1"
 				>
 					<div className="py-1" role="none">
+						<p className="border-l-4 border-l-gray-800 transition-all duration-100 sm:block md:hidden text-gray-700 flex justify-between items-center px-4 py-2 text-md border-gray-200 border-b-2">
+							<FontAwesomeIcon icon={faUser} /> {`Hi, ${username}`}
+						</p>
 						{/* <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" --> */}
 						<Link
-							className="text-gray-700 block px-4 py-2 text-md active:bg-gray-100 active:text-gray-900"
+							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center px-4 py-2 text-md active:bg-gray-100 active:text-gray-900"
 							to={`/blogs/${username}`}
 							role="menuitem"
 							tabIndex="-1"
 							id="menu-item-0"
 						>
+							<FontAwesomeIcon fontSize="1.4em" icon={faLinesLeaning} />
 							Your blogs
 						</Link>
 						<Link
 							to={`/blogs/${username}/bookmarks`}
-							className="text-gray-700 block px-4 py-2 text-md active:bg-gray-100 active:text-gray-900"
+							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center px-4 py-2 text-md active:bg-gray-100 active:text-gray-900"
 							role="menuitem"
 							tabIndex="-1"
 							id="menu-item-1"
 						>
+							<FontAwesomeIcon fontSize="1.4em" icon={faBookBookmark} />
 							Your bookmarks
 						</Link>
 						<Link
-							to={`/blogs/${username}/drafts`}
-							className="text-gray-700 block px-4 py-2 text-md active:bg-gray-100 active:text-gray-900"
+							to={`/blogs/${username}/likes`}
+							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center px-4 py-2 text-md active:bg-gray-100 active:text-gray-900"
 							role="menuitem"
 							tabIndex="-1"
 							id="menu-item-2"
 						>
+							<FontAwesomeIcon
+								fontSize="1.4em"
+								icon={faHeartCircleCheck}
+							/>
+							Your likes
+						</Link>
+						<Link
+							to={`/blogs/${username}/drafts`}
+							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center px-4 py-2 text-md active:bg-gray-100 active:text-gray-900"
+							role="menuitem"
+							tabIndex="-1"
+							id="menu-item-2"
+						>
+							<FontAwesomeIcon fontSize="1.4em" icon={faFilePen} />
 							Your drafts
 						</Link>
 						<form onSubmit={handleLogout}>
 							<button
 								type="submit"
-								className="text-gray-700 block w-full px-4 py-2 text-left text-md"
+								className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
 								role="menuitem"
 								tabIndex="-1"
 								id="menu-item-3"
 							>
+								<FontAwesomeIcon
+									fontSize="1.4em"
+									icon={faArrowRightFromBracket}
+								/>
 								Logout
 							</button>
 						</form>

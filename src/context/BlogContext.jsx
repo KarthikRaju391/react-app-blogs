@@ -38,6 +38,10 @@ export const blogReducer = (state, action) => {
 			return {
 				blogs: action.payload,
 			};
+		case "GetUserLikes":
+			return {
+				blogs: action.payload,
+			};
 		case "SortBlogsLatestFirst":
 			return {
 				blogs: state.blogs.sort((a, b) =>
@@ -68,8 +72,6 @@ export const BlogsContextProvider = ({ children }) => {
 		blogs: null,
 		//TODO: Notification system!
 	});
-
-	console.log("Blogs context: ", state);
 
 	return (
 		<BlogContext.Provider value={{ ...state, dispatch }}>

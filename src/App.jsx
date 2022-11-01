@@ -17,6 +17,8 @@ import { UserDrafts } from "./pages/UserDrafts";
 import React from "react";
 import { AuthorInfo } from "./pages/AuthorInfo";
 import { CategoryInfo } from "./pages/CategoryInfo";
+import { UserLikes } from "./pages/UserLikes";
+import { useBlogsContext } from "./hooks/useBlogContext";
 
 function App() {
 	const { user } = useAuthContext();
@@ -36,11 +38,15 @@ function App() {
 							path="/blogs/:username/bookmarks"
 							element={<UserBookmarks />}
 						/>
+						<Route
+							path="/blogs/:username/likes"
+							element={<UserLikes />}
+						/>
 						{/* TODO: reroute to home when routing to blog that's deleted */}
 						<Route path="/blog/:id" element={<Blog />} />
 						<Route
 							path="/blog/create"
-							element={user ? <Create /> : <Navigate to="/auth" />}
+							element={user ? <Edit /> : <Navigate to="/auth" />}
 						/>
 						<Route
 							path="/blog/edit/:id"

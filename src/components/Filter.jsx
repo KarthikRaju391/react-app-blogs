@@ -86,7 +86,7 @@ export const Filter = ({ username }) => {
 						<button
 							type="submit"
 							onClick={handleOldestFirst}
-							className="text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
+							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
 							role="menuitem"
 							tabIndex="-1"
 							id="menu-item-3"
@@ -97,7 +97,7 @@ export const Filter = ({ username }) => {
 						<button
 							type="submit"
 							onClick={handleLatestFirst}
-							className="text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
+							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
 							role="menuitem"
 							tabIndex="-1"
 							id="menu-item-3"
@@ -108,7 +108,7 @@ export const Filter = ({ username }) => {
 						<button
 							type="submit"
 							onClick={handleMostLikeFirst}
-							className="text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
+							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
 							role="menuitem"
 							tabIndex="-1"
 							id="menu-item-3"
@@ -119,7 +119,7 @@ export const Filter = ({ username }) => {
 						<button
 							type="submit"
 							onClick={handleLeastLikedFirst}
-							className="text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
+							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
 							role="menuitem"
 							tabIndex="-1"
 							id="menu-item-3"

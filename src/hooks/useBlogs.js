@@ -51,6 +51,29 @@ export const useBlogs = () => {
 		}
 	};
 
+	const getUserLikes = async () => {
+		setIsLoading(true);
+		setError(null);
+		const response = await fetch(`${URL}/blogs`);
+
+		const data = await response.json();
+
+		const likes = data.filter((blog) => {
+			return blog.likes.includes(user?.userId);
+		});
+
+		if (!response.ok) {
+			setIsLoading(false);
+			setError(data.error);
+		}
+
+		if (response.ok) {
+			dispatch({ type: "GetUserLikes", payload: likes });
+			setIsLoading(false);
+			setError(null);
+		}
+	};
+
 	const getUserBlogs = async () => {
 		setIsLoading(true);
 		setError(null);
@@ -218,6 +241,7 @@ export const useBlogs = () => {
 		getUserBlogs,
 		getUserDrafts,
 		getUserBookmarks,
+		getUserLikes,
 		deleteBlog,
 		createBlog,
 		updateBlog,
