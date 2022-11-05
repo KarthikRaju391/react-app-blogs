@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const CryptoJS = require('crypto-js');
-const validator = require('validator');
+const mongoose = require("mongoose");
+const CryptoJS = require("crypto-js");
+const validator = require("validator");
 
 const UserSchema = new mongoose.Schema(
 	{
@@ -36,22 +36,22 @@ UserSchema.statics.signup = async function (
 	password
 ) {
 	if (!email || !password || !username || !firstname || !lastname) {
-		throw Error('All fields must be filled');
+		throw Error("All fields must be filled");
 	}
 
 	if (!validator.isEmail(email)) {
-		throw Error('Email is not valid');
+		throw Error("Email is not valid");
 	}
 
 	if (!validator.isStrongPassword(password)) {
-		throw Error('Password not strong enough');
+		throw Error("Password not strong enough");
 	}
 
 	const emailExists = await this.findOne({ email: email });
 	const usernameExists = await this.findOne({ username: username });
 
-	if (emailExists) throw Error('Email already in use...');
-	if (usernameExists) throw Error('Username already in use...');
+	if (emailExists) throw Error("Email already in use...");
+	if (usernameExists) throw Error("Username already in use...");
 
 	const newUser = await this.create({
 		firstname,
@@ -66,13 +66,13 @@ UserSchema.statics.signup = async function (
 
 UserSchema.statics.login = async function (username, password) {
 	if (!username || !password) {
-		throw Error('All fields must be filled...');
+		throw Error("All fields must be filled...");
 	}
 
 	const user = await this.findOne({ username });
 
 	if (!user) {
-		throw Error('Incorrect username');
+		throw Error("Incorrect username");
 	}
 
 	const hashedPassword = CryptoJS.AES.decrypt(
@@ -83,10 +83,10 @@ UserSchema.statics.login = async function (username, password) {
 	const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
 
 	if (originalPassword !== password) {
-		throw Error('Incorrect password');
+		throw Error("Incorrect password");
 	}
 
 	return user;
 };
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model("User", UserSchema);

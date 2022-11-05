@@ -16,11 +16,11 @@ router.get("/", async (req, res) => {
 			}).sort({ createdAt: -1 });
 		} else if (qCategory) {
 			blogs = await Blog.find({ draft: false, category: qCategory }).sort({
-				updatedAt: -1,
+				createdAt: -1,
 			});
 		} else if (qAuthor) {
 			blogs = await Blog.find({ draft: false, author: qAuthor }).sort({
-				updatedAt: -1,
+				createdAt: -1,
 			});
 		} else {
 			blogs = await Blog.find({ draft: false }).sort({ createdAt: -1 });
@@ -47,13 +47,13 @@ router.get("/user/:id", verifyToken, async (req, res) => {
 
 		if (latest) {
 			userBlogs = await Blog.find({ userId: req.params.id, draft: false })
-				.sort({ updatedAt: -1 })
+				.sort({ createdAt: -1 })
 				.limit(1);
 		} else {
 			userBlogs = await Blog.find({
 				userId: req.params.id,
 				draft: false,
-			}).sort({ updatedAt: -1 });
+			}).sort({ createdAt: -1 });
 		}
 		res.status(200).json(userBlogs);
 	} catch (error) {
@@ -66,7 +66,7 @@ router.get("/drafts/user/:id", verifyToken, async (req, res) => {
 		const drafts = await Blog.find({
 			draft: true,
 			userId: req.params.id,
-		}).sort({ updatedAt: -1 });
+		}).sort({ createdAt: -1 });
 		res.status(200).json(drafts);
 	} catch (error) {
 		console.log("here");
@@ -90,7 +90,7 @@ router.post("/", verifyToken, async (req, res) => {
 		const savedBlog = await newBlog.save();
 		res.status(201).json(savedBlog);
 	} catch (error) {
-		res.status(500).json(error.message);
+		res.status(400).json(error._message);
 	}
 });
 

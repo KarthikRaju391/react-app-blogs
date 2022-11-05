@@ -12,7 +12,7 @@ import { Loading } from "../components/Loading";
 export const UserBlogs = () => {
 	const { user } = useAuthContext();
 	const { getUserBlogs, isLoading, error } = useBlogs();
-	const { blogs, dispatch } = useBlogsContext();
+	const { userBlogs, dispatch } = useBlogsContext();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [subscribed, setIsSubscribed] = useState(false);
 	const [postsPerPage] = useState(5);
@@ -28,7 +28,7 @@ export const UserBlogs = () => {
 
 	const indexOfLastPost = currentPage * postsPerPage;
 	const indexOfFirstPost = indexOfLastPost - postsPerPage;
-	const currentPosts = blogs?.slice(indexOfFirstPost, indexOfLastPost);
+	const currentPosts = userBlogs?.slice(indexOfFirstPost, indexOfLastPost);
 
 	const paginate = (pageNumber) => {
 		setCurrentPage(pageNumber);
@@ -39,30 +39,30 @@ export const UserBlogs = () => {
 			<div className="home col-span-2 mt-10 md:w-3/4 md:mx-auto">
 				{error && <div>unable to get the data...</div>}
 				{isLoading ? (
-					<Loading subtitle={"Loading your blogs..."} />
+					<Loading subtitle={"Loading your userBlogs..."} />
 				) : (
-					blogs &&
-					blogs.length !== 0 && (
+					userBlogs &&
+					userBlogs.length !== 0 && (
 						<BlogList
-							blogs={currentPosts}
+							userBlogs={currentPosts}
 							deleteable={true}
-							title="Your blogs"
+							title="Your userBlogs"
 						/>
 					)
 				)}
-				{!isLoading && blogs && blogs.length === 0 && (
+				{!isLoading && userBlogs && userBlogs.length === 0 && (
 					<NoContent content="Please write blogs to see them here..." />
 				)}
-				{!isLoading && blogs && blogs.length > 5 && (
+				{!isLoading && userBlogs && userBlogs.length > 5 && (
 					<Pagination
 						postsPerPage={postsPerPage}
-						totalPosts={blogs?.length}
+						totalPosts={userBlogs?.length}
 						currentPage={currentPage}
 						paginate={paginate}
 					/>
 				)}
 			</div>
-			{blogs && (
+			{userBlogs && (
 				<div className="mt-[3.25em]">
 					<AuthorList />
 					<CategoryList />

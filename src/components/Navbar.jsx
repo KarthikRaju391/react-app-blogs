@@ -24,7 +24,7 @@ export const Navbar = () => {
 					</Link>
 					<Link
 						className="hover:border-b-4 text-xl border-black hidden ml-10 md:flex transition-all duration-75"
-						to="/blog/create"
+						to="/blogs/create"
 					>
 						Write
 					</Link>

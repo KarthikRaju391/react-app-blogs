@@ -19,9 +19,11 @@ import { AuthorInfo } from "./pages/AuthorInfo";
 import { CategoryInfo } from "./pages/CategoryInfo";
 import { UserLikes } from "./pages/UserLikes";
 import { useBlogsContext } from "./hooks/useBlogContext";
+import { Notification } from "./components/Notification";
 
 function App() {
 	const { user } = useAuthContext();
+	const { notifyCreate, notifyUpdate, notifyDelete } = useBlogsContext();
 	return (
 		<Router>
 			<div className="App min-h-screen bg-background px-5 py-5">
@@ -45,11 +47,11 @@ function App() {
 						{/* TODO: reroute to home when routing to blog that's deleted */}
 						<Route path="/blog/:id" element={<Blog />} />
 						<Route
-							path="/blog/create"
+							path="/blogs/create"
 							element={user ? <Edit /> : <Navigate to="/auth" />}
 						/>
 						<Route
-							path="/blog/edit/:id"
+							path="/blogs/edit/:id"
 							element={user ? <Edit /> : <Navigate to="/auth" />}
 						/>
 						<Route
@@ -62,6 +64,24 @@ function App() {
 							element={<CategoryInfo />}
 						/>
 					</Routes>
+					{notifyCreate ? (
+						<Notification
+							success={true}
+							message={"Blog created successfully!"}
+						/>
+					) : null}
+					{notifyUpdate ? (
+						<Notification
+							success={true}
+							message={"Blog updated successfully!"}
+						/>
+					) : null}
+					{notifyDelete ? (
+						<Notification
+							error={true}
+							message={"Blog deleted successfully!"}
+						/>
+					) : null}
 				</div>
 			</div>
 		</Router>

@@ -12,6 +12,7 @@ import {
 	faBookmark as bookmark,
 	faXmarkCircle as trash,
 	faPenToSquare as edit,
+	faEye,
 } from "@fortawesome/free-regular-svg-icons";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Filter } from "./Filter";
@@ -103,16 +104,20 @@ export const BlogList = ({ blogs, deleteable, title }) => {
 										onClick={() => handleUpdate(blog._id)}
 									/>
 								)}
-								<Link className="read-more" to={`/blog/${blog._id}`}>
+								{/* <Link className="read-more" to={`/blog/${blog._id}`}>
 									<FontAwesomeIcon
 										className="icon group-hover:translate-x-1 transition-all text-2xl"
 										fontSize="larger"
 										icon={faArrowRight}
 									/>
-								</Link>
+								</Link> */}
+								<div className="flex gap-x-2 items-center text-lg">
+									<FontAwesomeIcon icon={faEye} />
+									<span>{blog.views}</span>
+								</div>
 								{deleteable && (
 									<div className="icon-container flex">
-										<Link to={`/blog/edit/${blog._id}`}>
+										<Link to={`/blogs/edit/${blog._id}`}>
 											<FontAwesomeIcon
 												className="icon edit text-2xl"
 												icon={edit}

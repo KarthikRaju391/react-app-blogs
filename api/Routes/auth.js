@@ -1,6 +1,6 @@
-const User = require('../Models/User');
-const router = require('express').Router();
-const jwt = require('jsonwebtoken');
+const User = require("../Models/User");
+const router = require("express").Router();
+const jwt = require("jsonwebtoken");
 
 function createToken(user) {
 	return jwt.sign(
@@ -10,11 +10,11 @@ function createToken(user) {
 			lastname: user.lastname,
 		},
 		process.env.JWT_SEC,
-		{ expiresIn: '3d' }
+		{ expiresIn: "3d" }
 	);
 }
 
-router.post('/signup', async (req, res) => {
+router.post("/signup", async (req, res) => {
 	const { firstname, lastname, username, email, password } = req.body;
 	try {
 		const newUser = await User.signup(
@@ -29,12 +29,11 @@ router.post('/signup', async (req, res) => {
 		const userId = newUser._id;
 		res.status(200).json({ username, accessToken, userId });
 	} catch (error) {
-		console.log(error);
 		res.status(400).json({ error: error.message });
 	}
 });
 
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
 	const { username, password } = req.body;
 
 	try {

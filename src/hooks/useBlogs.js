@@ -199,7 +199,9 @@ export const useBlogs = () => {
 		const data = await response.json();
 		if (!response.ok) {
 			setIsLoading(false);
-			setError(data.error);
+			if (data === "Blog validation failed") {
+				setError("Please enter title and content...");
+			}
 		}
 
 		if (response.ok) {

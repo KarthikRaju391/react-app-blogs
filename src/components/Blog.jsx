@@ -6,7 +6,7 @@ import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useBlogs } from "../hooks/useBlogs";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { faHeart as heart } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as heart, faEye } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as heartSolid } from "@fortawesome/free-solid-svg-icons";
 
 //TODO: figure out icon tooltips
@@ -17,7 +17,9 @@ export const Blog = () => {
 	const blogId = path.pathname.split("/")[2];
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
+	const [refresh, setRefresh] = useState(false);
 	const [blog, setBlog] = useState(null);
+	const [views, setViews] = useState(null);
 	useEffect(() => {
 		let unsubscribed = false;
 		const fetchBlog = async () => {
@@ -30,6 +32,7 @@ export const Blog = () => {
 					setError(null);
 					setBlog(data);
 					setIsLoading(false);
+					incrementView(data.views);
 				}
 			} catch (error) {
 				if (!unsubscribed) {
@@ -44,11 +47,15 @@ export const Blog = () => {
 		};
 
 		fetchBlog();
-		// blog && updateBlog(blogId, { ...blog, views: blog?.views + 1 }, false);
 		return () => {
 			unsubscribed = true;
 		};
-	}, [blogId]);
+	}, []);
+
+	const incrementView = (blogViews) => {
+		setViews(blogViews + 1);
+		updateBlog(blogId, { ...blog, views: blogViews + 1 }, false);
+	};
 
 	const handleUpdate = async (id) => {
 		if (blog.likes.includes(user?.userId)) {
@@ -74,7 +81,7 @@ export const Blog = () => {
 								<Link to="">
 									<span className="author">{blog.author}</span>
 								</Link>
-								{" |  "}
+								{" | "}
 								{formatDistanceToNow(
 									new Date(
 										blog.createdAt
@@ -89,20 +96,26 @@ export const Blog = () => {
 								)}
 							</p>
 						</div>
-						<div className="heart-content ">
-							<FontAwesomeIcon
-								className="icon text-2xl cursor-pointer"
-								fontSize="larger"
-								icon={
-									blog.likes && blog.likes.includes(user?.userId)
-										? heartSolid
-										: heart
-								}
-								onClick={() => handleUpdate(blogId)}
-							/>
-							<span className="heart-count ml-2">
-								{blog.likes.length > 0 && blog.likes.length}
-							</span>
+						<div className="heart-content flex gap-x-6">
+							<div className="flex items-center">
+								<FontAwesomeIcon
+									className="icon text-2xl cursor-pointer"
+									fontSize="larger"
+									icon={
+										blog.likes && blog.likes.includes(user?.userId)
+											? heartSolid
+											: heart
+									}
+									onClick={() => handleUpdate(blogId)}
+								/>
+								<span className="heart-count ml-2">
+									{blog.likes.length > 0 && blog.likes.length}
+								</span>
+							</div>
+							<div className="flex items-center">
+								<FontAwesomeIcon className="text-2xl" icon={faEye} />
+								<span className="ml-2">{views}</span>
+							</div>
 						</div>
 					</div>
 					<article className="article mt-5 text-lg">

@@ -10,11 +10,11 @@ export const blogReducer = (state, action) => {
 			};
 		case "GetUserBlogs":
 			return {
-				blogs: action.payload,
+				userBlogs: action.payload,
 			};
 		case "GetUserDrafts":
 			return {
-				blogs: action.payload,
+				userDrafts: action.payload,
 			};
 		case "AddBlog":
 			return {
@@ -36,22 +36,22 @@ export const blogReducer = (state, action) => {
 			};
 		case "GetUserBookmarks":
 			return {
-				blogs: action.payload,
+				userBookmarks: action.payload,
 			};
 		case "GetUserLikes":
 			return {
-				blogs: action.payload,
+				userLikes: action.payload,
 			};
 		case "SortBlogsLatestFirst":
 			return {
 				blogs: state.blogs.sort((a, b) =>
-					b.updatedAt.localeCompare(a.updatedAt)
+					b.updatedAt.localeCompare(a.createdAt)
 				),
 			};
 		case "SortBlogsOldestFirst":
 			return {
 				blogs: state.blogs.sort((a, b) =>
-					a.updatedAt.localeCompare(b.updatedAt)
+					a.updatedAt.localeCompare(b.createdAt)
 				),
 			};
 		case "SortBlogsMostLikedFirst":
@@ -70,6 +70,11 @@ export const blogReducer = (state, action) => {
 export const BlogsContextProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(blogReducer, {
 		blogs: null,
+		userBlogs: null,
+		//TODO: Fix blog list on updating bookmarks
+		userBookmarks: null,
+		userDrafts: null,
+		userLikes: null,
 		//TODO: Notification system!
 	});
 
