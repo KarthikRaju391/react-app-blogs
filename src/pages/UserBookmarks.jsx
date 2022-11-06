@@ -7,7 +7,6 @@ import CategoryList from "../components/CategoryList";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useBlogsContext } from "../hooks/useBlogContext";
 import { NoContent } from "../components/NoContent";
-import { useBlogs } from "../hooks/useBlogs";
 import { useUserBookmarks } from "../hooks/useUserBookmarks";
 
 export const UserBookmarks = () => {

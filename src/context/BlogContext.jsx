@@ -107,13 +107,13 @@ export const blogReducer = (state, action) => {
 		case "NotifyLikeStart":
 			return {
 				...state,
-				notifyUpdate: false,
+				notifyUpdate: true,
 				notificationMessage: action.payload,
 			};
 		case "NotifyLikeStop":
 			return {
 				...state,
-				notifyUpdate: true,
+				notifyUpdate: false,
 				notificationMessage: action.payload,
 			};
 		case "NotifyDeleteStart":

@@ -17,8 +17,6 @@ export const useBlogs = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const { dispatch } = useBlogsContext();
 	const { user } = useAuthContext();
-	// const { getUserDrafts } = useUserDrafts();
-	// const { getUserBlogs } = useUserBlogs();
 	const {
 		notifyCreateBlog,
 		notifyDeleteBlog,
@@ -151,15 +149,15 @@ export const useBlogs = () => {
 			notifyError(false, true, false);
 		} else {
 			setUpdateLoading(false);
-			if (likeUpdate.likeAdd === true) {
-				notifyLikeUpdate(true);
-			} else if (likeUpdate.likeAdd === true) {
-				notifyLikeUpdate(false);
-			}
-
 			dispatch({ type: "UpdateBlog", payload: { data } });
-			!viewsUpdate && !newUpdate && notifyUpdateBlog(bookmarkAddUpdate);
-			!viewsUpdate && newUpdate && notifyUpdateBlog();
+			if (likeUpdate.likeAdd === true) {
+				notifyLikeUpdate(likeUpdate.likeAdd);
+			} else if (likeUpdate.likeAdd === false) {
+				notifyLikeUpdate(likeUpdate.likeAdd);
+			} else {
+				!viewsUpdate && !newUpdate && notifyUpdateBlog(bookmarkAddUpdate);
+				!viewsUpdate && newUpdate && notifyUpdateBlog();
+			}
 			setUpdateError(null);
 			newUpdate && navigate("/");
 		}

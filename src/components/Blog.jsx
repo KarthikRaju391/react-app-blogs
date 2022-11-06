@@ -86,7 +86,10 @@ export const Blog = () => {
 						<div className="flex items-center">
 							<span className="bg-teal-800 h-5 w-1"></span>
 							<p className="author-content text-lg pl-2">
-								<Link to="">
+								<Link
+									className="hover:underline"
+									to={`/author/${blog.author}`}
+								>
 									<span className="author">{blog.author}</span>
 								</Link>
 								{" | "}

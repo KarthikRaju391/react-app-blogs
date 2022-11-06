@@ -1,4 +1,5 @@
 import { faCircleCheck } from "@fortawesome/free-regular-svg-icons";
+import { faCircleNotch, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
@@ -12,9 +13,18 @@ export const Notification = ({ success, error, loading, message }) => {
 			} border-2 w-80 font-bold fixed bottom-4 right-6`}
 		>
 			<div>
-				<FontAwesomeIcon icon={faCircleCheck} />
+				{success && (
+					<FontAwesomeIcon className="text-2xl" icon={faCircleCheck} />
+				)}
+				{loading && (
+					<FontAwesomeIcon
+						className="fa-spin text-2xl"
+						icon={faCircleNotch}
+					/>
+				)}
+				{error && <FontAwesomeIcon className="text-2xl" icon={faXmark} />}
 			</div>
-			<p className="">{message}</p>
+			<p>{message}</p>
 		</div>
 	);
 };

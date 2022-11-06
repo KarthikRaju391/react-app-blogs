@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BlogList } from "../components/BlogList";
 import { useBlogsContext } from "../hooks/useBlogContext";
-import { useBlogs } from "../hooks/useBlogs";
 import AuthorList from "../components/AuthorList";
 import CategoryList from "../components/CategoryList";
 import { useLocation } from "react-router-dom";
