@@ -1,11 +1,13 @@
 # Drafters
+
 This is a full stack blog application where users can:
-- View blogs by other users
-- Create account to write blogs
-- Bookmark blogs
-- Like blogs
-- Write up drafts!
-- Publish blogs too!
+
+-  View blogs by other users
+-  Create account to write blogs
+-  Bookmark blogs
+-  Like blogs
+-  Write up drafts!
+-  Publish blogs too!
 
 ## Application Screenshots
 
