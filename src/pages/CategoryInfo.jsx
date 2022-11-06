@@ -8,9 +8,10 @@ import { useLocation } from "react-router-dom";
 import { Pagination } from "../components/Pagination";
 import { NoContent } from "../components/NoContent";
 import { Loading } from "../components/Loading";
+import { useCategory } from "../hooks/useCategory";
 
 export const CategoryInfo = () => {
-	const { getCategoryBlogs, isLoading, error } = useBlogs();
+	const { getCategoryBlogs, isLoading, error } = useCategory();
 	const { categoryBlogs, dispatch } = useBlogsContext();
 	const [subscribed, setIsSubsribed] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);

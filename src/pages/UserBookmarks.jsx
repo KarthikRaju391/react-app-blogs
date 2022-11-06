@@ -8,16 +8,16 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useBlogsContext } from "../hooks/useBlogContext";
 import { NoContent } from "../components/NoContent";
 import { useBlogs } from "../hooks/useBlogs";
+import { useUserBookmarks } from "../hooks/useUserBookmarks";
 
 export const UserBookmarks = () => {
 	const { user } = useAuthContext();
-	const { getUserBookmarks, isLoading, error } = useBlogs();
+	const { getUserBookmarks, isLoading, error } = useUserBookmarks();
 	const { userBookmarks, dispatch } = useBlogsContext();
 	const [subscribed, setIsSubscribed] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [postsPerPage] = useState(5);
 
-	//TODO: Take care removing of bookmarks UI
 	useEffect(() => {
 		setIsSubscribed(true);
 		subscribed && user && getUserBookmarks();

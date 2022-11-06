@@ -8,6 +8,7 @@ import { useBlogs } from "../hooks/useBlogs";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { faHeart as heart, faEye } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as heartSolid } from "@fortawesome/free-solid-svg-icons";
+import { Loading } from "./Loading";
 
 //TODO: figure out icon tooltips
 export const Blog = () => {
@@ -16,14 +17,11 @@ export const Blog = () => {
 	const { updateBlog } = useBlogs();
 	const blogId = path.pathname.split("/")[2];
 	const [error, setError] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
-	const [refreshed, setRefreshed] = useState();
+	const [blogLoading, setBlogLoading] = useState(true);
 	const [blog, setBlog] = useState(null);
 	const [views, setViews] = useState(null);
 	useEffect(() => {
 		let unsubscribed = false;
-
-		window.addEventListener("beforeunload", alertUser);
 		const fetchBlog = async () => {
 			try {
 				const response = await fetch(
@@ -33,17 +31,17 @@ export const Blog = () => {
 				if (!unsubscribed) {
 					setError(null);
 					setBlog(data);
-					setIsLoading(false);
-					incrementView(data.views);
+					setBlogLoading(false);
+					data.draft === false && incrementView(data.views);
 				}
 			} catch (error) {
 				if (!unsubscribed) {
 					setError(error);
-					setIsLoading(false);
+					setBlogLoading(false);
 				}
 			} finally {
 				if (!unsubscribed) {
-					setIsLoading(false);
+					setBlogLoading(false);
 				}
 			}
 		};
@@ -51,11 +49,8 @@ export const Blog = () => {
 		fetchBlog();
 		return () => {
 			unsubscribed = true;
-			window.removeEventListener("beforeunload", alertUser);
 		};
 	}, []);
-
-	const alertUser = () => {};
 
 	const incrementView = (blogViews) => {
 		setViews(blogViews + 1);
@@ -83,7 +78,7 @@ export const Blog = () => {
 	return (
 		<div className="col-span-3 w-full md:w-1/2 mx-auto mt-11">
 			{error && <div>{error}</div>}
-			{isLoading && <div>Loading blog...</div>}
+			{blogLoading && <Loading subtitle={"Loading blog..."} />}
 			{blog && (
 				<div>
 					<h1 className="text-5xl font-bold -ml-1.5">{blog.title}</h1>
@@ -109,27 +104,29 @@ export const Blog = () => {
 								)}
 							</p>
 						</div>
-						<div className="heart-content flex gap-x-6">
-							<div className="flex items-center">
-								<FontAwesomeIcon
-									className="icon text-2xl cursor-pointer"
-									fontSize="larger"
-									icon={
-										blog.likes && blog.likes.includes(user?.userId)
-											? heartSolid
-											: heart
-									}
-									onClick={() => handleUpdate(blogId)}
-								/>
-								<span className="heart-count ml-2">
-									{blog.likes.length > 0 && blog.likes.length}
-								</span>
+						{blog.draft === false && (
+							<div className="heart-content flex gap-x-6">
+								<div className="flex items-center">
+									<FontAwesomeIcon
+										className="icon text-2xl cursor-pointer"
+										fontSize="larger"
+										icon={
+											blog.likes && blog.likes.includes(user?.userId)
+												? heartSolid
+												: heart
+										}
+										onClick={() => handleUpdate(blogId)}
+									/>
+									<span className="heart-count ml-2">
+										{blog.likes.length > 0 && blog.likes.length}
+									</span>
+								</div>
+								<div className="flex items-center">
+									<FontAwesomeIcon className="text-2xl" icon={faEye} />
+									<span className="ml-2">{views}</span>
+								</div>
 							</div>
-							<div className="flex items-center">
-								<FontAwesomeIcon className="text-2xl" icon={faEye} />
-								<span className="ml-2">{views}</span>
-							</div>
-						</div>
+						)}
 					</div>
 					<article className="article mt-5 text-lg">
 						{

@@ -4,14 +4,14 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useBlogsContext } from "../hooks/useBlogContext";
 import AuthorList from "../components/AuthorList";
 import CategoryList from "../components/CategoryList";
-import { useBlogs } from "../hooks/useBlogs";
 import { Pagination } from "../components/Pagination";
 import { NoContent } from "../components/NoContent";
 import { Loading } from "../components/Loading";
+import { useUserDrafts } from "../hooks/useUserDrafts";
 
 export const UserDrafts = () => {
 	const { user } = useAuthContext();
-	const { getUserDrafts, isLoading, error } = useBlogs();
+	const { getUserDrafts, isLoading, error } = useUserDrafts();
 	const { userDrafts, dispatch } = useBlogsContext();
 	const [subscribed, setIsSubscribed] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);

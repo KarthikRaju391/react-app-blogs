@@ -5,12 +5,13 @@ import { useBlogs } from "../hooks/useBlogs";
 import AuthorList from "../components/AuthorList";
 import CategoryList from "../components/CategoryList";
 import { useLocation } from "react-router-dom";
+import { useAuthor } from "../hooks/useAuthor";
 import { Pagination } from "../components/Pagination";
 import { NoContent } from "../components/NoContent";
 import { Loading } from "../components/Loading";
 
 export const AuthorInfo = () => {
-	const { getAuthorBlogs, isLoading, error } = useBlogs();
+	const { getAuthorBlogs, isLoading, error } = useAuthor();
 	const { authorBlogs, dispatch } = useBlogsContext();
 	const [subscribed, setIsSubsribed] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);

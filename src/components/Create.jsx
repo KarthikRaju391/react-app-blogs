@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useBlogs } from "../hooks/useBlogs";
@@ -7,12 +7,13 @@ import { Loading } from "./Loading";
 
 export const Create = () => {
 	const path = useLocation();
-	const { createBlog, updateBlog, isLoading, error } = useBlogs();
+	const { createBlog, updateBlog, deleteBlog, error } = useBlogs();
+	const [loadingState, setLoadingState] = useState(null);
 	const [title, setTitle] = useState("");
 	const [body, setBody] = useState("");
 	const [draft, setDraft] = useState(false);
 	const [category, setCategory] = useState("Personal");
-	const [showError, setShowError] = useState(null);
+	const [setShowError] = useState(null);
 	const [update, setUpdate] = useState(false);
 
 	let blogId;
@@ -24,13 +25,14 @@ export const Create = () => {
 		blogId && setUpdate(true);
 
 		window.addEventListener("beforeunload", alertUser);
-
 		const fetchBlog = async () => {
+			setLoadingState(true);
 			try {
 				const response = await fetch(
 					`http://localhost:4000/api/blogs/${blogId}`
 				);
 				const data = await response.json();
+				setLoadingState(false);
 				setTitle(data.title);
 				setBody(data.body);
 				setCategory(data.category);
@@ -45,21 +47,21 @@ export const Create = () => {
 			setUpdate(false);
 			window.removeEventListener("beforeunload", alertUser);
 		};
-	}, []);
+	}, [path]);
 
 	const alertUser = (e) => {
 		e.preventDefault();
 		e.returnValue = "";
 	};
 
-	const handleUpdate = async (e) => {
+	const handleUpdate = async (e, draftState) => {
 		e.preventDefault();
-		if (e.nativeEvent.submitter.name === "final") {
+		if (draftState) {
 			const newData = {
 				title,
 				body,
 				category,
-				draft: false,
+				draft: draftState,
 			};
 			updateBlog(blogId, newData, true, false, false, false);
 		} else {
@@ -67,30 +69,37 @@ export const Create = () => {
 				title,
 				body,
 				category,
-				draft,
+				draft: draftState,
+				createdAt: new Date().toISOString(),
 			};
 			updateBlog(blogId, newData, true, false, false, false);
 		}
 	};
 
-	const handleSubmit = async (e) => {
+	const handleCreate = async (e, draftState) => {
 		e.preventDefault();
-		if (e.nativeEvent.submitter.name === "final") {
-			createBlog(title, body, category, false);
-		} else {
+		if (draftState) {
 			createBlog(title, body, category, true);
+		} else {
+			createBlog(title, body, category, false);
 		}
 	};
-
+	const handleDraftSubmit = async (e, blog_id) => {
+		e.preventDefault();
+		createBlog(title, body, category, false);
+		deleteBlog(blog_id, false, "none");
+	};
 	return (
 		<div className="col-span-3 w-full md:w-3/4 mx-auto mt-11 min-h-screen">
-			{isLoading ? (
-				<Loading subtitle={"publishing blog..."} />
+			{loadingState ? (
+				<Loading subtitle={"Loading..."} />
 			) : (
-				<form onSubmit={update ? handleUpdate : handleSubmit}>
+				<form>
 					<div className="input-section">
 						<h2 className="text-2xl font-bold">
-							{update ? "Update" : "Enter"} the blog title
+							{!update && !draft && "Enter the blog title"}
+							{update && draft && "Update the draft title"}
+							{update && !draft && "Update the blog title"}
 						</h2>
 						<div className="md:flex md:justify-between md:items-center">
 							<input
@@ -122,11 +131,13 @@ export const Create = () => {
 								</select>
 							</div>
 						</div>
-						{error ? <div>{error}</div> : null}
+						{/* {error ? <div>{error}</div> : null} */}
 					</div>
 					<div className="input-section">
 						<h2 className="mt-5 text-[23.5px] font-bold">
-							{update ? "Update" : "Enter"} the blog content
+							{!update && !draft && "Enter the blog content"}
+							{update && draft && "Update the draft content"}
+							{update && !draft && "Update the blog content"}
 						</h2>
 						<ReactQuill
 							className=""
@@ -135,33 +146,53 @@ export const Create = () => {
 							onChange={setBody}
 						/>
 					</div>
-					<div className="flex gap-y-2 flex-col md:flex-row md:gap-x-2 mt-28">
-						{
-							<button
-								type="submit"
-								name="final"
-								className="border border-black hover:bg-gray-900 transition-all w-1/2 md:w-3/12 mx-auto bg-gray-800 text-white px-2 py-3"
-							>
-								{update ? "Update" : "Publish"}
-							</button>
-						}
-						{draft && (
-							<button
-								type="submit"
-								name="final"
-								className="border border-black hover:bg-gray-900 transition-all w-1/2 md:w-3/12 mx-auto bg-gray-800 text-white px-2 py-3"
-							>
-								Publish Draft
-							</button>
+					<div className="">
+						{!update && !draft && (
+							<div className="flex gap-y-2 flex-col md:flex-row md:gap-x-2 mt-28">
+								<button
+									name="final"
+									className="border border-black hover:bg-gray-900 transition-all w-1/2 md:w-3/12 bg-gray-800 text-white px-2 py-3"
+									onClick={(e) => handleCreate(e, false)}
+								>
+									Publish
+								</button>
+								<button
+									name="final"
+									className="border border-black hover:bg-gray-900 transition-all w-1/2 md:w-3/12 bg-gray-800 text-white px-2 py-3"
+									onClick={(e) => handleCreate(e, true)}
+								>
+									Save as Draft
+								</button>
+							</div>
 						)}
-						{!update && (
-							<button
-								type="submit"
-								name="draft"
-								className="border border-black hover:bg-gray-900 transition-all w-1/2 md:w-3/12 mx-auto bg-gray-800 text-white px-2 py-3"
-							>
-								Save as Draft
-							</button>
+						{update && draft && (
+							<div className="flex gap-y-2 flex-col md:flex-row md:mr-40 mt-28">
+								<button
+									name="final"
+									className="border border-black hover:bg-gray-900 transition-all w-1/2 md:w-3/12 bg-gray-800 text-white px-2 py-3"
+									onClick={(e) => handleUpdate(e, true)}
+								>
+									Update Draft
+								</button>
+								<button
+									name="final"
+									className="border border-black hover:bg-gray-900 transition-all w-1/2 md:w-3/12 md:ml-4 bg-gray-800 text-white px-2 py-3"
+									onClick={(e) => handleDraftSubmit(e, blogId)}
+								>
+									Publish Draft
+								</button>
+							</div>
+						)}
+						{update && !draft && (
+							<div className="flex gap-y-2 flex-col md:flex-row md:mr-40 mt-28">
+								<button
+									name="final"
+									className="border border-black hover:bg-gray-900 transition-all w-1/2 md:w-3/12 bg-gray-800 text-white px-2 py-3"
+									onClick={(e) => handleUpdate(e, false)}
+								>
+									Update Blog
+								</button>
+							</div>
 						)}
 					</div>
 				</form>

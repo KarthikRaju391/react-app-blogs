@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import { BlogList } from "../components/BlogList";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useBlogsContext } from "../hooks/useBlogContext";
-import { useBlogs } from "../hooks/useBlogs";
 import AuthorList from "../components/AuthorList";
 import CategoryList from "../components/CategoryList";
 import { Pagination } from "../components/Pagination";
 import { NoContent } from "../components/NoContent";
 import { Loading } from "../components/Loading";
+import { useUserLikes } from "../hooks/useUserLikes";
 
 export const UserLikes = () => {
 	const { user } = useAuthContext();
-	const { getUserLikes, isLoading, error } = useBlogs();
+	const { getUserLikes, isLoading, error } = useUserLikes();
 	const { userLikes, dispatch } = useBlogsContext();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [subscribed, setIsSubscribed] = useState(false);

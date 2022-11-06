@@ -46,6 +46,15 @@ export const blogReducer = (state, action) => {
 				}),
 			};
 		case "DeleteBlog":
+			console.log(action.payload.source);
+			if (action.payload.source === "drafts") {
+				return {
+					...state,
+					userDrafts: state.userDrafts.filter(
+						(blog) => blog._id !== action.payload.id
+					),
+				};
+			}
 			return {
 				...state,
 				userBlogs: state.userBlogs.filter(
@@ -72,7 +81,6 @@ export const blogReducer = (state, action) => {
 			return {
 				...state,
 				notifyCreate: false,
-				notificationMessage: action.payload,
 			};
 		case "NotifyUpdateStart":
 			return {
@@ -84,7 +92,6 @@ export const blogReducer = (state, action) => {
 			return {
 				...state,
 				notifyUpdate: false,
-				notificationMessage: action.payload,
 			};
 		case "NotifyLoadingStart":
 			return {
@@ -120,6 +127,17 @@ export const blogReducer = (state, action) => {
 				...state,
 				notifyDelete: false,
 				notificationMessage: action.payload,
+			};
+		case "NotifyErrorStart":
+			return {
+				...state,
+				notifyError: true,
+				notificationMessage: action.payload,
+			};
+		case "NotifyErrorStop":
+			return {
+				...state,
+				notifyError: false,
 			};
 		// SORTING
 
@@ -407,17 +425,16 @@ export const BlogsContextProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(blogReducer, {
 		blogs: null,
 		userBlogs: null,
-		//TODO: Fix blog list on updating bookmarks
 		userBookmarks: null,
 		userDrafts: null,
 		userLikes: null,
 		authorBlogs: null,
 		categoryBlogs: null,
-		//TODO: Notification system!
 		notifyCreate: false,
 		notifyUpdate: false,
 		notifyDelete: false,
 		notifyLoading: false,
+		notifyError: false,
 		notificationMessage: null,
 	});
 

@@ -10,7 +10,6 @@ import {
 import { useAuthContext } from "./hooks/useAuthContext";
 import { UserBlogs } from "./pages/UserBlogs";
 import { Blog } from "./components/Blog";
-import { Create } from "./components/Create";
 import { Edit } from "./pages/Edit";
 import { UserBookmarks } from "./pages/UserBookmarks";
 import { UserDrafts } from "./pages/UserDrafts";
@@ -20,12 +19,17 @@ import { CategoryInfo } from "./pages/CategoryInfo";
 import { UserLikes } from "./pages/UserLikes";
 import { useBlogsContext } from "./hooks/useBlogContext";
 import { Notification } from "./components/Notification";
-import { useBlogs } from "./hooks/useBlogs";
 
 function App() {
 	const { user } = useAuthContext();
-	const { notifyCreate, notifyUpdate, notifyDelete, notificationMessage } =
-		useBlogsContext();
+	const {
+		notifyCreate,
+		notifyUpdate,
+		notifyDelete,
+		notifyLoading,
+		notifyError,
+		notificationMessage,
+	} = useBlogsContext();
 	return (
 		<Router>
 			<div className="App min-h-screen bg-background px-5 py-5">
@@ -66,15 +70,21 @@ function App() {
 							element={<CategoryInfo />}
 						/>
 					</Routes>
-					{notifyCreate ? (
-						<Notification success={true} message={notificationMessage} />
-					) : null}
-					{notifyUpdate ? (
-						<Notification success={true} message={notificationMessage} />
-					) : null}
-					{notifyDelete ? (
+					{notifyLoading && (
+						<Notification loading={true} message={notificationMessage} />
+					)}
+					{notifyError && (
 						<Notification error={true} message={notificationMessage} />
-					) : null}
+					)}
+					{notifyCreate && (
+						<Notification success={true} message={notificationMessage} />
+					)}
+					{notifyUpdate && (
+						<Notification success={true} message={notificationMessage} />
+					)}
+					{notifyDelete && (
+						<Notification error={true} message={notificationMessage} />
+					)}
 				</div>
 			</div>
 		</Router>

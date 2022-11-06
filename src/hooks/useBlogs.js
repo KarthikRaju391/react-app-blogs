@@ -1,28 +1,41 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useBlogsContext } from "./useBlogContext";
 import { useAuthContext } from "./useAuthContext";
+import { useNotification } from "./useNotification";
 
 export const useBlogs = () => {
 	const URL = "http://localhost:4000/api";
 	const navigate = useNavigate();
 	const [error, setError] = useState(null);
-	const [isLoading, setIsLoading] = useState(null);
+	const [updateError, setUpdateError] = useState(null);
+	const [createError, setCreateError] = useState(null);
+	const [deleteError, setDeleteError] = useState(null);
+	const [updateLoading, setUpdateLoading] = useState(true);
+	const [createLoading, setCreateLoading] = useState(true);
+	const [deleteLoading, setDeleteLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(true);
 	const { dispatch } = useBlogsContext();
-	const { user, userId } = useAuthContext();
-	const location = useLocation();
-	const path = location.pathname.split("/")[3];
+	const { user } = useAuthContext();
+	// const { getUserDrafts } = useUserDrafts();
+	// const { getUserBlogs } = useUserBlogs();
+	const {
+		notifyCreateBlog,
+		notifyDeleteBlog,
+		notifyLikeUpdate,
+		notifyLoadingState,
+		notifyUpdateBlog,
+		notifyError,
+	} = useNotification();
 
 	const getAllBlogs = async () => {
-		setIsLoading(true);
-		setError(null);
-
 		const response = await fetch(`${URL}/blogs`);
 		const data = await response.json();
 
 		if (!response.ok) {
 			setIsLoading(false);
 			setError(data.error);
+			notifyError();
 		} else {
 			localStorage.setItem("blogs", JSON.stringify(data));
 			dispatch({ type: "GetBlogs", payload: data });
@@ -31,136 +44,12 @@ export const useBlogs = () => {
 		}
 	};
 
-	const getUserDrafts = async () => {
-		setIsLoading(true);
-		setError(null);
-		const response = await fetch(`${URL}/blogs/drafts/user/${user?.userId}`, {
-			headers: {
-				"Content-Type": "application/json",
-				token: `Bearer ${user?.accessToken}`,
-			},
-		});
-		const data = await response.json();
+	const deleteBlog = async (id, notify, pathName) => {
+		setDeleteLoading((prev) => !prev);
+		deleteLoading && notify === false
+			? notifyLoadingState(true, false, false, false)
+			: notifyLoadingState(false, false, false, true);
 
-		if (!response.ok) {
-			setIsLoading(false);
-			setError(data.error);
-		}
-
-		if (response.ok) {
-			dispatch({ type: "GetUserDrafts", payload: data });
-			setIsLoading(false);
-			setError(null);
-		}
-	};
-
-	const getUserLikes = async () => {
-		setIsLoading(true);
-		setError(null);
-		const response = await fetch(`${URL}/blogs`);
-
-		const data = await response.json();
-
-		const likes = data.filter((blog) => {
-			return blog.likes.includes(user?.userId);
-		});
-
-		if (!response.ok) {
-			setIsLoading(false);
-			setError(data.error);
-		}
-
-		if (response.ok) {
-			dispatch({ type: "GetUserLikes", payload: likes });
-			setIsLoading(false);
-			setError(null);
-		}
-	};
-
-	const getUserBlogs = async () => {
-		setIsLoading(true);
-		setError(null);
-		const response = await fetch(`${URL}/blogs/user/${user?.userId}`, {
-			headers: {
-				"Content-Type": "application/json",
-				token: `Bearer ${user?.accessToken}`,
-			},
-		});
-
-		const data = await response.json();
-		if (!response.ok) {
-			setIsLoading(false);
-			setError(data.error);
-		}
-
-		if (response.ok) {
-			dispatch({ type: "GetUserBlogs", payload: data });
-			setIsLoading(false);
-			setError(null);
-		}
-	};
-
-	const getAuthorBlogs = async (authorName) => {
-		setIsLoading(true);
-		setError(null);
-
-		const response = await fetch(`${URL}/blogs?author=${authorName}`);
-		const data = await response.json();
-
-		if (!response.ok) {
-			setIsLoading(false);
-			setError(data.error);
-		}
-
-		if (response.ok) {
-			dispatch({ type: "GetAuthorBlogs", payload: data });
-			setIsLoading(false);
-			setError(null);
-		}
-	};
-
-	const getCategoryBlogs = async (category) => {
-		setIsLoading(true);
-		setError(null);
-
-		const response = await fetch(`${URL}/blogs?category=${category}`);
-		const data = await response.json();
-		if (!response.ok) {
-			setIsLoading(false);
-			setError(data.error);
-		}
-
-		if (response.ok) {
-			dispatch({ type: "GetCategoryBlogs", payload: data });
-			setIsLoading(false);
-			setError(null);
-		}
-	};
-
-	const getUserBookmarks = async () => {
-		setIsLoading(true);
-		setError(null);
-		const response = await fetch(`${URL}/blogs`);
-
-		const data = await response.json();
-
-		const bookmarks = data.filter((blog) => {
-			return blog.bookmark.includes(user?.userId);
-		});
-
-		if (!response.ok) {
-			setIsLoading(false);
-			setError(data.error);
-		}
-
-		if (response.ok) {
-			dispatch({ type: "GetUserBookmarks", payload: bookmarks });
-			setIsLoading(false);
-			setError(null);
-		}
-	};
-
-	const deleteBlog = async (id) => {
 		const response = await fetch(`${URL}/blogs/${id}`, {
 			method: "DELETE",
 			headers: {
@@ -172,35 +61,35 @@ export const useBlogs = () => {
 		const data = response.json();
 
 		if (!response.ok) {
-			setIsLoading(false);
-			setError(data.error);
+			setDeleteLoading(false);
+			setDeleteError(data.error);
+			notifyError(false, false, true);
 		}
 
 		if (response.ok) {
-			dispatch({ type: "DeleteBlog", payload: id });
-			notifyDeleteBlog();
-			setIsLoading(false);
-			setError(null);
+			setDeleteLoading((prev) => !prev);
+			notify === true &&
+				pathName === "drafts" &&
+				dispatch({
+					type: "DeleteBlog",
+					payload: { id: id, source: pathName },
+				});
+
+			notify === true &&
+				pathName === "user" &&
+				dispatch({
+					type: "DeleteBlog",
+					payload: { id: id, source: pathName },
+				});
+			notify === true && pathName !== "none" && notifyDeleteBlog();
+			setDeleteError(null);
 		}
-
-		getUserBlogs();
-	};
-
-	const notifyLoadingState = () => {
-		dispatch({ type: "NotifyLoadingStart", payload: "Loading..." });
-	};
-
-	const notifyDeleteBlog = () => {
-		dispatch({
-			type: "NotifyDeleteStart",
-			payload: "Blog deleted successfully!",
-		});
-		setTimeout(() => {
-			dispatch({ type: "NotifyDeleteStop" });
-		}, 2500);
 	};
 
 	const createBlog = async (title, body, category, draft) => {
+		setCreateLoading((prev) => !prev);
+		createLoading && notifyLoadingState(true, draft, false, false);
+
 		const response = await fetch("http://localhost:4000/api/blogs", {
 			method: "POST",
 			headers: {
@@ -215,79 +104,22 @@ export const useBlogs = () => {
 			}),
 		});
 		const data = await response.json();
+
 		if (!response.ok) {
-			setIsLoading(false);
-			draft === true ? notifyCreateBlog(true) : notifyCreateBlog(false);
+			setCreateLoading((prev) => !prev);
 			if (data === "Blog validation failed") {
-				setError("Please enter title and content...");
+				setCreateError("Please enter title and content...");
+				notifyError(true, false, false);
 			}
 		}
 
 		if (response.ok) {
+			setCreateLoading((prev) => !prev);
+			draft === true ? notifyCreateBlog(true) : notifyCreateBlog(false);
 			dispatch({ type: "AddBlog", payload: { data } });
-			notifyCreateBlog();
-			setIsLoading(false);
-			setError(null);
+			setCreateError(null);
 			navigate("/");
 		}
-	};
-
-	const notifyCreateBlog = (createDraft) => {
-		createDraft
-			? dispatch({
-					type: "NotifyCreateStart",
-					payload: "Draft created successfully!",
-			  })
-			: dispatch({
-					type: "NotifyCreateStart",
-					payload: "Blog created successfully!",
-			  });
-		setTimeout(() => {
-			dispatch({ type: "NotifyCreateStop" });
-		}, 2500);
-	};
-
-	const notifyLikeUpdate = (addLike) => {
-		if (addLike === true) {
-			console.log("here too");
-			dispatch({
-				type: "NotifyLikeStart",
-				payload: "Added blog to your likes!",
-			});
-		} else {
-			dispatch({
-				type: "NotifyLikeStart",
-				payload: "Removed blog from your likes...",
-			});
-		}
-		setTimeout(() => {
-			dispatch({
-				type: "NotifyLikeStop",
-			});
-		}, 2500);
-	};
-
-	const notifyUpdateBlog = (bookmarkAddUpdate) => {
-		if (bookmarkAddUpdate === undefined) {
-			dispatch({
-				type: "NotifyUpdateStart",
-				payload: "Blog updated successfully!",
-			});
-		} else if (bookmarkAddUpdate) {
-			dispatch({
-				type: "NotifyUpdateStart",
-				payload: "Bookmark added successfully!",
-			});
-		} else {
-			dispatch({
-				type: "NotifyUpdateStart",
-				payload: "Bookmark removed successfully!",
-			});
-			path === "bookmarks" && getUserBookmarks();
-		}
-		setTimeout(() => {
-			dispatch({ type: "NotifyUpdateStop" });
-		}, 2500);
 	};
 
 	const updateBlog = async (
@@ -298,6 +130,11 @@ export const useBlogs = () => {
 		likeUpdate,
 		viewsUpdate
 	) => {
+		setUpdateLoading((prev) => !prev);
+		updateLoading &&
+			!viewsUpdate &&
+			notifyLoadingState(false, false, true, false);
+
 		const response = await fetch(`http://localhost:4000/api/blogs/${id}`, {
 			method: "PUT",
 			headers: {
@@ -309,20 +146,21 @@ export const useBlogs = () => {
 		const data = await response.json();
 
 		if (!response.ok) {
-			setError(data.error);
-			setIsLoading(false);
+			setUpdateError(data.error);
+			setUpdateLoading((prev) => !prev);
+			notifyError(false, true, false);
 		} else {
+			setUpdateLoading(false);
 			if (likeUpdate.likeAdd === true) {
-				console.log("here");
 				notifyLikeUpdate(true);
 			} else if (likeUpdate.likeAdd === true) {
 				notifyLikeUpdate(false);
 			}
+
 			dispatch({ type: "UpdateBlog", payload: { data } });
 			!viewsUpdate && !newUpdate && notifyUpdateBlog(bookmarkAddUpdate);
-			newUpdate && notifyUpdateBlog();
-			setError(null);
-			setIsLoading(false);
+			!viewsUpdate && newUpdate && notifyUpdateBlog();
+			setUpdateError(null);
 			newUpdate && navigate("/");
 		}
 
@@ -331,13 +169,6 @@ export const useBlogs = () => {
 
 	return {
 		getAllBlogs,
-		getAuthorBlogs,
-		getCategoryBlogs,
-		getUserBlogs,
-		getUserDrafts,
-		getUserBookmarks,
-		notifyCreateBlog,
-		getUserLikes,
 		deleteBlog,
 		createBlog,
 		updateBlog,

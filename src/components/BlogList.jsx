@@ -1,12 +1,8 @@
-import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useBlogs } from "../hooks/useBlogs";
-import { useBlogsContext } from "../hooks/useBlogContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-	faArrowRightLong as faArrowRight,
-	faBookmark as bookmarkSolid,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBookmark as bookmarkSolid } from "@fortawesome/free-solid-svg-icons";
 
 import {
 	faBookmark as bookmark,
@@ -19,11 +15,9 @@ import { Filter } from "./Filter";
 
 export const BlogList = ({ blogs, deleteable, title, blogsType }) => {
 	const { user } = useAuthContext();
-	const { deleteBlog, updateBlog, getUserBookmarks } = useBlogs();
-	const { dispatch } = useBlogsContext();
+	const { deleteBlog, updateBlog } = useBlogs();
 	const location = useLocation();
 	const path = location.pathname.split("/")[3];
-
 	// colors
 	const colors = {
 		personal: "bg-gray-500",
@@ -107,17 +101,12 @@ export const BlogList = ({ blogs, deleteable, title, blogsType }) => {
 										onClick={() => handleUpdate(blog._id)}
 									/>
 								)}
-								{/* <Link className="read-more" to={`/blog/${blog._id}`}>
-									<FontAwesomeIcon
-										className="icon group-hover:translate-x-1 transition-all text-2xl"
-										fontSize="larger"
-										icon={faArrowRight}
-									/>
-								</Link> */}
-								<div className="flex gap-x-2 items-center text-lg">
-									<FontAwesomeIcon icon={faEye} />
-									<span>{blog.views}</span>
-								</div>
+								{blogsType !== "Your Drafts" && (
+									<div className="flex gap-x-2 items-center text-lg">
+										<FontAwesomeIcon icon={faEye} />
+										<span>{blog.views}</span>
+									</div>
+								)}
 								{deleteable && (
 									<div className="icon-container flex">
 										<Link to={`/blogs/edit/${blog._id}`}>
@@ -131,7 +120,11 @@ export const BlogList = ({ blogs, deleteable, title, blogsType }) => {
 											icon={trash}
 											fontSize="larger"
 											className="icon trash ml-3 text-2xl cursor-pointer"
-											onClick={() => deleteBlog(blog._id)}
+											onClick={() => {
+												if (path === undefined)
+													deleteBlog(blog._id, true, "user");
+												else deleteBlog(blog._id, true, path);
+											}}
 										/>
 									</div>
 								)}

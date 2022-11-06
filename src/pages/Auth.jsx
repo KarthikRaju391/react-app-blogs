@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSignup } from "../hooks/useSignup";
 import { useLogin } from "../hooks/useLogin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { Loading } from "../components/Loading";
 import { faTriangleExclamation as caution } from "@fortawesome/free-solid-svg-icons";
 
 const Auth = () => {
@@ -108,6 +108,9 @@ const Auth = () => {
 				>
 					{register ? "Register" : "Login"}
 				</button>
+				{(isLoading || loginIsLoading) && (
+					<Loading subtitle={"Getting you in..."} />
+				)}
 				<p
 					className="mx-auto mt-4"
 					onClick={() => setRegister((prevState) => !prevState)}

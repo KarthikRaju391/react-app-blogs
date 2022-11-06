@@ -5,10 +5,8 @@ import { useBlogsContext } from "../hooks/useBlogContext";
 import AuthorList from "../components/AuthorList";
 import CategoryList from "../components/CategoryList";
 import { Pagination } from "../components/Pagination";
-import { NoContent } from "../components/NoContent";
 import { Loading } from "../components/Loading";
 
-//TODO: Notification on actions!!
 export const Home = () => {
 	const { getAllBlogs, isLoading, error } = useBlogs();
 	const { blogs, dispatch } = useBlogsContext();
@@ -32,7 +30,6 @@ export const Home = () => {
 	const paginate = (pageNumber) => {
 		setCurrentPage(pageNumber);
 	};
-
 	return (
 		<>
 			<div className="home col-span-2 mt-10 md:w-3/4 md:mx-auto">
