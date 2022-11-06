@@ -13,7 +13,7 @@ import {
 	faArrowDown91,
 } from "@fortawesome/free-solid-svg-icons";
 
-export const Filter = () => {
+export const Filter = ({ blogsType }) => {
 	const [open, setOpen] = useState(false);
 	const { dispatch } = useBlogsContext();
 
@@ -34,19 +34,103 @@ export const Filter = () => {
 	});
 
 	const handleOldestFirst = () => {
-		dispatch({ type: "SortBlogsOldestFirst" });
+		blogsType === "All Blogs" && dispatch({ type: "SortBlogsOldestFirst" });
+		blogsType === "Your Blogs" &&
+			dispatch({ type: "SortUserBlogsOldestFirst" });
+		blogsType === "Your Bookmarks" &&
+			dispatch({ type: "SortUserBookmarksOldestFirst" });
+		blogsType === "Your Drafts" &&
+			dispatch({ type: "SortUserDraftsOldestFirst" });
+		blogsType === "Your Likes" &&
+			dispatch({ type: "SortUserLikesOldestFirst" });
+		blogsType === "Author Blogs" &&
+			dispatch({ type: "SortAuthorBlogsOldestFirst" });
+		blogsType === "Category Blogs" &&
+			dispatch({ type: "SortCategoryBlogsOldestFirst" });
 	};
 
 	const handleLatestFirst = () => {
-		dispatch({ type: "SortBlogsLatestFirst" });
+		blogsType === "All Blogs" && dispatch({ type: "SortBlogsLatestFirst" });
+		blogsType === "Your Blogs" &&
+			dispatch({ type: "SortUserBlogsLatestFirst" });
+		blogsType === "Your Bookmarks" &&
+			dispatch({ type: "SortUserBookmarksLatestFirst" });
+		blogsType === "Your Drafts" &&
+			dispatch({ type: "SortUserDraftsLatestFirst" });
+		blogsType === "Your Likes" &&
+			dispatch({ type: "SortUserLikesLatestFirst" });
+		blogsType === "Author Blogs" &&
+			dispatch({ type: "SortAuthorBlogsLatestFirst" });
+		blogsType === "Category Blogs" &&
+			dispatch({ type: "SortCategoryBlogsLatestFirst" });
 	};
 
-	const handleMostLikeFirst = () => {
-		dispatch({ type: "SortBlogsMostLikedFirst" });
+	const handleMostLikedFirst = () => {
+		blogsType === "All Blogs" &&
+			dispatch({ type: "SortBlogsMostLikedFirst" });
+		blogsType === "Your Blogs" &&
+			dispatch({ type: "SortUserBlogsMostLikedFirst" });
+		blogsType === "Your Bookmarks" &&
+			dispatch({ type: "SortUserBookmarksMostLikedFirst" });
+		blogsType === "Your Drafts" &&
+			dispatch({ type: "SortUserDraftsMostLikedFirst" });
+		blogsType === "Your Likes" &&
+			dispatch({ type: "SortUserLikesMostLikedFirst" });
+		blogsType === "Author Blogs" &&
+			dispatch({ type: "SortAuthorBlogsMostLikedFirst" });
+		blogsType === "Category Blogs" &&
+			dispatch({ type: "SortCategoryBlogsMostLikedFirst" });
 	};
 
 	const handleLeastLikedFirst = () => {
-		dispatch({ type: "SortBlogsLeastLikedFirst" });
+		blogsType === "All Blogs" &&
+			dispatch({ type: "SortBlogsLeastLikedFirst" });
+		blogsType === "Your Blogs" &&
+			dispatch({ type: "SortUserBlogsLeastLikedFirst" });
+		blogsType === "Your Bookmarks" &&
+			dispatch({ type: "SortUserBookmarksLeastLikedFirst" });
+		blogsType === "Your Drafts" &&
+			dispatch({ type: "SortUserDraftsLeastLikedFirst" });
+		blogsType === "Your Likes" &&
+			dispatch({ type: "SortUserLikesLeastLikedFirst" });
+		blogsType === "Author Blogs" &&
+			dispatch({ type: "SortAuthorBlogsLeastLikedFirst" });
+		blogsType === "Category Blogs" &&
+			dispatch({ type: "SortCategoryBlogsLeastLikedFirst" });
+	};
+
+	const handleMostViewedFirst = () => {
+		blogsType === "All Blogs" &&
+			dispatch({ type: "SortBlogsMostViewedFirst" });
+		blogsType === "Your Blogs" &&
+			dispatch({ type: "SortUserBlogsMostViewedFirst" });
+		blogsType === "Your Bookmarks" &&
+			dispatch({ type: "SortUserBookmarksMostViewedFirst" });
+		blogsType === "Your Drafts" &&
+			dispatch({ type: "SortUserDraftsMostViewedFirst" });
+		blogsType === "Your Likes" &&
+			dispatch({ type: "SortUserLikesMostViewedFirst" });
+		blogsType === "Author Blogs" &&
+			dispatch({ type: "SortAuthorBlogsMostViewedFirst" });
+		blogsType === "Category Blogs" &&
+			dispatch({ type: "SortCategoryBlogsMostViewedFirst" });
+	};
+
+	const handleLeastViewedFirst = () => {
+		blogsType === "All Blogs" &&
+			dispatch({ type: "SortBlogsLeastViewedFirst" });
+		blogsType === "Your Blogs" &&
+			dispatch({ type: "SortUserBlogsLeastViewedFirst" });
+		blogsType === "Your Bookmarks" &&
+			dispatch({ type: "SortUserBookmarksLeastViewedFirst" });
+		blogsType === "Your Drafts" &&
+			dispatch({ type: "SortUserDraftsLeastViewedFirst" });
+		blogsType === "Your Likes" &&
+			dispatch({ type: "SortUserLikesLeastViewedFirst" });
+		blogsType === "Author Blogs" &&
+			dispatch({ type: "SortAuthorBlogsLeastViewedFirst" });
+		blogsType === "Category Blogs" &&
+			dispatch({ type: "SortCategoryBlogsLeastViewedFirst" });
 	};
 
 	return (
@@ -75,101 +159,89 @@ export const Filter = () => {
       To: "transform opacity-0 scale-95"
   --> */ && (
 				<div
-					className=" focus:animate-closeDropdown absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+					className=" focus:animate-closeDropdown absolute right-0 z-10 mt-2 w-80 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 					role="menu"
 					aria-orientation="vertical"
 					aria-labelledby="menu-button"
 					tabIndex="-1"
 				>
-					<div className="py-1" role="none">
-						<button
-							type="submit"
-							onClick={handleOldestFirst}
-							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
-							role="menuitem"
-							tabIndex="-1"
-							id="menu-item-3"
-						>
-							<FontAwesomeIcon icon={faArrowDownShortWide} />
-							Oldest first
-						</button>
-						<button
-							type="submit"
-							onClick={handleLatestFirst}
-							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
-							role="menuitem"
-							tabIndex="-1"
-							id="menu-item-3"
-						>
-							<FontAwesomeIcon icon={faArrowDownWideShort} />
-							Latest First
-						</button>
-						<button
-							type="submit"
-							onClick={handleMostLikeFirst}
-							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
-							role="menuitem"
-							tabIndex="-1"
-							id="menu-item-3"
-						>
-							<FontAwesomeIcon icon={faArrowDown91} />
-							Most Liked
-						</button>
-						<button
-							type="submit"
-							onClick={handleLeastLikedFirst}
-							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
-							role="menuitem"
-							tabIndex="-1"
-							id="menu-item-3"
-						>
-							<FontAwesomeIcon icon={faArrowDown19} />
-							Least Liked
-						</button>
+					<div
+						className="py-1 flex justify-between items-center"
+						role="none"
+					>
+						<div className="w-44">
+							<button
+								type="submit"
+								onClick={handleOldestFirst}
+								className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center w-full px-4 py-2  text-md"
+								role="menuitem"
+								tabIndex="-1"
+								id="menu-item-3"
+							>
+								<FontAwesomeIcon icon={faArrowDownShortWide} />
+								Oldest first
+							</button>
+							<button
+								type="submit"
+								onClick={handleLeastLikedFirst}
+								className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
+								role="menuitem"
+								tabIndex="-1"
+								id="menu-item-3"
+							>
+								<FontAwesomeIcon icon={faArrowDown19} />
+								Least Liked
+							</button>
+							<button
+								type="submit"
+								onClick={handleLeastViewedFirst}
+								className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
+								role="menuitem"
+								tabIndex="-1"
+								id="menu-item-3"
+							>
+								<FontAwesomeIcon icon={faArrowDown19} />
+								Least Viewed
+							</button>
+						</div>
+						<div className="w-44">
+							<button
+								type="submit"
+								onClick={handleLatestFirst}
+								className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
+								role="menuitem"
+								tabIndex="-1"
+								id="menu-item-3"
+							>
+								<FontAwesomeIcon icon={faArrowDownWideShort} />
+								Latest First
+							</button>
+							<button
+								type="submit"
+								onClick={handleMostLikedFirst}
+								className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
+								role="menuitem"
+								tabIndex="-1"
+								id="menu-item-3"
+							>
+								<FontAwesomeIcon icon={faArrowDown91} />
+								Most Liked
+							</button>
+							<button
+								type="submit"
+								onClick={handleMostViewedFirst}
+								className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center w-full px-4 py-2 text-left text-md"
+								role="menuitem"
+								tabIndex="-1"
+								id="menu-item-3"
+							>
+								<FontAwesomeIcon icon={faArrowDown91} />
+								Most Viewed
+							</button>
+						</div>
 					</div>
 				</div>
 			)}
 		</div>
 	);
 };
-
-{
-	/* <div className="group transition">
-					<button className="dropbtn filter-btn">
-						<FontAwesomeIcon
-							className="cursor-pointer text-2xl"
-							icon={faSliders}
-						/>
-					</button>
-					<div className="hidden group-hover:flex flex-col rounded shadow-xl items-start bg-white absolute right-[35.25em]">
-						<button
-							className="group button-old flex justify-between gap-9 items-center text-lg w-full py-2 px-3 transition"
-							onClick={handleClick}
-						>
-							<FontAwesomeIcon icon={faArrowDownShortWide} />
-							<small className="">Oldest first</small>
-						</button>
-						<button
-							className="group button-new flex justify-between items-center text-lg w-full py-2 px-3 transition"
-							onClick={handleClick}
-						>
-							<FontAwesomeIcon icon={faArrowDownWideShort} />
-							<small className="">Latest first</small>
-						</button>
-						<button
-							className="group button-most flex justify-between items-center text-lg w-full py-2 px-3 transition"
-							onClick={handleClick}
-						>
-							<FontAwesomeIcon icon={faArrowDown91} />
-							<small className="">Most liked</small>
-						</button>
-						<button
-							className="group button-least flex justify-between items-center text-lg w-full py-2 px-3 transition"
-							onClick={handleClick}
-						>
-							<FontAwesomeIcon icon={faArrowDown19} />
-							<small className="">Least liked</small>
-						</button>
-					</div>
-				</div> */
-}

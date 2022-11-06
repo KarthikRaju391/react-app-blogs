@@ -12,7 +12,7 @@ import { Loading } from "../components/Loading";
 export const UserDrafts = () => {
 	const { user } = useAuthContext();
 	const { getUserDrafts, isLoading, error } = useBlogs();
-	const { blogs, dispatch } = useBlogsContext();
+	const { userDrafts, dispatch } = useBlogsContext();
 	const [subscribed, setIsSubscribed] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [postsPerPage] = useState(5);
@@ -28,7 +28,7 @@ export const UserDrafts = () => {
 
 	const indexOfLastPost = currentPage * postsPerPage;
 	const indexOfFirstPost = indexOfLastPost - postsPerPage;
-	const currentPosts = blogs?.slice(indexOfFirstPost, indexOfLastPost);
+	const currentPosts = userDrafts?.slice(indexOfFirstPost, indexOfLastPost);
 
 	const paginate = (pageNumber) => {
 		setCurrentPage(pageNumber);
@@ -41,28 +41,29 @@ export const UserDrafts = () => {
 				{isLoading ? (
 					<Loading subtitle={"Loading your drafts..."} />
 				) : (
-					blogs &&
-					blogs.length !== 0 && (
+					userDrafts &&
+					userDrafts.length !== 0 && (
 						<BlogList
 							blogs={currentPosts}
 							deleteable={true}
-							title="Your drafts"
+							title="Your Drafts"
+							blogsType="Your Drafts"
 						/>
 					)
 				)}
-				{!isLoading && blogs && blogs.length === 0 && (
+				{!isLoading && userDrafts && userDrafts.length === 0 && (
 					<NoContent content="Write drafts to see them here..." />
 				)}
-				{!isLoading && blogs && blogs.length > 5 && (
+				{!isLoading && userDrafts && userDrafts.length > 5 && (
 					<Pagination
 						postsPerPage={postsPerPage}
-						totalPosts={blogs?.length}
+						totalPosts={userDrafts?.length}
 						currentPage={currentPage}
 						paginate={paginate}
 					/>
 				)}
 			</div>
-			{blogs && (
+			{userDrafts && (
 				<div className="mt-[3.25em]">
 					<AuthorList />
 					<CategoryList />

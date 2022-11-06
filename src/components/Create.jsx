@@ -22,6 +22,9 @@ export const Create = () => {
 
 	useEffect(() => {
 		blogId && setUpdate(true);
+
+		window.addEventListener("beforeunload", alertUser);
+
 		const fetchBlog = async () => {
 			try {
 				const response = await fetch(
@@ -40,8 +43,14 @@ export const Create = () => {
 
 		return () => {
 			setUpdate(false);
+			window.removeEventListener("beforeunload", alertUser);
 		};
 	}, []);
+
+	const alertUser = (e) => {
+		e.preventDefault();
+		e.returnValue = "";
+	};
 
 	const handleUpdate = async (e) => {
 		e.preventDefault();
@@ -52,7 +61,7 @@ export const Create = () => {
 				category,
 				draft: false,
 			};
-			updateBlog(blogId, newData, true);
+			updateBlog(blogId, newData, true, false, false, false);
 		} else {
 			const newData = {
 				title,
@@ -60,7 +69,7 @@ export const Create = () => {
 				category,
 				draft,
 			};
-			updateBlog(blogId, newData, true);
+			updateBlog(blogId, newData, true, false, false, false);
 		}
 	};
 

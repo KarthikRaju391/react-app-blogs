@@ -11,7 +11,7 @@ import { Loading } from "../components/Loading";
 
 export const CategoryInfo = () => {
 	const { getCategoryBlogs, isLoading, error } = useBlogs();
-	const { blogs, dispatch } = useBlogsContext();
+	const { categoryBlogs, dispatch } = useBlogsContext();
 	const [subscribed, setIsSubsribed] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [postsPerPage] = useState(5);
@@ -30,7 +30,7 @@ export const CategoryInfo = () => {
 
 	const indexOfLastPost = currentPage * postsPerPage;
 	const indexOfFirstPost = indexOfLastPost - postsPerPage;
-	const currentPosts = blogs?.slice(indexOfFirstPost, indexOfLastPost);
+	const currentPosts = categoryBlogs?.slice(indexOfFirstPost, indexOfLastPost);
 
 	const paginate = (pageNumber) => {
 		setCurrentPage(pageNumber);
@@ -41,30 +41,31 @@ export const CategoryInfo = () => {
 			<div className="home col-span-2 mt-10 md:w-3/4 md:mx-auto">
 				{error && <div>unable to get the data...</div>}
 				{isLoading ? (
-					<Loading subtitle={`Loading ${categoryName} blogs...`} />
+					<Loading subtitle={`Loading ${categoryName} Blogs...`} />
 				) : (
-					blogs &&
-					blogs.length !== 0 && (
+					categoryBlogs &&
+					categoryBlogs.length !== 0 && (
 						<BlogList
 							blogs={currentPosts}
 							deleteable={false}
-							title={`${categoryName} blogs`}
+							title={`${categoryName} Blogs`}
+							blogsType="Category Blogs"
 						/>
 					)
 				)}
-				{!isLoading && blogs && blogs.length === 0 && (
+				{!isLoading && categoryBlogs && categoryBlogs.length === 0 && (
 					<NoContent content="No recent blogs in this category..." />
 				)}
-				{!isLoading && blogs && blogs.length >= 5 && (
+				{!isLoading && categoryBlogs && categoryBlogs.length >= 5 && (
 					<Pagination
 						postsPerPage={postsPerPage}
-						totalPosts={blogs?.length}
+						totalPosts={categoryBlogs?.length}
 						currentPage={currentPage}
 						paginate={paginate}
 					/>
 				)}
 			</div>
-			{blogs && (
+			{categoryBlogs && (
 				<div className="mt-[3.25em]">
 					<AuthorList />
 					<CategoryList />

@@ -17,11 +17,13 @@ export const Blog = () => {
 	const blogId = path.pathname.split("/")[2];
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
-	const [refresh, setRefresh] = useState(false);
+	const [refreshed, setRefreshed] = useState();
 	const [blog, setBlog] = useState(null);
 	const [views, setViews] = useState(null);
 	useEffect(() => {
 		let unsubscribed = false;
+
+		window.addEventListener("beforeunload", alertUser);
 		const fetchBlog = async () => {
 			try {
 				const response = await fetch(
@@ -49,22 +51,33 @@ export const Blog = () => {
 		fetchBlog();
 		return () => {
 			unsubscribed = true;
+			window.removeEventListener("beforeunload", alertUser);
 		};
 	}, []);
 
+	const alertUser = () => {};
+
 	const incrementView = (blogViews) => {
 		setViews(blogViews + 1);
-		updateBlog(blogId, { ...blog, views: blogViews + 1 }, false);
+		updateBlog(
+			blogId,
+			{ ...blog, views: blogViews + 1 },
+			false,
+			false,
+			{},
+			true
+		);
 	};
 
 	const handleUpdate = async (id) => {
 		if (blog.likes.includes(user?.userId)) {
 			const index = blog.likes.findIndex((b) => b === user?.userId);
 			blog.likes.splice(index, 1);
+			updateBlog(id, blog, false, false, { likeAdd: false }, false);
 		} else {
 			blog.likes.push(user?.userId);
+			updateBlog(id, blog, false, false, { likeAdd: true }, false);
 		}
-		updateBlog(id, blog, false);
 	};
 
 	return (

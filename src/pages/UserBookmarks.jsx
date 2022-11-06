@@ -45,14 +45,15 @@ export const UserBookmarks = () => {
 					userBookmarks &&
 					userBookmarks.length !== 0 && (
 						<BlogList
-							userBookmarks={currentPosts}
+							blogs={currentPosts}
 							deleteable={false}
 							title="Your Bookmarks"
+							blogsType="Your Bookmarks"
 						/>
 					)
 				)}
 				{!isLoading && userBookmarks && userBookmarks.length === 0 && (
-					<NoContent content="Bookmark userBookmarks to see them here..." />
+					<NoContent content="Bookmark blogs to see them here..." />
 				)}
 				{!isLoading && userBookmarks && userBookmarks.length > 5 && (
 					<Pagination

@@ -46,6 +46,7 @@ export const Home = () => {
 							blogs={currentPosts}
 							deleteable={false}
 							title="All Blogs"
+							blogsType="All Blogs"
 						/>
 					)
 				)}

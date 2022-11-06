@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useBlogsContext } from "./useBlogContext";
 import { useAuthContext } from "./useAuthContext";
 
@@ -10,6 +10,8 @@ export const useBlogs = () => {
 	const [isLoading, setIsLoading] = useState(null);
 	const { dispatch } = useBlogsContext();
 	const { user, userId } = useAuthContext();
+	const location = useLocation();
+	const path = location.pathname.split("/")[3];
 
 	const getAllBlogs = async () => {
 		setIsLoading(true);
@@ -22,6 +24,7 @@ export const useBlogs = () => {
 			setIsLoading(false);
 			setError(data.error);
 		} else {
+			localStorage.setItem("blogs", JSON.stringify(data));
 			dispatch({ type: "GetBlogs", payload: data });
 			setIsLoading(false);
 			setError(null);
@@ -110,7 +113,7 @@ export const useBlogs = () => {
 		}
 
 		if (response.ok) {
-			dispatch({ type: "GetBlogs", payload: data });
+			dispatch({ type: "GetAuthorBlogs", payload: data });
 			setIsLoading(false);
 			setError(null);
 		}
@@ -128,7 +131,7 @@ export const useBlogs = () => {
 		}
 
 		if (response.ok) {
-			dispatch({ type: "GetBlogs", payload: data });
+			dispatch({ type: "GetCategoryBlogs", payload: data });
 			setIsLoading(false);
 			setError(null);
 		}
@@ -175,11 +178,26 @@ export const useBlogs = () => {
 
 		if (response.ok) {
 			dispatch({ type: "DeleteBlog", payload: id });
+			notifyDeleteBlog();
 			setIsLoading(false);
 			setError(null);
 		}
 
 		getUserBlogs();
+	};
+
+	const notifyLoadingState = () => {
+		dispatch({ type: "NotifyLoadingStart", payload: "Loading..." });
+	};
+
+	const notifyDeleteBlog = () => {
+		dispatch({
+			type: "NotifyDeleteStart",
+			payload: "Blog deleted successfully!",
+		});
+		setTimeout(() => {
+			dispatch({ type: "NotifyDeleteStop" });
+		}, 2500);
 	};
 
 	const createBlog = async (title, body, category, draft) => {
@@ -199,6 +217,7 @@ export const useBlogs = () => {
 		const data = await response.json();
 		if (!response.ok) {
 			setIsLoading(false);
+			draft === true ? notifyCreateBlog(true) : notifyCreateBlog(false);
 			if (data === "Blog validation failed") {
 				setError("Please enter title and content...");
 			}
@@ -206,13 +225,79 @@ export const useBlogs = () => {
 
 		if (response.ok) {
 			dispatch({ type: "AddBlog", payload: { data } });
+			notifyCreateBlog();
 			setIsLoading(false);
 			setError(null);
 			navigate("/");
 		}
 	};
 
-	const updateBlog = async (id, blog, newUpdate) => {
+	const notifyCreateBlog = (createDraft) => {
+		createDraft
+			? dispatch({
+					type: "NotifyCreateStart",
+					payload: "Draft created successfully!",
+			  })
+			: dispatch({
+					type: "NotifyCreateStart",
+					payload: "Blog created successfully!",
+			  });
+		setTimeout(() => {
+			dispatch({ type: "NotifyCreateStop" });
+		}, 2500);
+	};
+
+	const notifyLikeUpdate = (addLike) => {
+		if (addLike === true) {
+			console.log("here too");
+			dispatch({
+				type: "NotifyLikeStart",
+				payload: "Added blog to your likes!",
+			});
+		} else {
+			dispatch({
+				type: "NotifyLikeStart",
+				payload: "Removed blog from your likes...",
+			});
+		}
+		setTimeout(() => {
+			dispatch({
+				type: "NotifyLikeStop",
+			});
+		}, 2500);
+	};
+
+	const notifyUpdateBlog = (bookmarkAddUpdate) => {
+		if (bookmarkAddUpdate === undefined) {
+			dispatch({
+				type: "NotifyUpdateStart",
+				payload: "Blog updated successfully!",
+			});
+		} else if (bookmarkAddUpdate) {
+			dispatch({
+				type: "NotifyUpdateStart",
+				payload: "Bookmark added successfully!",
+			});
+		} else {
+			dispatch({
+				type: "NotifyUpdateStart",
+				payload: "Bookmark removed successfully!",
+			});
+			path === "bookmarks" && getUserBookmarks();
+		}
+		setTimeout(() => {
+			dispatch({ type: "NotifyUpdateStop" });
+		}, 2500);
+	};
+
+	const updateBlog = async (
+		id,
+		blog,
+		newUpdate,
+		bookmarkAddUpdate,
+		likeUpdate,
+		viewsUpdate
+	) => {
 		const response = await fetch(`http://localhost:4000/api/blogs/${id}`, {
 			method: "PUT",
 			headers: {
@@ -227,7 +312,15 @@ export const useBlogs = () => {
 			setError(data.error);
 			setIsLoading(false);
 		} else {
+			if (likeUpdate.likeAdd === true) {
+				console.log("here");
+				notifyLikeUpdate(true);
+			} else if (likeUpdate.likeAdd === true) {
+				notifyLikeUpdate(false);
+			}
 			dispatch({ type: "UpdateBlog", payload: { data } });
+			!viewsUpdate && !newUpdate && notifyUpdateBlog(bookmarkAddUpdate);
+			newUpdate && notifyUpdateBlog();
 			setError(null);
 			setIsLoading(false);
 			newUpdate && navigate("/");
@@ -243,6 +336,7 @@ export const useBlogs = () => {
 		getUserBlogs,
 		getUserDrafts,
 		getUserBookmarks,
+		notifyCreateBlog,
 		getUserLikes,
 		deleteBlog,
 		createBlog,

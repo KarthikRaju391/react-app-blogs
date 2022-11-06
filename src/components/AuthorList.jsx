@@ -10,7 +10,8 @@ const AuthorList = () => {
 
 	useEffect(() => {
 		const blogAuthors = new Map();
-		const arr = blogs && [...blogs];
+		const arr =
+			JSON.parse(localStorage.getItem("blogs")) || (blogs && [...blogs]);
 		arr &&
 			arr.forEach((blog) => {
 				if (!blogAuthors.has(blog.author) && blog.likes) {

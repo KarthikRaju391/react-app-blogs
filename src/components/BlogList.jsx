@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useBlogs } from "../hooks/useBlogs";
 import { useBlogsContext } from "../hooks/useBlogContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,10 +17,12 @@ import {
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Filter } from "./Filter";
 
-export const BlogList = ({ blogs, deleteable, title }) => {
+export const BlogList = ({ blogs, deleteable, title, blogsType }) => {
 	const { user } = useAuthContext();
 	const { deleteBlog, updateBlog, getUserBookmarks } = useBlogs();
 	const { dispatch } = useBlogsContext();
+	const location = useLocation();
+	const path = location.pathname.split("/")[3];
 
 	// colors
 	const colors = {
@@ -36,17 +38,18 @@ export const BlogList = ({ blogs, deleteable, title }) => {
 		if (blog.bookmark.includes(user?.userId)) {
 			const index = blog.bookmark.findIndex((b) => b === user?.userId);
 			blog.bookmark.splice(index, 1);
+			updateBlog(id, blog, false, false, {}, false);
 		} else {
 			blog.bookmark.push(user?.userId);
+			updateBlog(id, blog, false, true, {}, false);
 		}
-		updateBlog(id, blog, false);
 	};
 
 	return (
 		<div className="blog-lists">
 			<div className="flex justify-between">
 				<h2 className="text-3xl font-medium">{title}</h2>
-				<Filter />
+				<Filter blogsType={blogsType} />
 			</div>
 			{blogs.map((blog, index) => {
 				let category = blog.category && blog.category.toLowerCase();

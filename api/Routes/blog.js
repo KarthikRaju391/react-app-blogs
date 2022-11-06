@@ -95,6 +95,7 @@ router.post("/", verifyToken, async (req, res) => {
 });
 
 // PUT REQUEST
+
 router.put("/:id", verifyToken, async (req, res) => {
 	try {
 		const updatedBlog = await Blog.findByIdAndUpdate(

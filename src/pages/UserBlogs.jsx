@@ -44,9 +44,10 @@ export const UserBlogs = () => {
 					userBlogs &&
 					userBlogs.length !== 0 && (
 						<BlogList
-							userBlogs={currentPosts}
+							blogs={currentPosts}
 							deleteable={true}
-							title="Your userBlogs"
+							title="Your Blogs"
+							blogsType="Your Blogs"
 						/>
 					)
 				)}

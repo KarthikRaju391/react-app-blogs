@@ -20,10 +20,12 @@ import { CategoryInfo } from "./pages/CategoryInfo";
 import { UserLikes } from "./pages/UserLikes";
 import { useBlogsContext } from "./hooks/useBlogContext";
 import { Notification } from "./components/Notification";
+import { useBlogs } from "./hooks/useBlogs";
 
 function App() {
 	const { user } = useAuthContext();
-	const { notifyCreate, notifyUpdate, notifyDelete } = useBlogsContext();
+	const { notifyCreate, notifyUpdate, notifyDelete, notificationMessage } =
+		useBlogsContext();
 	return (
 		<Router>
 			<div className="App min-h-screen bg-background px-5 py-5">
@@ -65,22 +67,13 @@ function App() {
 						/>
 					</Routes>
 					{notifyCreate ? (
-						<Notification
-							success={true}
-							message={"Blog created successfully!"}
-						/>
+						<Notification success={true} message={notificationMessage} />
 					) : null}
 					{notifyUpdate ? (
-						<Notification
-							success={true}
-							message={"Blog updated successfully!"}
-						/>
+						<Notification success={true} message={notificationMessage} />
 					) : null}
 					{notifyDelete ? (
-						<Notification
-							error={true}
-							message={"Blog deleted successfully!"}
-						/>
+						<Notification error={true} message={notificationMessage} />
 					) : null}
 				</div>
 			</div>

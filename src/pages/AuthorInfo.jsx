@@ -11,7 +11,7 @@ import { Loading } from "../components/Loading";
 
 export const AuthorInfo = () => {
 	const { getAuthorBlogs, isLoading, error } = useBlogs();
-	const { blogs, dispatch } = useBlogsContext();
+	const { authorBlogs, dispatch } = useBlogsContext();
 	const [subscribed, setIsSubsribed] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [postsPerPage] = useState(5);
@@ -27,11 +27,11 @@ export const AuthorInfo = () => {
 		return () => {
 			setIsSubsribed(false);
 		};
-	}, [dispatch, subscribed]);
+	}, [dispatch, subscribed, authorName]);
 
 	const indexOfLastPost = currentPage * postsPerPage;
 	const indexOfFirstPost = indexOfLastPost - postsPerPage;
-	const currentPosts = blogs?.slice(indexOfFirstPost, indexOfLastPost);
+	const currentPosts = authorBlogs?.slice(indexOfFirstPost, indexOfLastPost);
 
 	const paginate = (pageNumber) => {
 		setCurrentPage(pageNumber);
@@ -42,30 +42,31 @@ export const AuthorInfo = () => {
 			<div className="home col-span-2 mt-10 md:w-3/4 md:mx-auto">
 				{error && <div>unable to get the data...</div>}
 				{isLoading ? (
-					<Loading subtitle={`Loading ${authorName} blogs...`} />
+					<Loading subtitle={`Loading ${authorName} Blogs...`} />
 				) : (
-					blogs &&
-					blogs.length !== 0 && (
+					authorBlogs &&
+					authorBlogs.length !== 0 && (
 						<BlogList
 							blogs={currentPosts}
 							deleteable={false}
-							title={`${authorName}'s blogs`}
+							title={`${authorName}'s Blogs`}
+							blogsType="Author Blogs"
 						/>
 					)
 				)}
-				{!isLoading && blogs && blogs.length === 0 && (
+				{!isLoading && authorBlogs && authorBlogs.length === 0 && (
 					<NoContent content="No recent blogs by this author..." />
 				)}
-				{!isLoading && blogs && blogs.length >= 5 && (
+				{!isLoading && authorBlogs && authorBlogs.length >= 5 && (
 					<Pagination
 						postsPerPage={postsPerPage}
-						totalPosts={blogs?.length}
+						totalPosts={authorBlogs?.length}
 						currentPage={currentPage}
 						paginate={paginate}
 					/>
 				)}
 			</div>
-			{blogs && (
+			{authorBlogs && (
 				<div className="mt-[3.25em]">
 					<AuthorList />
 					<CategoryList />
