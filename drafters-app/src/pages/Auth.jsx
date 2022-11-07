@@ -36,7 +36,7 @@ const Auth = () => {
 	};
 
 	return (
-		<div className="col-span-3 md:w-4/12 mx-auto h-[500px] mt-40 md:mt-20">
+		<div className="col-span-3 md:w-4/12 mx-auto h-screen mt-40 md:mt-20">
 			<h1 className="text-3xl font-bold text-center">
 				Welcome to Drafters!
 			</h1>
