@@ -10,6 +10,7 @@ import {
 	faHeartCircleCheck,
 	faArrowRightFromBracket,
 	faUser,
+	faPen,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const Dropdown = ({ username }) => {
@@ -88,6 +89,16 @@ export const Dropdown = ({ username }) => {
 							<FontAwesomeIcon icon={faUser} /> {`Hi, ${username}`}
 						</p>
 						{/* <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" --> */}
+						<Link
+							className="md:hidden hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center px-4 py-2 text-md active:bg-gray-100 active:text-gray-900"
+							to={`/blogs/create`}
+							role="menuitem"
+							tabIndex="-1"
+							id="menu-item-0"
+						>
+							<FontAwesomeIcon fontSize="1.4em" icon={faPen} />
+							Write
+						</Link>
 						<Link
 							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center px-4 py-2 text-md active:bg-gray-100 active:text-gray-900"
 							to={`/blogs/${username}`}

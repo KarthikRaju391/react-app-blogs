@@ -29,7 +29,7 @@ export const Navbar = () => {
 					</Link>
 					{!user ? (
 						<Link
-							className="ml-10 hover:border-b-4 transition-all duration-75 text-xl border-black"
+							className="ml-10 hover:border-b-4 transition-all duration-75 text-lg md:text-xl border-black"
 							to="/auth"
 						>
 							Login
