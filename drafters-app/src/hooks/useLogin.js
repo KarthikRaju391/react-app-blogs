@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useAuthContext } from './useAuthContext';
+import { useState } from "react";
+import { useAuthContext } from "./useAuthContext";
 
 export const useLogin = () => {
 	const [error, setError] = useState(null);
@@ -10,13 +10,16 @@ export const useLogin = () => {
 		setIsLoading(true);
 		setError(null);
 
-		const response = await fetch('http://localhost:4000/api/auth/login', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ username, password }),
-		});
+		const response = await fetch(
+			"https://drafters.up.railway.app/api/auth/login",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ username, password }),
+			}
+		);
 
 		const data = await response.json();
 
@@ -27,9 +30,9 @@ export const useLogin = () => {
 
 		if (response.ok) {
 			// save the user to local storage
-			localStorage.setItem('user', JSON.stringify(data));
+			localStorage.setItem("user", JSON.stringify(data));
 
-			dispatch({ type: 'LOGIN', payload: data });
+			dispatch({ type: "LOGIN", payload: data });
 			setIsLoading(false);
 		}
 	};

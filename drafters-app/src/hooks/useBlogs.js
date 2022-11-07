@@ -5,7 +5,7 @@ import { useAuthContext } from "./useAuthContext";
 import { useNotification } from "./useNotification";
 
 export const useBlogs = () => {
-	const URL = "http://localhost:4000/api";
+	const URL = "https://drafters.up.railway.app/api";
 	const navigate = useNavigate();
 	const [error, setError] = useState(null);
 	const [updateError, setUpdateError] = useState(null);
@@ -88,7 +88,7 @@ export const useBlogs = () => {
 		setCreateLoading((prev) => !prev);
 		createLoading && notifyLoadingState(true, draft, false, false);
 
-		const response = await fetch("http://localhost:4000/api/blogs", {
+		const response = await fetch(`${URL}/blogs`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -133,7 +133,7 @@ export const useBlogs = () => {
 			!viewsUpdate &&
 			notifyLoadingState(false, false, true, false);
 
-		const response = await fetch(`http://localhost:4000/api/blogs/${id}`, {
+		const response = await fetch(`${URL}/blogs/${id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",

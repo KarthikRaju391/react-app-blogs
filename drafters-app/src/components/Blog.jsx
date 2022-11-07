@@ -25,7 +25,7 @@ export const Blog = () => {
 		const fetchBlog = async () => {
 			try {
 				const response = await fetch(
-					`http://localhost:4000/api/blogs/${blogId}`
+					`https://drafters.up.railway.app/api/blogs/${blogId}`
 				);
 				const data = await response.json();
 				if (!unsubscribed) {
