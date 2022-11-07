@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+   mongodb:
+      image: "mongo"
+      volumes:
+         - data:/data/db
+   api:
+      build: ./api
+      container_name: api_c
+      ports:
+         - "4000:4000"
+      volumes:
+         - ./api:/app
+         - /app/node_modules
+      depends_on:
+         - mongodb
+
+   drafters-app:
+      build: ./drafters-app
+      container_name: drafters_c
+      ports:
+         - "8000:8000"
+      volumes: 
+         - ./drafters-app/src:/app/src
+      stdin_open: true
+      tty: true
+      depends_on:
+         - api
+volumes:
+   data:

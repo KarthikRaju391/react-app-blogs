@@ -32,7 +32,9 @@ export const Blog = () => {
 					setError(null);
 					setBlog(data);
 					setBlogLoading(false);
-					data.draft === false && incrementView(data.views);
+					data.draft === false &&
+						user !== null &&
+						incrementView(data.views);
 				}
 			} catch (error) {
 				if (!unsubscribed) {
@@ -53,15 +55,17 @@ export const Blog = () => {
 	}, []);
 
 	const incrementView = (blogViews) => {
+		console.log("first");
 		setViews(blogViews + 1);
-		updateBlog(
-			blogId,
-			{ ...blog, views: blogViews + 1 },
-			false,
-			false,
-			{},
-			true
-		);
+		user &&
+			updateBlog(
+				blogId,
+				{ ...blog, views: blogViews + 1 },
+				false,
+				false,
+				{},
+				true
+			);
 	};
 
 	const handleUpdate = async (id) => {
