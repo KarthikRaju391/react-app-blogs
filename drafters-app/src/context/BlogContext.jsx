@@ -46,7 +46,6 @@ export const blogReducer = (state, action) => {
 				}),
 			};
 		case "DeleteBlog":
-			console.log(action.payload.source);
 			if (action.payload.source === "drafts") {
 				return {
 					...state,
@@ -445,8 +444,6 @@ export const BlogsContextProvider = ({ children }) => {
 			dispatch({ type: "GetAllBlogs", payload: blogs });
 		}
 	}, []);
-
-	console.log("BlogsContext state: ", state);
 
 	return (
 		<BlogContext.Provider value={{ ...state, dispatch }}>

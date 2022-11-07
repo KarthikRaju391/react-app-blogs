@@ -55,7 +55,6 @@ export const Blog = () => {
 	}, []);
 
 	const incrementView = (blogViews) => {
-		console.log("first");
 		setViews(blogViews + 1);
 		user &&
 			updateBlog(
