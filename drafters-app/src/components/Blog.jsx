@@ -85,7 +85,7 @@ export const Blog = () => {
 			{blog && (
 				<div>
 					<h1 className="text-5xl font-bold -ml-1.5">{blog.title}</h1>
-					<div className="subheader flex items-center justify-between mt-3">
+					<div className="subheader flex flex-col md:flex-row md:items-center md:justify-between mt-3">
 						<div className="flex items-center">
 							<span className="bg-teal-800 h-5 w-1"></span>
 							<p className="author-content text-lg pl-2">
@@ -110,7 +110,7 @@ export const Blog = () => {
 								)}
 							</p>
 						</div>
-						{blog.draft === false && (
+						{blog.draft === false && user && (
 							<div className="heart-content flex gap-x-6">
 								<div className="flex items-center">
 									<FontAwesomeIcon
