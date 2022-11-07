@@ -39,7 +39,7 @@ export const UserLikes = () => {
 			<div className="home col-span-2 mt-10 md:w-3/4 md:mx-auto">
 				{error && <div>unable to get the data...</div>}
 				{isLoading ? (
-					<Loading subtitle={"Loading your liked userLikes..."} />
+					<Loading subtitle={"Loading your liked blogs..."} />
 				) : (
 					userLikes &&
 					userLikes.length !== 0 && (
@@ -52,7 +52,7 @@ export const UserLikes = () => {
 					)
 				)}
 				{!isLoading && userLikes && userLikes.length === 0 && (
-					<NoContent content="Please like userLikes to see them here..." />
+					<NoContent content="Please like blogs to see them here..." />
 				)}
 				{!isLoading && userLikes && userLikes.length > 5 && (
 					<Pagination
