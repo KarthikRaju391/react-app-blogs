@@ -36,15 +36,15 @@ const Auth = () => {
 	};
 
 	return (
-		<div className="col-span-3 w-4/12 mx-auto h-[500px] my-20">
+		<div className="col-span-3 md:w-4/12 mx-auto h-[500px] mt-40 md:mt-20">
 			<h1 className="text-3xl font-bold text-center">
 				Welcome to Drafters!
 			</h1>
 			<form className="flex flex-col" onSubmit={handleSubmit}>
 				{register && (
 					<>
-						<div className="flex gap-12 w-full items-center">
-							<div className="block w-1/2">
+						<div className="flex flex-col mt-10 lg:flex-row lg:justify-between">
+							<div className="flex flex-col lg:w-60">
 								<label className="" htmlFor="firstname">
 									First Name
 								</label>
@@ -55,8 +55,8 @@ const Auth = () => {
 									onChange={handleChange}
 								/>
 							</div>
-							<div className="block">
-								<label className="mt-4" htmlFor="lastname">
+							<div className="flex flex-col lg:w-60">
+								<label className="mt-4 md:mt-0" htmlFor="lastname">
 									Last Name
 								</label>
 								<input
