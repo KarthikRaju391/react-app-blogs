@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useSignup } from "../hooks/useSignup";
 import { useLogin } from "../hooks/useLogin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Loading } from "../components/Loading";
 import { faTriangleExclamation as caution } from "@fortawesome/free-solid-svg-icons";
 
 const Auth = () => {
 	const [register, setRegister] = useState(false);
+	const [showError, setShowError] = useState(false);
 	const [auth, setAuth] = useState(false);
 	useEffect(() => {
 		return () => {
@@ -33,6 +33,13 @@ const Auth = () => {
 			...prev,
 			[e.target.name]: e.target.value,
 		}));
+	};
+
+	const handleError = () => {
+		setShowError(true);
+		setTimeout(() => {
+			setShowError((prev) => !prev);
+		}, 1500);
 	};
 
 	return (
@@ -103,14 +110,27 @@ const Auth = () => {
 					</div>
 				)}
 				<button
-					className="border border-black mt-5 w-1/3 mx-auto bg-black text-white px-2 py-3"
+					className="border transition-all border-black mt-5 w-1/3 mx-auto bg-black px-2 py-3"
 					disabled={isLoading || loginIsLoading}
 				>
-					{register ? "Register" : "Login"}
+					<div className="transition-all text-white flex justify-center gap-x-4 items-center">
+						{register ? "Register" : "Login"}
+						{(isLoading || loginIsLoading) && (
+							<svg
+								className="animate-spin"
+								width="15px"
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 512 512"
+								fill="white"
+							>
+								<path d="M222.7 32.1c5 16.9-4.6 34.8-21.5 39.8C121.8 95.6 64 169.1 64 256c0 106 86 192 192 192s192-86 192-192c0-86.9-57.8-160.4-137.1-184.1c-16.9-5-26.6-22.9-21.5-39.8s22.9-26.6 39.8-21.5C434.9 42.1 512 140 512 256c0 141.4-114.6 256-256 256S0 397.4 0 256C0 140 77.1 42.1 182.9 10.6c16.9-5 34.8 4.6 39.8 21.5z" />
+							</svg>
+						)}
+					</div>
 				</button>
-				{(isLoading || loginIsLoading) && (
+				{/* {(isLoading || loginIsLoading) && (
 					<Loading subtitle={"Getting you in..."} />
-				)}
+				)} */}
 				<p
 					className="mx-auto mt-4"
 					onClick={() => setRegister((prevState) => !prevState)}

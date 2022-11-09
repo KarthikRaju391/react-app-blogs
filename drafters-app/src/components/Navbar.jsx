@@ -1,10 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Dropdown } from "./Dropdown";
 
 export const Navbar = () => {
 	const { user } = useAuthContext();
+	const location = useLocation();
+	const path = location.pathname.split("/")[1];
 
 	return (
 		<div className="">

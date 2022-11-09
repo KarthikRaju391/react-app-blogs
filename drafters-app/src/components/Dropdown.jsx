@@ -91,6 +91,7 @@ export const Dropdown = ({ username }) => {
 						{/* <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" --> */}
 						<Link
 							className="md:hidden hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center px-4 py-2 text-md active:bg-gray-100 active:text-gray-900"
+							onClick={() => setOpen((prevState) => !prevState)}
 							to={`/blogs/create`}
 							role="menuitem"
 							tabIndex="-1"
@@ -102,6 +103,7 @@ export const Dropdown = ({ username }) => {
 						<Link
 							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center px-4 py-2 text-md active:bg-gray-100 active:text-gray-900"
 							to={`/blogs/${username}`}
+							onClick={() => setOpen((prevState) => !prevState)}
 							role="menuitem"
 							tabIndex="-1"
 							id="menu-item-0"
@@ -113,6 +115,7 @@ export const Dropdown = ({ username }) => {
 							to={`/blogs/${username}/bookmarks`}
 							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center px-4 py-2 text-md active:bg-gray-100 active:text-gray-900"
 							role="menuitem"
+							onClick={() => setOpen((prevState) => !prevState)}
 							tabIndex="-1"
 							id="menu-item-1"
 						>
@@ -121,6 +124,7 @@ export const Dropdown = ({ username }) => {
 						</Link>
 						<Link
 							to={`/blogs/${username}/likes`}
+							onClick={() => setOpen((prevState) => !prevState)}
 							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center px-4 py-2 text-md active:bg-gray-100 active:text-gray-900"
 							role="menuitem"
 							tabIndex="-1"
@@ -134,6 +138,7 @@ export const Dropdown = ({ username }) => {
 						</Link>
 						<Link
 							to={`/blogs/${username}/drafts`}
+							onClick={() => setOpen((prevState) => !prevState)}
 							className="hover:border-l-4 focus:border-l-4 border-gray-800 transition-all duration-100 text-gray-700 flex justify-between items-center px-4 py-2 text-md active:bg-gray-100 active:text-gray-900"
 							role="menuitem"
 							tabIndex="-1"

@@ -116,7 +116,9 @@ export const useBlogs = () => {
 			draft === true ? notifyCreateBlog(true) : notifyCreateBlog(false);
 			dispatch({ type: "AddBlog", payload: { data } });
 			setCreateError(null);
-			navigate("/");
+			draft === true
+				? navigate(`/blogs/${user.username}/drafts`)
+				: navigate("/");
 		}
 	};
 
@@ -148,7 +150,7 @@ export const useBlogs = () => {
 			setUpdateLoading((prev) => !prev);
 			notifyError(false, true, false);
 		} else {
-			setUpdateLoading(false);
+			setUpdateLoading((prev) => !prev);
 			dispatch({ type: "UpdateBlog", payload: { data } });
 			if (likeUpdate.likeAdd === true) {
 				notifyLikeUpdate(likeUpdate.likeAdd);

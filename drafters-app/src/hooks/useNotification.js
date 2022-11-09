@@ -44,7 +44,7 @@ export const useNotification = () => {
 			});
 		setTimeout(() => {
 			dispatch({ type: "NotifyErrorStop" });
-		}, 2500);
+		}, 1500);
 	};
 
 	const notifyDeleteBlog = () => {
@@ -55,7 +55,7 @@ export const useNotification = () => {
 		});
 		setTimeout(() => {
 			dispatch({ type: "NotifyDeleteStop" });
-		}, 2500);
+		}, 1500);
 	};
 
 	const notifyCreateBlog = (createDraft) => {
@@ -71,7 +71,7 @@ export const useNotification = () => {
 			  });
 		setTimeout(() => {
 			dispatch({ type: "NotifyCreateStop" });
-		}, 2500);
+		}, 1500);
 	};
 
 	const notifyLikeUpdate = (addLike) => {
@@ -91,7 +91,7 @@ export const useNotification = () => {
 			dispatch({
 				type: "NotifyLikeStop",
 			});
-		}, 2500);
+		}, 1500);
 	};
 
 	const notifyUpdateBlog = (bookmarkAddUpdate) => {
@@ -115,7 +115,7 @@ export const useNotification = () => {
 		}
 		setTimeout(() => {
 			dispatch({ type: "NotifyUpdateStop" });
-		}, 2500);
+		}, 1500);
 	};
 
 	return {

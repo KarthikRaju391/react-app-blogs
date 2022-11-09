@@ -70,6 +70,8 @@ function App() {
 							element={<CategoryInfo />}
 						/>
 					</Routes>
+				</div>
+				<div className="w-full flex justify-center">
 					{notifyLoading && (
 						<Notification loading={true} message={notificationMessage} />
 					)}

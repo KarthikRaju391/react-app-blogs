@@ -10,7 +10,7 @@ export const Notification = ({ success, error, loading, message }) => {
 				success && `bg-green-200 border-green-600`
 			} ${error && `bg-red-200 border-red-600`} ${
 				loading && `bg-yellow-100 border-yellow-500`
-			} border-2 w-80 font-bold fixed bottom-4 right-6`}
+			} border-2 w-80 font-bold md:fixed md:bottom-4 md:right-6`}
 		>
 			<div>
 				{success && (
