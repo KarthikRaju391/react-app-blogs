@@ -25,7 +25,7 @@ export const Blog = () => {
 		const fetchBlog = async () => {
 			try {
 				const response = await fetch(
-					`https://drafters.up.railway.app/api/blogs/${blogId}`
+					`https://drafters.onrender.com/api/blogs/${blogId}`
 				);
 				const data = await response.json();
 				if (!unsubscribed) {
@@ -93,7 +93,9 @@ export const Blog = () => {
 									className="hover:underline"
 									to={`/author/${blog.author}`}
 								>
-									<span className="author">{blog.author}</span>
+									<span className="author">
+										{blog.author}
+									</span>
 								</Link>
 								{" | "}
 								{formatDistanceToNow(
@@ -117,18 +119,23 @@ export const Blog = () => {
 										className="icon text-2xl cursor-pointer"
 										fontSize="larger"
 										icon={
-											blog.likes && blog.likes.includes(user?.userId)
+											blog.likes &&
+											blog.likes.includes(user?.userId)
 												? heartSolid
 												: heart
 										}
 										onClick={() => handleUpdate(blogId)}
 									/>
 									<span className="heart-count ml-2">
-										{blog.likes.length > 0 && blog.likes.length}
+										{blog.likes.length > 0 &&
+											blog.likes.length}
 									</span>
 								</div>
 								<div className="flex items-center">
-									<FontAwesomeIcon className="text-2xl" icon={faEye} />
+									<FontAwesomeIcon
+										className="text-2xl"
+										icon={faEye}
+									/>
 									<span className="ml-2">{views}</span>
 								</div>
 							</div>

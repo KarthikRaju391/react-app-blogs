@@ -29,7 +29,7 @@ export const Create = () => {
 			setLoadingState(true);
 			try {
 				const response = await fetch(
-					`https://drafters.up.railway.app/api/blogs/${blogId}`
+					`https://drafters.onrender.com/api/blogs/${blogId}`
 				);
 				const data = await response.json();
 				setLoadingState(false);
@@ -120,13 +120,17 @@ export const Create = () => {
 								<select
 									className="p-2 cursor-pointer rounded focus:outline-none border border-quill-border"
 									value={category || "Personal"}
-									onChange={(e) => setCategory(e.target.value)}
+									onChange={(e) =>
+										setCategory(e.target.value)
+									}
 									required
 								>
 									<option value="Personal">Personal</option>
 									<option value="Tech">Tech</option>
 									<option value="Self-help">Self-help</option>
-									<option value="Entertainment">Entertainment</option>
+									<option value="Entertainment">
+										Entertainment
+									</option>
 									<option value="Lifestyle">Lifestyle</option>
 								</select>
 							</div>
@@ -177,7 +181,9 @@ export const Create = () => {
 								<button
 									name="final"
 									className="border border-black hover:bg-gray-900 transition-all w-1/2 md:w-3/12 md:ml-4 bg-gray-800 text-white px-2 py-3"
-									onClick={(e) => handleDraftSubmit(e, blogId)}
+									onClick={(e) =>
+										handleDraftSubmit(e, blogId)
+									}
 								>
 									Publish Draft
 								</button>
