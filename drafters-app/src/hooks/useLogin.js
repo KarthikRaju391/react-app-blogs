@@ -11,7 +11,7 @@ export const useLogin = () => {
 		setError(null);
 
 		const response = await fetch(
-			"https://drafters.onrender.com/api/auth/login",
+			"https://drafters.up.railway.app/api/auth/login",
 			{
 				method: "POST",
 				headers: {

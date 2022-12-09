@@ -5,7 +5,7 @@ import { useAuthContext } from "./useAuthContext";
 import { useNotification } from "./useNotification";
 
 export const useBlogs = () => {
-	const URL = "https://drafters.onrender.com/api";
+	const URL = "https://drafters.up.railway.app/api";
 	const navigate = useNavigate();
 	const [error, setError] = useState(null);
 	const [updateError, setUpdateError] = useState(null);

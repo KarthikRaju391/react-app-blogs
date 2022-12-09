@@ -29,7 +29,7 @@ export const Create = () => {
 			setLoadingState(true);
 			try {
 				const response = await fetch(
-					`https://drafters.onrender.com/api/blogs/${blogId}`
+					`https://drafters.up.railway.app/api/blogs/${blogId}`
 				);
 				const data = await response.json();
 				setLoadingState(false);

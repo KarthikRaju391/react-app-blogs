@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useBlogsContext } from "./useBlogContext";
 
 export const useCategory = () => {
-	const URL = "https://drafters.onrender.com/api";
+	const URL = "https://drafters.up.railway.app/api";
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(null);
 	const { dispatch } = useBlogsContext();
