@@ -25,7 +25,9 @@ const Auth = () => {
 	const handleSubmit = async (e) => {
 		setAuth(true);
 		e.preventDefault();
-		register ? await signup(user) : await login(user.username, user.password);
+		register
+			? await signup(user)
+			: await login(user.username, user.password);
 	};
 
 	const handleChange = (e) => {
@@ -63,7 +65,10 @@ const Auth = () => {
 								/>
 							</div>
 							<div className="flex flex-col lg:w-60">
-								<label className="mt-4 md:mt-0" htmlFor="lastname">
+								<label
+									className="mt-4 md:mt-0"
+									htmlFor="lastname"
+								>
 									Last Name
 								</label>
 								<input
@@ -90,6 +95,7 @@ const Auth = () => {
 				</label>
 				<input
 					className="border rounded p-2 font-bold text-black border-black focus:outline-none"
+					placeholder="test username: testuser"
 					name="username"
 					type="text"
 					onChange={handleChange}
@@ -99,6 +105,7 @@ const Auth = () => {
 				</label>
 				<input
 					className="border rounded p-2 font-bold text-black border-black focus:outline-none"
+					placeholder="testuser password : ABCabc123!"
 					name="password"
 					type="password"
 					onChange={handleChange}
