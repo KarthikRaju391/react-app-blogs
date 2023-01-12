@@ -5,13 +5,14 @@ export const useSignup = () => {
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(null);
 	const { dispatch } = useAuthContext();
+	const URL = import.meta.env.VITE_APP_URL;
 
 	const signup = async (user) => {
 		setIsLoading(true);
 		setError(null);
 
 		const response = await fetch(
-			"https://drafters.up.railway.app/api/auth/signup",
+			`${URL}/auth/signup`,
 			{
 				method: "POST",
 				headers: {

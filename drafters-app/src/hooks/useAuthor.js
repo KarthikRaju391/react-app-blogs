@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useBlogsContext } from "./useBlogContext";
 
 export const useAuthor = () => {
-	const URL = "https://drafters.up.railway.app/api";
+	const URL = import.meta.env.VITE_APP_URL;
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(null);
 	const { dispatch } = useBlogsContext();
