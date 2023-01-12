@@ -83,6 +83,7 @@ router.post("/", verifyToken, async (req, res) => {
 		body: req.body.body,
 		category: req.body.category,
 		draft: req.body.draft,
+		image: req.body.image,
 		author: `${req.user.firstname} ${req.user.lastname}`,
 	});
 

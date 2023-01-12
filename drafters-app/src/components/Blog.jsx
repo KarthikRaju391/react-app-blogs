@@ -12,6 +12,7 @@ import { Loading } from "./Loading";
 
 //TODO: figure out icon tooltips
 export const Blog = () => {
+	const URL = import.meta.env.VITE_APP_URL;
 	const path = useLocation();
 	const { user } = useAuthContext();
 	const { updateBlog } = useBlogs();
@@ -24,9 +25,7 @@ export const Blog = () => {
 		let unsubscribed = false;
 		const fetchBlog = async () => {
 			try {
-				const response = await fetch(
-					`https://drafters.up.railway.app/api/blogs/${blogId}`
-				);
+				const response = await fetch(`${URL}/blogs/${blogId}`);
 				const data = await response.json();
 				if (!unsubscribed) {
 					setError(null);
@@ -141,6 +140,15 @@ export const Blog = () => {
 							</div>
 						)}
 					</div>
+					{blog.image && blog.image != "" && (
+						<div className="mt-2">
+							<img
+								className="w-full h-[300px] object-cover shadow-sm rounded-md"
+								src={blog.image}
+								alt="image"
+							/>
+						</div>
+					)}
 					<article className="article mt-5 text-lg">
 						{
 							<div

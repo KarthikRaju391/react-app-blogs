@@ -5,7 +5,7 @@ import { useAuthContext } from "./useAuthContext";
 import { useNotification } from "./useNotification";
 
 export const useBlogs = () => {
-	const URL = "https://drafters.up.railway.app/api";
+	const URL = import.meta.env.VITE_APP_URL;
 	const navigate = useNavigate();
 	const [error, setError] = useState(null);
 	const [updateError, setUpdateError] = useState(null);
@@ -84,7 +84,7 @@ export const useBlogs = () => {
 		}
 	};
 
-	const createBlog = async (title, body, category, draft) => {
+	const createBlog = async (title, body, category,image, draft) => {
 		setCreateLoading((prev) => !prev);
 		createLoading && notifyLoadingState(true, draft, false, false);
 
@@ -99,6 +99,7 @@ export const useBlogs = () => {
 				body,
 				category,
 				draft,
+				image
 			}),
 		});
 		const data = await response.json();

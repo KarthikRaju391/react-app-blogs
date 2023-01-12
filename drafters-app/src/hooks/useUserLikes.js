@@ -3,7 +3,7 @@ import { useBlogsContext } from "./useBlogContext";
 import { useAuthContext } from "./useAuthContext";
 
 export const useUserLikes = () => {
-	const URL = "https://drafters.up.railway.app/api";
+	const URL = import.meta.env.VITE_APP_URL;
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(null);
 	const { dispatch } = useBlogsContext();

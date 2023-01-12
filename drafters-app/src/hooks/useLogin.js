@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 
+
 export const useLogin = () => {
+	const URL = import.meta.env.VITE_APP_URL;
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(null);
 	const { dispatch } = useAuthContext();
@@ -11,7 +13,8 @@ export const useLogin = () => {
 		setError(null);
 
 		const response = await fetch(
-			"https://drafters.up.railway.app/api/auth/login",
+			`${URL}/auth/login`,
+			// "https://drafters.up.railway.app/api/auth/login",
 			{
 				method: "POST",
 				headers: {

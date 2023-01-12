@@ -11,6 +11,7 @@ const BlogSchema = new mongoose.Schema(
 		bookmark: { type: Array },
 		views: { type: Number, default: 0 },
 		draft: { type: Boolean, required: true, default: false },
+		image: {type: String, default:""}
 	},
 	{
 		timestamps: true,
