@@ -64,6 +64,7 @@ export const Create = () => {
 				body,
 				category,
 				draft: draftState,
+				image,
 			};
 			updateBlog(blogId, newData, true, false, false, false);
 		} else {
@@ -72,6 +73,7 @@ export const Create = () => {
 				body,
 				category,
 				draft: draftState,
+				image,
 				createdAt: new Date().toISOString(),
 			};
 			updateBlog(blogId, newData, true, false, false, false);
@@ -105,7 +107,7 @@ export const Create = () => {
 				<div>
 					<button
 						onClick={handleModal}
-						className="mt-2 border border-gray-400"
+						className="mt-2 border border-gray-400 p-2 rounded-md"
 					>
 						{image ? "Added Cover Image" : "Add Cover"}
 					</button>
