@@ -39,6 +39,7 @@ export const Create = () => {
 				setBody(data.body);
 				setCategory(data.category);
 				setDraft(data.draft);
+				setImage(data.image);
 			} catch (err) {
 				setShowError(err);
 			}
@@ -82,7 +83,6 @@ export const Create = () => {
 
 	const handleCreate = async (e, draftState) => {
 		e.preventDefault();
-		console.log(image);
 		if (draftState) {
 			createBlog(title, body, category, image, true);
 		} else {
