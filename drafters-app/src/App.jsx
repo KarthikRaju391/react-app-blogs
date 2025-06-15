@@ -20,7 +20,6 @@ import { CategoryInfo } from "./pages/CategoryInfo";
 import { UserLikes } from "./pages/UserLikes";
 import { useBlogsContext } from "./hooks/useBlogContext";
 import { Notification } from "./components/Notification";
-import { ThemeProvider } from "./context/ThemeContext";
 
 function App() {
 	const { user } = useAuthContext();
@@ -32,56 +31,50 @@ function App() {
 		notifyError,
 		notificationMessage,
 	} = useBlogsContext();
-	
 	return (
-		<ThemeProvider>
-			<Router>
-				<div className="App min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
-					<Navbar />
-					<main className="container mx-auto px-4 py-8">
-						<div className="grid grid-cols-1 grid-flow-row-dense md:grid-cols-2 lg:grid-cols-3 gap-8">
-							<Routes>
-								<Route
-									path="/auth"
-									element={!user ? <Auth /> : <Navigate to="/" />}
-								/>
-								<Route
-									path="/forgot-password"
-									element={!user ? <ForgotPassword /> : <Navigate to="/" />}
-								/>
-								<Route path="/" element={<Home />} />
-								<Route path="/blogs/:username" element={<UserBlogs />} />
-								<Route
-									path="/blogs/:username/bookmarks"
-									element={<UserBookmarks />}
-								/>
-								<Route
-									path="/blogs/:username/likes"
-									element={<UserLikes />}
-								/>
-								<Route path="/blog/:id" element={<Blog />} />
-								<Route
-									path="/blogs/create"
-									element={user ? <Edit /> : <Navigate to="/auth" />}
-								/>
-								<Route
-									path="/blogs/edit/:id"
-									element={user ? <Edit /> : <Navigate to="/auth" />}
-								/>
-								<Route
-									path="/blogs/:username/drafts"
-									element={<UserDrafts />}
-								/>
-								<Route path="/author/:authorName" element={<AuthorInfo />} />
-								<Route
-									path="/blogs/category/:categoryName"
-									element={<CategoryInfo />}
-								/>
-							</Routes>
-						</div>
-					</main>
-					
-					{/* Notifications */}
+		<Router>
+			<div className="App min-h-screen bg-background px-5 py-5">
+				{<Navbar />}
+				<div className="content grid grid-cols-1 grid-flow-row-dense md:grid-cols-2 lg:grid-cols-3">
+					<Routes>
+						<Route
+							path="/auth"
+							element={!user ? <Auth /> : <Navigate to="/" />}
+						/>
+						<Route
+							path="/forgot-password"
+							element={!user ? <ForgotPassword /> : <Navigate to="/" />}
+						/>
+						<Route path="/" element={<Home />} />
+						<Route path="/blogs/:username" element={<UserBlogs />} />
+						<Route
+							path="/blogs/:username/bookmarks"
+							element={<UserBookmarks />}
+						/>
+						<Route
+							path="/blogs/:username/likes"
+							element={<UserLikes />}
+						/>
+						{/* TODO: reroute to home when routing to blog that's deleted */}
+						<Route path="/blog/:id" element={<Blog />} />
+						<Route
+							path="/blogs/create"
+							element={user ? <Edit /> : <Navigate to="/auth" />}
+						/>
+						<Route
+							path="/blogs/edit/:id"
+							element={user ? <Edit /> : <Navigate to="/auth" />}
+						/>
+						<Route
+							path="/blogs/:username/drafts"
+							element={<UserDrafts />}
+						/>
+						<Route path="/author/:authorName" element={<AuthorInfo />} />
+						<Route
+							path="/blogs/category/:categoryName"
+							element={<CategoryInfo />}
+						/>
+					</Routes>
 					{notifyLoading && (
 						<Notification loading={true} message={notificationMessage} />
 					)}
@@ -98,8 +91,8 @@ function App() {
 						<Notification error={true} message={notificationMessage} />
 					)}
 				</div>
-			</Router>
-		</ThemeProvider>
+			</div>
+		</Router>
 	);
 }
 
