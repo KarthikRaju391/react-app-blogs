@@ -11,7 +11,7 @@
     "start:app": "cd drafters-app && npm start",
     "build": "cd drafters-app && npm run build",
     "build:app": "cd drafters-app && npm run build",
-    "dev": "npm run start:app",
+    "dev": "npm run start:api",
     "test": "echo \"Run tests in individual packages\"",
     "clean": "rm -rf api/node_modules drafters-app/node_modules"
   },
