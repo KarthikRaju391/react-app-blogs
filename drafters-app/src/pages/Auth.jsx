@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useSignup } from "../hooks/useSignup";
 import { useLogin } from "../hooks/useLogin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -135,9 +136,6 @@ const Auth = () => {
 						)}
 					</div>
 				</button>
-				{/* {(isLoading || loginIsLoading) && (
-					<Loading subtitle={"Getting you in..."} />
-				)} */}
 				<p
 					className="mx-auto mt-4"
 					onClick={() => setRegister((prevState) => !prevState)}
@@ -148,6 +146,17 @@ const Auth = () => {
 							: "Don't have an account? Register"}
 					</span>
 				</p>
+				
+				{!register && (
+					<div className="text-center mt-4">
+						<Link
+							to="/forgot-password"
+							className="text-sm text-gray-600 hover:text-gray-800 underline"
+						>
+							Forgot your password?
+						</Link>
+					</div>
+				)}
 			</form>
 		</div>
 	);

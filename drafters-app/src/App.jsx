@@ -1,6 +1,7 @@
 import { Navbar } from "./components/Navbar";
 import { Home } from "./pages/Home";
 import Auth from "./pages/Auth";
+import ForgotPassword from "./pages/ForgotPassword";
 import {
 	BrowserRouter as Router,
 	Routes,
@@ -39,6 +40,10 @@ function App() {
 						<Route
 							path="/auth"
 							element={!user ? <Auth /> : <Navigate to="/" />}
+						/>
+						<Route
+							path="/forgot-password"
+							element={!user ? <ForgotPassword /> : <Navigate to="/" />}
 						/>
 						<Route path="/" element={<Home />} />
 						<Route path="/blogs/:username" element={<UserBlogs />} />
