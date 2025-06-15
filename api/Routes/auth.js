@@ -57,6 +57,7 @@ router.post("/login", async (req, res) => {
 
 // Forgot Password - Send OTP to email
 router.post("/forgot-password", async (req, res) => {
+	console.log("Forgot password route hit with body:", req.body);
 	const { email } = req.body;
 
 	try {
@@ -89,6 +90,7 @@ router.post("/forgot-password", async (req, res) => {
 		const emailResult = await sendOTPEmail(email, otp, user.username);
 		
 		if (!emailResult.success) {
+			console.error("Email sending failed:", emailResult.error);
 			return res.status(500).json({ error: "Failed to send OTP email. Please try again." });
 		}
 
@@ -104,6 +106,7 @@ router.post("/forgot-password", async (req, res) => {
 
 // Verify OTP
 router.post("/verify-otp", async (req, res) => {
+	console.log("Verify OTP route hit with body:", req.body);
 	const { email, otp } = req.body;
 
 	try {
@@ -146,6 +149,7 @@ router.post("/verify-otp", async (req, res) => {
 
 // Reset Password
 router.post("/reset-password", async (req, res) => {
+	console.log("Reset password route hit with body:", req.body);
 	const { resetToken, newPassword } = req.body;
 
 	try {

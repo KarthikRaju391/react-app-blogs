@@ -1,16 +1,32 @@
 const nodemailer = require("nodemailer");
 
 // Create transporter
-const transporter = nodemailer.createTransport({
-	service: "gmail",
-	auth: {
-		user: process.env.EMAIL_USER,
-		pass: process.env.EMAIL_PASS,
-	},
-});
+const createTransporter = () => {
+	// Check if email credentials are configured
+	if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+		console.warn("Email credentials not configured. Email functionality will be disabled.");
+		return null;
+	}
+
+	return nodemailer.createTransporter({
+		service: "gmail",
+		auth: {
+			user: process.env.EMAIL_USER,
+			pass: process.env.EMAIL_PASS,
+		},
+	});
+};
 
 // Send OTP email
 const sendOTPEmail = async (email, otp, username) => {
+	const transporter = createTransporter();
+	
+	// If no transporter (missing credentials), simulate success for development
+	if (!transporter) {
+		console.log(`[DEV MODE] OTP for ${email}: ${otp}`);
+		return { success: true, devMode: true };
+	}
+
 	const mailOptions = {
 		from: process.env.EMAIL_USER,
 		to: email,
