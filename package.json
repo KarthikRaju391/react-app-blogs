@@ -1,0 +1,25 @@
+{
+  "name": "drafters-monorepo",
+  "version": "1.0.0",
+  "description": "A blogging platform with React frontend and Express backend",
+  "private": true,
+  "scripts": {
+    "install:api": "cd api && npm install",
+    "install:app": "cd drafters-app && npm install",
+    "install:all": "npm run install:api && npm run install:app",
+    "start:api": "cd api && npm start",
+    "start:app": "cd drafters-app && npm start",
+    "build": "cd drafters-app && npm run build",
+    "build:app": "cd drafters-app && npm run build",
+    "dev": "npm run start:app",
+    "test": "echo \"Run tests in individual packages\"",
+    "clean": "rm -rf api/node_modules drafters-app/node_modules"
+  },
+  "workspaces": [
+    "api",
+    "drafters-app"
+  ],
+  "keywords": ["blog", "react", "express", "mongodb"],
+  "author": "",
+  "license": "ISC"
+}
