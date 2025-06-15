@@ -6,8 +6,8 @@ import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useBlogs } from "../hooks/useBlogs";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { faHeart as heart, faEye, faBookmark } from "@fortawesome/free-regular-svg-icons";
-import { faHeart as heartSolid, faBookmark as bookmarkSolid, faShare } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as heart, faEye, faBookmark, faShare } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as heartSolid, faBookmark as bookmarkSolid } from "@fortawesome/free-solid-svg-icons";
 import { BlogContentSkeleton } from "./LoadingSkeleton";
 
 export const Blog = () => {
