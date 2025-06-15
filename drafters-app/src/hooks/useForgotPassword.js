@@ -1,7 +1,8 @@
 import { useState } from "react";
 
 export const useForgotPassword = () => {
-	const URL = import.meta.env.VITE_APP_URL;
+	// Use the environment variable or fallback to localhost for development
+	const URL = import.meta.env.VITE_APP_URL || "http://localhost:4000/api";
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [success, setSuccess] = useState(false);
@@ -24,6 +25,16 @@ export const useForgotPassword = () => {
 			});
 
 			console.log("Response status:", response.status);
+			console.log("Response headers:", response.headers);
+			
+			// Check if response is HTML (error page) instead of JSON
+			const contentType = response.headers.get("content-type");
+			if (contentType && contentType.includes("text/html")) {
+				console.error("Received HTML response instead of JSON - route not found");
+				setError("Service temporarily unavailable. Please try again later.");
+				return { success: false };
+			}
+
 			const data = await response.json();
 			console.log("Response data:", data);
 
@@ -58,6 +69,13 @@ export const useForgotPassword = () => {
 				body: JSON.stringify({ email, otp }),
 			});
 
+			const contentType = response.headers.get("content-type");
+			if (contentType && contentType.includes("text/html")) {
+				console.error("Received HTML response instead of JSON - route not found");
+				setError("Service temporarily unavailable. Please try again later.");
+				return { success: false };
+			}
+
 			const data = await response.json();
 			console.log("Verify OTP response:", data);
 
@@ -90,6 +108,13 @@ export const useForgotPassword = () => {
 				},
 				body: JSON.stringify({ resetToken, newPassword }),
 			});
+
+			const contentType = response.headers.get("content-type");
+			if (contentType && contentType.includes("text/html")) {
+				console.error("Received HTML response instead of JSON - route not found");
+				setError("Service temporarily unavailable. Please try again later.");
+				return { success: false };
+			}
 
 			const data = await response.json();
 			console.log("Reset password response:", data);

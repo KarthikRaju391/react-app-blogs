@@ -57,26 +57,37 @@ router.post("/login", async (req, res) => {
 
 // Forgot Password - Send OTP to email
 router.post("/forgot-password", async (req, res) => {
-	console.log("Forgot password route hit with body:", req.body);
+	console.log("=== FORGOT PASSWORD ROUTE HIT ===");
+	console.log("Request body:", req.body);
+	console.log("Request headers:", req.headers);
+	
 	const { email } = req.body;
 
 	try {
 		if (!email) {
+			console.log("No email provided");
 			return res.status(400).json({ error: "Email is required" });
 		}
 
+		console.log("Looking for user with email:", email);
 		// Check if user exists
 		const user = await User.findOne({ email });
 		if (!user) {
+			console.log("User not found for email:", email);
 			return res.status(404).json({ error: "No account found with this email address" });
 		}
+
+		console.log("User found:", user.username);
 
 		// Generate OTP
 		const otp = generateOTP();
 		const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
+		console.log("Generated OTP:", otp);
+
 		// Delete any existing OTPs for this email
 		await PasswordReset.deleteMany({ email });
+		console.log("Deleted existing OTPs for email");
 
 		// Save OTP to database
 		const passwordReset = new PasswordReset({
@@ -85,15 +96,18 @@ router.post("/forgot-password", async (req, res) => {
 			expiresAt,
 		});
 		await passwordReset.save();
+		console.log("Saved new OTP to database");
 
 		// Send OTP via email
 		const emailResult = await sendOTPEmail(email, otp, user.username);
+		console.log("Email result:", emailResult);
 		
 		if (!emailResult.success) {
 			console.error("Email sending failed:", emailResult.error);
 			return res.status(500).json({ error: "Failed to send OTP email. Please try again." });
 		}
 
+		console.log("OTP sent successfully");
 		res.status(200).json({ 
 			message: "OTP sent to your email address. Please check your inbox.",
 			email: email.replace(/(.{2})(.*)(@.*)/, "$1***$3") // Mask email for security
@@ -106,13 +120,17 @@ router.post("/forgot-password", async (req, res) => {
 
 // Verify OTP
 router.post("/verify-otp", async (req, res) => {
-	console.log("Verify OTP route hit with body:", req.body);
+	console.log("=== VERIFY OTP ROUTE HIT ===");
+	console.log("Request body:", req.body);
+	
 	const { email, otp } = req.body;
 
 	try {
 		if (!email || !otp) {
 			return res.status(400).json({ error: "Email and OTP are required" });
 		}
+
+		console.log("Looking for OTP:", { email, otp });
 
 		// Find valid OTP
 		const passwordReset = await PasswordReset.findOne({
@@ -123,8 +141,11 @@ router.post("/verify-otp", async (req, res) => {
 		});
 
 		if (!passwordReset) {
+			console.log("Invalid or expired OTP");
 			return res.status(400).json({ error: "Invalid or expired OTP" });
 		}
+
+		console.log("OTP verified successfully");
 
 		// Mark OTP as used
 		passwordReset.used = true;
@@ -149,7 +170,9 @@ router.post("/verify-otp", async (req, res) => {
 
 // Reset Password
 router.post("/reset-password", async (req, res) => {
-	console.log("Reset password route hit with body:", req.body);
+	console.log("=== RESET PASSWORD ROUTE HIT ===");
+	console.log("Request body:", { resetToken: "***", newPassword: "***" });
+	
 	const { resetToken, newPassword } = req.body;
 
 	try {
@@ -162,6 +185,8 @@ router.post("/reset-password", async (req, res) => {
 		if (decoded.purpose !== "password-reset") {
 			return res.status(400).json({ error: "Invalid reset token" });
 		}
+
+		console.log("Reset token verified for email:", decoded.email);
 
 		// Find user
 		const user = await User.findOne({ email: decoded.email });
@@ -178,6 +203,8 @@ router.post("/reset-password", async (req, res) => {
 		// Update password
 		user.password = CryptoJS.AES.encrypt(newPassword, process.env.PASS_SEC).toString();
 		await user.save();
+
+		console.log("Password updated successfully");
 
 		// Clean up used OTPs for this email
 		await PasswordReset.deleteMany({ email: decoded.email });
