@@ -16,7 +16,7 @@ export const Navbar = () => {
 			<nav className="container mx-auto px-4 py-4">
 				<div className="flex items-center justify-between">
 					<Link to={"/"} className="group">
-						<h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent group-hover:from-purple-600 group-hover:to-blue-600 dark:group-hover:from-purple-400 dark:group-hover:to-blue-400 transition-all duration-300">
+						<h1 className="text-3xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
 							Drafters
 						</h1>
 					</Link>

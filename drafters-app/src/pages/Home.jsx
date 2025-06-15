@@ -30,10 +30,15 @@ export const Home = () => {
 	const paginate = (pageNumber) => {
 		setCurrentPage(pageNumber);
 	};
+	
 	return (
 		<>
-			<div className="home col-span-2 mt-10 md:w-3/4 md:mx-auto">
-				{error && <div>'Unable to get the data...</div>}
+			<div className="col-span-2 lg:col-span-2">
+				{error && (
+					<div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-red-700 dark:text-red-300">
+						Unable to get the data...
+					</div>
+				)}
 				{isLoading ? (
 					<Loading subtitle={"Loading all blogs..."} />
 				) : (
@@ -56,12 +61,12 @@ export const Home = () => {
 					/>
 				)}
 			</div>
-			{blogs && (
-				<div className="mt-[3.25em]">
-					<AuthorList />
-					<CategoryList />
-				</div>
-			)}
+			
+			{/* Sidebar */}
+			<div className="hidden lg:block lg:col-span-1 space-y-6">
+				<AuthorList />
+				<CategoryList />
+			</div>
 		</>
 	);
 };
